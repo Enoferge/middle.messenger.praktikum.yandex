@@ -10,6 +10,9 @@
     "start": "npm run build && npm run preview"
   },
   "devDependencies": {
+    "postcss": "^8.5.3",
+    "postcss-nested": "^7.0.2",
+    "postcss-preset-env": "^10.1.6",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
   }
