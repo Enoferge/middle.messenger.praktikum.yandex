@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-	  "node": ">=12"
-	},
+    "node": ">=12"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -17,8 +17,7 @@
     "postcss-nested": "^7.0.2",
     "postcss-preset-env": "^10.1.6",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5",
-    "vite-plugin-string": "^1.2.3"
+    "vite": "^6.3.5"
   },
   "dependencies": {
     "handlebars": "^4.7.8"
