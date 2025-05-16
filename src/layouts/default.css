@@ -1,0 +1,9 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-text-main);
+  background-color: var(--color-bg-layout);
+  padding: 48px 0;
+}

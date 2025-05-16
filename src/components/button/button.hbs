@@ -1,0 +1,9 @@
+<button 
+  class="button button_{{#if variant}}{{variant}}{{else}}default{{/if}}{{#if fullWidth}} button_full{{/if}}"
+  type="{{type}}"
+  name="{{name}}"
+  {{#if page}}data-page="{{page}}"{{/if}}
+  {{#if formId}}form="{{formId}}"{{/if}}
+>
+  {{ text }}
+</button>

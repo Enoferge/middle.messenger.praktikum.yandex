@@ -1,0 +1,38 @@
+.button {
+  --color-button-active: #5275b6;
+  --color-button-active-accent: #7aa2e5;
+
+  transition: all 0.2s ease;
+
+  &_default {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 20px;
+
+    background-color: var(--color-button-active);
+    padding: 10px 16px;
+    border: 2px solid var(--color-button-active-accent);
+    border-radius: var(--radius-small);
+
+    &:hover {
+      background-color: var(--color-button-active-hovered);
+      border-color: var(--color-button-active-accent-hovered);
+    }
+  }
+
+  &_plain {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 24px;
+    color: var(--color-button-active-accent);
+
+    &:hover {
+      color: var(--color-button-active-accent-hovered);
+      text-decoration: underline;
+    }
+  }
+
+  &_full {
+    width: 100%;
+  }
+}

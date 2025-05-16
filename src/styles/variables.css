@@ -1,0 +1,14 @@
+:root {
+  --radius-small: 20px;
+  --radius-large: 30px;
+
+  --color-bg-layout: #392f5c;
+  --color-bg-main: #2e1f4c;
+  --color-error-accent: #ff6969;
+
+  --color-border-main: #7460b7;
+  --color-button-active-hovered: #385b9c;
+  --color-button-active-accent-hovered: #4e7bc8;
+
+  --color-text-main: #fff;
+}
