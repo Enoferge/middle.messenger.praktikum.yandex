@@ -3,10 +3,11 @@ import { registrationFields } from '../data/authFields';
 import { AuthPage } from '../pages/auth';
 import { HomePage } from '../pages/home';
 import { prepareForm } from '../utils/form';
-import type { AuthPageData } from './types';
+import { PAGE_NAMES } from './constants';
+import type { AuthPageData, PageName } from './types';
 
 // use AuthPageData for now
-export const pages: Record<string, AuthPageData> = {
+export const pages: Record<PageName, AuthPageData> = {
   registration: {
     template: AuthPage,
     cardContext: {
@@ -20,7 +21,7 @@ export const pages: Record<string, AuthPageData> = {
       secondaryAction: {
         name: 'register',
         text: 'Sign in',
-        page: '''',
+        page: PAGE_NAMES.LOGIN,
       },
     },
     mountCb: () => prepareForm('registration-form', console.log),
