@@ -1,4 +1,6 @@
 :root {
+  --font-family-base: 'Poppins', system-ui, sans-serif;
+
   --radius-small: 20px;
   --radius-large: 30px;
 
