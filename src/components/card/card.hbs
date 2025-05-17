@@ -1,11 +1,15 @@
 <div class='card'>
   <div class="card__title">{{title}}</div>
 
+  {{#if contentBlock }}
     <div class="card__content">
-      {{> Form }}
+      {{> (resolveSlot "contentBlock") }}
     </div>
+  {{/if}}
 
+  {{#if footerBlock }}
     <div class="card__footer">
-      {{> FormFooter }}
-      </div>
+      {{> (resolveSlot "footerBlock") }}
+    </div>
+  {{/if}}
 </div>
