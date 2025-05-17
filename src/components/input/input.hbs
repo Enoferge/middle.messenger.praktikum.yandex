@@ -1,16 +1,26 @@
-<div class="input-container">
-  <label for="{{name}}" class="input__label">{{label}}</label>
-    <input
-      class="input{{#if error}} input_error{{/if}}"
-      type="{{type}}"
-      name="{{name}}"
-      id="{{name}}"
-      placeholder="{{placeholder}}"
-      {{#if minlength}}minlength="{{minlength}}"{{/if}}
-      {{#if disabled}}disabled{{/if}}
-      {{#if required}}required{{/if}}
-      {{#if readonly}}readonly{{/if}}
-      {{#if autocomplete}}autocomplete="{{autocomplete}}"{{/if}}
-    />
-  {{#if error}}<div class="input__error-caption">{{ error}}</div> {{/if}}
+<div class="input-field
+  {{#if error}} input-field_error{{/if}}
+  {{#if readonly}} input-field_readonly{{/if}}
+  {{#if disabled}} input-field_disabled{{/if}}">
+
+  <label for="{{name}}" class="input-field__label">{{label}}</label>
+
+  <input
+    class="input-field__input"
+    type="{{type}}"
+    value="{{value}}"
+    name="{{name}}"
+    id="{{name}}"
+    placeholder="{{placeholder}}"
+    {{#if minlength}}minlength="{{minlength}}"{{/if}}
+    {{#if disabled}}disabled{{/if}}
+    {{#if required}}required{{/if}}
+    {{#if readonly}}readonly{{/if}}
+    {{#if autocomplete}}autocomplete="{{autocomplete}}"{{/if}}
+  />
+
+  {{#if error}}
+    <div class="input-field__error-caption">{{error}}</div>
+  {{/if}}
+
 </div>

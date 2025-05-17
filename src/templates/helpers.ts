@@ -7,4 +7,8 @@ export function registerHelpers() {
       return this[slotName] ?? fallback;
     }
   );
+
+  Handlebars.registerHelper('ifEquals', function (this: any, arg1, arg2, options) {
+    return arg1 === arg2 ? options.fn(this) : options.inverse(this);
+  });
 }

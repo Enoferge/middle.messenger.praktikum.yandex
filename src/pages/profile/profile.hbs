@@ -1,0 +1,34 @@
+<Button data-page="home">Back to Home</Button>
+
+<div class="profile-card">
+  <div class="profile-card__title">Profile</div>
+
+  <div class="profile-card__content">
+  
+    <div class="profile-card__avatar">
+      <div class="profile-card__avatar-image">
+        {{> Avatar src="/assets/images/user1.png" alt="User avatar" size=160 }}
+      </div>
+      <div class="profile-card__avatar-actions">
+        {{> Button variant="plain" text="Change avatar"}}
+        {{> Button variant="plain" text="Change password"}}
+        {{> Button variant="plain" text="Sign out" isAccent=true}}
+      </div>
+    </div>
+
+    <div class="profile-card__form">
+      {{> Form }}
+
+      {{#ifEquals mode "EDIT"}}
+        {{> Button class="profile-card__submit-button" text="Save" page="profileRead" type="button"}}
+      {{else}}
+        {{> Button class="profile-card__submit-button" text="Edit" page="profileEdit" type="button"}}
+      {{/ifEquals}}
+    </div>
+
+  </div>
+
+  <div class="profile-card__close-button">
+    x
+  </div>
+</div>

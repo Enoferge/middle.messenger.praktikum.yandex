@@ -1,11 +1,10 @@
-import type { PageName } from '../../navigation/types';
+import type { BaseContext, PageName } from '../../navigation/types';
 import type { InputField } from '../input/types';
 
-export interface CardContext {
+export interface CardContext extends BaseContext {
   title: string;
   contentBlock?: string;
   footerBlock?: string;
-  formId: string;
   formFields: Array<InputField>;
   submitAction: {
     name: string;

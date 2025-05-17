@@ -3,7 +3,8 @@ import { registrationFields } from '../data/authFields';
 import { AuthPage } from '../pages/auth';
 import { ErrorPage } from '../pages/error';
 import { HomePage } from '../pages/home';
-import { prepareForm } from '../utils/form';
+import { ProfilePage } from '../pages/profile';
+import { profileEditFields, profileReadFields } from '../data/profileFields';
 import { PAGE_NAMES } from './constants';
 import type { PageData, PageName } from './types';
 
@@ -29,7 +30,6 @@ export const pages: Record<PageName, PageData> = {
         page: PAGE_NAMES.LOGIN,
       },
     },
-    mountCb: () => prepareForm('registration-form', console.log),
   },
   login: {
     template: AuthPage,
@@ -47,7 +47,6 @@ export const pages: Record<PageName, PageData> = {
         page: PAGE_NAMES.REGISTRATION,
       },
     },
-    mountCb: () => prepareForm('login-form', console.log),
   },
   home: {
     template: HomePage,
@@ -67,6 +66,22 @@ export const pages: Record<PageName, PageData> = {
     context: {
       code: 400,
       message: 'Oops',
+    },
+  },
+  profileRead: {
+    template: ProfilePage,
+    context: {
+      mode: 'READ',
+      formFields: profileReadFields,
+      formId: 'profile-form',
+    },
+  },
+  profileEdit: {
+    template: ProfilePage,
+    context: {
+      mode: 'EDIT',
+      formFields: profileEditFields,
+      formId: 'profile-form',
     },
   },
 };

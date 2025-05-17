@@ -1,5 +1,5 @@
 <button 
-  class="button button_{{#if variant}}{{variant}}{{else}}default{{/if}}{{#if fullWidth}} button_full{{/if}}"
+  class="button button_{{#if variant}}{{variant}}{{else}}default{{/if}}{{#if fullWidth}} button_full{{/if}}{{#if isAccent}} button_accent{{/if}} {{class}}"
   type="{{type}}"
   name="{{name}}"
   {{#if page}}data-page="{{page}}"{{/if}}

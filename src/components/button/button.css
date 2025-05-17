@@ -10,7 +10,7 @@
     line-height: 20px;
 
     background-color: var(--color-button-active);
-    padding: 10px 16px;
+    padding: 8px 16px;
     border: 2px solid var(--color-button-active-accent);
     border-radius: var(--radius-small);
 
@@ -34,5 +34,9 @@
 
   &_full {
     width: 100%;
+  }
+
+  &_accent {
+    color: var(--color-error-accent);
   }
 }

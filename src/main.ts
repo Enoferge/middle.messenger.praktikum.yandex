@@ -23,5 +23,5 @@ document.addEventListener('click', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderPage(PAGE_NAMES.HOME);
+  renderPage(PAGE_NAMES.PROFILE_READ);
 });

@@ -3,3 +3,4 @@ export { Button } from './button';
 export { Card } from './card';
 export { Form } from './form';
 export { FormFooter } from './form-footer';
+export { Avatar } from './avatar';
