@@ -1,9 +1,19 @@
-<button 
+<{{#if tag}}{{tag}}{{else}}button{{/if}}
   class="button button_{{#if variant}}{{variant}}{{else}}default{{/if}}{{#if fullWidth}} button_full{{/if}}{{#if isAccent}} button_accent{{/if}} {{class}}"
-  type="{{type}}"
+  type="{{#if type}}{{type}}{{else}}button{{/if}}"
   name="{{name}}"
   {{#if page}}data-page="{{page}}"{{/if}}
   {{#if formId}}form="{{formId}}"{{/if}}
+
+  {{#if disabled}}
+    {{#unless tag}}disabled{{/unless}}                  
+    {{#if tag}}aria-disabled="true" tabindex="-1"{{/if}}
+  {{/if}}
 >
-  {{ text }}
+  {{#if text}}
+    {{text}}
+  {{/if}}
+  {{#if icon}}
+    {{> Icon name=icon class="button__icon" }}
+  {{/if}}
 </button>

@@ -29,3 +29,27 @@ export const profileEditFields: Array<InputField> = [
 // TODO: add the rest of fields
 
 export const profileReadFields = profileEditFields.map((field) => ({ ...field, readonly: true }));
+
+const commonPasswordField = {
+  type: 'password',
+  minlength: 8,
+  value: 'qwerty678',
+};
+
+export const profileChangePassFields = [
+  {
+    ...commonPasswordField,
+    label: 'Old password',
+    name: 'oldPassword',
+  },
+  {
+    ...commonPasswordField,
+    label: 'New password',
+    name: 'newPassword',
+  },
+  {
+    ...commonPasswordField,
+    label: 'Repeat password',
+    name: 'repeatPassword',
+  },
+];

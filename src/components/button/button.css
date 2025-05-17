@@ -1,7 +1,5 @@
 .button {
-  --color-button-active: #5275b6;
-  --color-button-active-accent: #7aa2e5;
-
+  /* flex */
   transition: all 0.2s ease;
 
   &_default {
@@ -38,5 +36,25 @@
 
   &_accent {
     color: var(--color-error-accent);
+  }
+
+  &__icon {
+    /* fix height-width */
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  &[disabled],
+  &[disabled]:hover {
+    cursor: default;
+    user-select: none;
+    opacity: 0.5;
+  }
+
+  &[disabled]:hover {
+    background-color: var(--color-button-active);
+    border-color: var(--color-button-active-accent);
   }
 }
