@@ -1,16 +1,21 @@
 import { loginFields } from '../data/authFields';
 import { registrationFields } from '../data/authFields';
 import { AuthPage } from '../pages/auth';
+import { ErrorPage } from '../pages/error';
 import { HomePage } from '../pages/home';
 import { prepareForm } from '../utils/form';
 import { PAGE_NAMES } from './constants';
-import type { AuthPageData, PageName } from './types';
+import type { PageData, PageName } from './types';
 
-// use AuthPageData for now
-export const pages: Record<PageName, AuthPageData> = {
+const currentPages = Object.values(PAGE_NAMES).map((page) => ({
+  page,
+  buttonText: `Page ${page}`,
+}));
+
+export const pages: Record<PageName, PageData> = {
   registration: {
     template: AuthPage,
-    cardContext: {
+    context: {
       title: 'Registration',
       formFields: registrationFields,
       formId: 'registration-form',
@@ -28,7 +33,7 @@ export const pages: Record<PageName, AuthPageData> = {
   },
   login: {
     template: AuthPage,
-    cardContext: {
+    context: {
       title: 'Login',
       formFields: loginFields,
       formId: 'login-form',
@@ -44,5 +49,24 @@ export const pages: Record<PageName, AuthPageData> = {
     },
     mountCb: () => prepareForm('login-form', console.log),
   },
-  home: { template: HomePage },
+  home: {
+    template: HomePage,
+    context: {
+      pages: currentPages,
+    },
+  },
+  500: {
+    template: ErrorPage,
+    context: {
+      code: 500,
+      message: 'Fixes are coming',
+    },
+  },
+  400: {
+    template: ErrorPage,
+    context: {
+      code: 400,
+      message: 'Oops',
+    },
+  },
 };

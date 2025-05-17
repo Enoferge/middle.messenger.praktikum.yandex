@@ -22,5 +22,5 @@ document.addEventListener('click', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderPage(PAGE_NAMES.REGISTRATION);
+  renderPage(PAGE_NAMES.HOME);
 });

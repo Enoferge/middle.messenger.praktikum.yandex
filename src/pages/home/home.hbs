@@ -1,4 +1,5 @@
-<div class="home">
-  {{> Button page="login" text="Login page" variant="plain"}}
-  {{> Button page="registration" text="Registration page" variant="plain"}}
+<div class='home'>
+  {{#each pages}}
+    {{> Button page=page text=buttonText variant="plain"}}
+  {{/each}}
 </div>

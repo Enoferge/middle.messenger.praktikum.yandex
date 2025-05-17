@@ -4,9 +4,9 @@ import { pages } from '../navigation/router';
 import type { PageName } from '../navigation/types';
 
 export function renderPage(page: PageName) {
-  const { template, cardContext = {}, mountCb } = pages[page];
+  const { template, context = {}, mountCb } = pages[page];
 
-  const pageHTML = Handlebars.compile(template)(cardContext);
+  const pageHTML = Handlebars.compile(template)(context);
   const fullHTML = Handlebars.compile(DefaultLayout)({ body: pageHTML });
 
   const root = document.getElementById('app');
