@@ -1,0 +1,27 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  align-items: center;
+
+  background-color: var(--color-bg-main);
+  border: 2px solid var(--color-border-main);
+  border-radius: var(--radius-large);
+
+  width: 420px;
+  padding: 32px 48px 24px 48px;
+
+  &__title {
+    font-size: 32px;
+    line-height: 32px;
+  }
+
+  &__content,
+  &__footer {
+    width: 100%;
+  }
+
+  &__footer {
+    padding-top: 16px;
+  }
+}

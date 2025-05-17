@@ -9,16 +9,38 @@ Object.entries(Components).forEach(([name, template]) => {
   Handlebars.registerPartial(name, template);
 });
 
+const fields = [
+  {
+    label: 'Login',
+    name: 'login',
+    type: 'text',
+    placeholder: 'Enter your login',
+  },
+  {
+    label: 'Password',
+    name: 'password',
+    type: 'password',
+    minlength: 8,
+    placeholder: 'Your password',
+  },
+];
+
 const pageHTML = Handlebars.compile(HomePage)({
-  buttonText: 'Button text',
-  inputContext: {
-    name: 'username',
-    label: 'Username',
-    error: 'error text',
+  title: 'Login',
+  formFields: fields,
+  formId: 'login-form',
+  submitAction: {
+    name: 'login',
+    text: 'Sign in',
+  },
+  secondaryAction: {
+    name: 'register',
+    text: 'Register',
+    page: 'registration',
   },
 });
-const fullHTML = Handlebars.compile(DefaultLayout)({ body: pageHTML });
 
+const fullHTML = Handlebars.compile(DefaultLayout)({ body: pageHTML });
 const root = document.getElementById('app');
 
 if (root) {
