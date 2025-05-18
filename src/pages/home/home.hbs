@@ -1,5 +1,14 @@
-<div class='home'>
+{{!-- <div class='home'>
   {{#each pages}}
     {{> Button page=page text=buttonText variant="plain"}}
   {{/each}}
+</div> --}}
+<div class="home">
+  <ul class="home__nav" role="list">
+    {{#each pages}}
+      <li>
+        {{> Link page=page text=buttonText }}
+      </li>
+    {{/each}}
+  </ul>
 </div>

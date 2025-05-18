@@ -27,8 +27,6 @@
 
   &_plain {
     font-size: 18px;
-    font-weight: 500;
-    line-height: 24px;
     color: var(--color-button-active-accent);
     background: none;
 

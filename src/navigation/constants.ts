@@ -10,4 +10,5 @@ export const PAGE_NAMES = {
   PROFILE_CHANGE_AVATAR_UPLOADED: 'profileChangeAvatarUploaded',
   500: '500',
   400: '400',
+  404: '404',
 } as const;

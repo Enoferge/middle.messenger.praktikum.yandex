@@ -1,4 +1,5 @@
-<Button data-page="home">Back to Home</Button>
+{{> Link page="home" text="Back to Home" }}
+
 {{> Card
   title=title
   contentBlock=(resolveSlot "contentBlock" "Form")

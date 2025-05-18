@@ -1,0 +1,16 @@
+.link {
+  font-size: 18px;
+  color: var(--color-button-active-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover:not(:disabled) {
+    color: var(--color-button-active-accent-hovered);
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    color: var(--color-button-active-accent);
+    text-decoration: none;
+  }
+}

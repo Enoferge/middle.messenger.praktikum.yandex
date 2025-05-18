@@ -15,7 +15,8 @@
       color: var(--color-error-accent);
     }
 
-    &_400 {
+    &_400,
+    &_404 {
       color: var(--color-warning-accent);
     }
   }

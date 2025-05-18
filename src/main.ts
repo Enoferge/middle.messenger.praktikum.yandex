@@ -13,15 +13,19 @@ registerHelpers();
 
 document.addEventListener('click', (e) => {
   const target = e.target as HTMLElement;
-  const page = target.dataset.page;
-
-  if (page && isPageName(page) && pages[page]) {
+  if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
     e.preventDefault();
-    e.stopPropagation();
-    renderPage(page);
+    const page = target.getAttribute('href')!.slice(1);
+    if (page && isPageName(page) && pages[page]) {
+      renderPage(page);
+      history.pushState(null, '', `#${page}`);
+    } else {
+      renderPage('404');
+      history.pushState(null, '', '#404');
+    }
   }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderPage(PAGE_NAMES.PROFILE_READ);
+  renderPage(PAGE_NAMES.HOME);
 });

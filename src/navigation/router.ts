@@ -72,6 +72,13 @@ export const pages: Record<PageName, PageData> = {
       message: 'Oops',
     },
   },
+  404: {
+    template: ErrorPage,
+    context: {
+      code: 404,
+      message: 'Oops, page not found',
+    },
+  },
   profileRead: {
     template: ProfilePage,
     context: {
