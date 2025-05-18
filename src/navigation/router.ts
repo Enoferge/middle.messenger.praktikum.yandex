@@ -58,27 +58,39 @@ export const pages: Record<PageName, PageData> = {
     context: {
       pages: currentPages,
     },
+    layoutContext: {
+      hideHomeButton: true,
+    }
   },
   500: {
     template: ErrorPage,
     context: {
-      code: 500,
+      code: "500",
       message: 'Fixes are coming',
     },
+    layoutContext: {
+      hideHomeButton: true,
+    }
   },
   400: {
     template: ErrorPage,
     context: {
-      code: 400,
+      code: "400",
       message: 'Oops',
     },
+    layoutContext: {
+      hideHomeButton: true,
+    }
   },
   404: {
     template: ErrorPage,
     context: {
-      code: 404,
+      code: "404",
       message: 'Oops, page not found',
     },
+    layoutContext: {
+      hideHomeButton: true,
+    }
   },
   profileRead: {
     template: ProfilePage,

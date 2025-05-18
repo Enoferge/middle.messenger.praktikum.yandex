@@ -1,6 +1,6 @@
 import type { BaseContext } from '../../navigation/types';
 
 export interface ErrorContext extends BaseContext {
-  code: number;
+  code: string;
   message: string;
 }

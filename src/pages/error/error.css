@@ -2,27 +2,8 @@
   &__wrapper {
     display: flex;
     flex-direction: column;
-    row-gap: 16px;
+    row-gap: var(--space-m);
 
     text-align: center;
-  }
-
-  &__title {
-    font-size: 64px;
-    line-height: 64px;
-
-    &_500 {
-      color: var(--color-error-accent);
-    }
-
-    &_400,
-    &_404 {
-      color: var(--color-warning-accent);
-    }
-  }
-
-  &__message {
-    font-size: 36px;
-    line-height: 36px;
   }
 }

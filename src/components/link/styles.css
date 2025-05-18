@@ -1,5 +1,5 @@
 .link {
-  font-size: 18px;
+  font-size: var(--font-size-plain-action);
   color: var(--color-button-active-accent);
   text-decoration: none;
   transition: color 0.2s ease;

@@ -2,9 +2,11 @@
   min-height: 100vh;
   min-width: 1024px;
   display: flex;
+  flex-direction: column;
+  row-gap: var(--space-l);
   justify-content: center;
   align-items: center;
-  padding: 32px 16px;
+  padding: var(--space-xl) var(--space-m);
   color: var(--color-text-main);
   background-color: var(--color-bg-layout);
   overflow: hidden;
@@ -14,9 +16,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 24px;
 
   height: 100%;
-  max-height: calc(100vh - 64px);
+  max-height: calc(100vh - (var(--space-xl)* 2 + var(--space-l) + var(--font-size-plain-action) * var(--line-height-base-coef)));
   width: 100%;
 }

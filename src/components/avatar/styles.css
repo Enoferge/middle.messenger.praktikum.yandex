@@ -10,7 +10,7 @@
   justify-content: center;
   position: relative;
 
-  border: 2px solid white;
+  border: var(--border-width) solid white;
 
   &__image {
     width: 100%;

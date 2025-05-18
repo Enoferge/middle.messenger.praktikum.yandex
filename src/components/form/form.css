@@ -1,6 +1,6 @@
 .form {
   display: flex;
   flex-direction: column;
-  row-gap: 8px;
+  row-gap: var(--space-xs);
   width: 100%;
 }

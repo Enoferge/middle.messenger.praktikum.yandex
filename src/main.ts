@@ -1,6 +1,7 @@
 import './styles/variables.css';
 import './styles/base.css';
 import './styles/fonts.css';
+import './styles/ui/';
 import { renderPage } from './view/render';
 import { isPageName } from './utils/isPageName';
 import { registerPartials } from './templates/partials';

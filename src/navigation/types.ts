@@ -7,6 +7,9 @@ import { PAGE_NAMES } from './constants';
 export interface BasePageData<C extends Record<string, any>> {
   template: string;
   context?: C;
+  layoutContext?: {
+    hideHomeButton?: boolean
+  }
   mountCb?: () => void;
 }
 

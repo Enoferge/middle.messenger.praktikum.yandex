@@ -23,7 +23,7 @@
 
   &_filled {
     background-color: var(--color-button-active);
-    border: 2px solid var(--color-button-active-accent);
+    border: var(--border-width) solid var(--color-button-active-accent);
     color: var(--color-icon);
 
     &:hover {

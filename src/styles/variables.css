@@ -1,6 +1,11 @@
 :root {
   --font-family-base: 'Poppins', system-ui, sans-serif;
 
+  --font-size-plain-action: 18px;
+  --line-height-base-coef: 1.5;
+
+  --border-width: 2px;
+
   --radius-small: 20px;
   --radius-large: 30px;
 
@@ -17,4 +22,13 @@
 
   --color-text-main: #fff;
   --color-readonly: #dedede;
+
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-s: 12px;
+  --space-m: 16px;
+  --space-l: 24px;
+  --space-xl: 32px;
+  --space-xxl: 64px;
+  --space-xxxl: 96px;
 }

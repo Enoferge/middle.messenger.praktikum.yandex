@@ -32,9 +32,10 @@ ol[role='list'] {
 /* Set core body defaults */
 body {
   min-height: 100vh;
-  line-height: 1.5;
   font-family: var(--font-family-base);
+  font-size: 12px;
   font-weight: 500;
+  line-height: var(--line-height-base-coef);
   text-rendering: optimizeSpeed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -78,7 +79,5 @@ button {
 }
 
 h1 {
-  font-size: 32px;
-  line-height: 32px;
   font-weight: 500;
 }

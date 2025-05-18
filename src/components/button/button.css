@@ -10,8 +10,8 @@
     line-height: 20px;
 
     background-color: var(--color-button-active);
-    padding: 8px 16px;
-    border: 2px solid var(--color-button-active-accent);
+    padding: var(--space-xs) var(--space-m);
+    border: var(--border-width) solid var(--color-button-active-accent);
     border-radius: var(--radius-small);
 
     &:hover:not(:disabled) {
@@ -26,7 +26,7 @@
   }
 
   &_plain {
-    font-size: 18px;
+    font-size: var(--font-size-plain-action);
     color: var(--color-button-active-accent);
     background: none;
 
@@ -51,7 +51,7 @@
 
   &_with-icon {
     display: inline-flex;
-    gap: 8px;
+    gap: var(--space-xs);
     align-items: center;
   }
 

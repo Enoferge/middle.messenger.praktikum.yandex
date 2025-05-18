@@ -16,7 +16,7 @@
 
   &__filename,
   &__error-message {
-    margin-top: 12px;
+    margin-top: var(--space-s);
   }
 
   &__error-message,
