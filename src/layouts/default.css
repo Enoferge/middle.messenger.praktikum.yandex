@@ -1,9 +1,21 @@
 .layout {
   min-height: 100vh;
+  min-width: 1024px;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 32px 16px;
   color: var(--color-text-main);
   background-color: var(--color-bg-layout);
-  padding: 48px 0;
+  overflow: hidden;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 24px;
+
+  max-height: calc(100vh - 64px);
+  width: 100%;
 }

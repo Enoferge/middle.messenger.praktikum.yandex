@@ -38,6 +38,12 @@
     color: var(--color-error-accent);
   }
 
+  &_with-icon {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
   &__icon {
     /* fix height-width */
     width: 20px;

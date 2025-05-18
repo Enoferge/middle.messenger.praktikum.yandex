@@ -1,7 +1,7 @@
 <Button data-page="home">Back to Home</Button>
 
-<div class="profile-card">
-  <div class="profile-card__title">Profile</div>
+<section class="profile-card" role="profile-dialog" aria-labelledby="profile-title">
+  <h1 class="profile-card__title" id="profile-title">Profile</h1>
 
   <div class="profile-card__content">
   
@@ -9,34 +9,46 @@
       <div class="profile-card__avatar-image">
         {{> Avatar src="/assets/images/user1.png" alt="User avatar" size=160 }}
       </div>
-      <div class="profile-card__avatar-actions">
+      <ul role='list' class="profile-card__avatar-actions">
         {{#ifEquals mode "CHANGE_AVATAR"}}
-          {{> Button variant="plain" text="Back" page="profileRead"}}
+          <li>
+            {{> Button variant="plain" text="Back" page="profileRead"}}
+          </li>
         {{else}}
-          {{> Button variant="plain" text="Change avatar" page="profileChangeAvatar"}}
-          {{> Button variant="plain" text="Change password" page="profileChangePass"}}
-          {{> Button variant="plain" text="Sign out" isAccent=true}}
+          <li>
+            {{> Button variant="plain" text="Change avatar" page="profileChangeAvatar"}}
+          </li>
+          <li>
+            {{> Button variant="plain" text="Change password" page="profileChangePass"}}
+          </li>          
+          <li>
+            {{> Button variant="plain" text="Sign out" isAccent=true}}
+          </li>
         {{/ifEquals}}
-      </div>
+      </ul>
     </div>
 
-    <div class="profile-card__form">
-      {{#ifIn mode (array "CHANGE_AVATAR" "CHANGE_AVATAR_ERROR" "CHANGE_AVATAR_UPLOADED")}}
-        <form 
-          class='form' 
-          id="{{formId}}"
-        >
-          {{> FileUpload fileData}}
-        </form>
-      {{else}}
-        {{> Form }}
-      {{/ifIn}}
+    <div class="profile-card__form-wrapper">
+      <div class="profile-card__form-scroll">
+        {{#ifIn mode (array "CHANGE_AVATAR" "CHANGE_AVATAR_ERROR" "CHANGE_AVATAR_UPLOADED")}}
+          <form 
+            class='form' 
+            id="{{formId}}"
+          >
+            {{> FileUpload fileData}}
+          </form>
+        {{else}}
+          {{> Form }}
+        {{/ifIn}}
+      </div>
 
-      {{#ifEquals mode "READ"}}
-        {{> Button class="profile-card__submit-button" name="edit" text="Edit" page="profileEdit" type="button"}}
-      {{else}}
-        {{> Button class="profile-card__submit-button" name="save" text="Save" page="profileRead" type="button" disabled=isFormInvalid }}
-      {{/ifEquals}}
+      <div class="profile-card__form-footer">
+        {{#ifEquals mode "READ"}}
+          {{> Button name="edit" text="Edit" type="submit" fullWidth=true}}
+        {{else}}
+          {{> Button name="save" text="Save" type="submit" disabled=isFormInvalid fullWidth=true}}
+        {{/ifEquals}}
+      </div>
     </div>
 
   </div>
@@ -44,4 +56,4 @@
   <div class="profile-card__close-button">
     x
   </div>
-</div>
+</section>

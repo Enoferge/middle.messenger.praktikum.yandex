@@ -1,5 +1,5 @@
 <{{#if tag}}{{tag}}{{else}}button{{/if}}
-  class="button button_{{#if variant}}{{variant}}{{else}}default{{/if}}{{#if fullWidth}} button_full{{/if}}{{#if isAccent}} button_accent{{/if}} {{class}}"
+  class="button button_{{#if variant}}{{variant}}{{else}}default{{/if}}{{#if fullWidth}} button_full{{/if}}{{#if isAccent}} button_accent{{/if}}{{#if icon}} button_with-icon{{/if}}{{#if class}} {{class}}{{/if}}"
   type="{{#if type}}{{type}}{{else}}button{{/if}}"
   name="{{name}}"
   {{#if page}}data-page="{{page}}"{{/if}}
@@ -16,4 +16,4 @@
   {{#if icon}}
     {{> Icon name=icon class="button__icon" }}
   {{/if}}
-</button>
+</{{#if tag}}{{tag}}{{else}}button{{/if}}>

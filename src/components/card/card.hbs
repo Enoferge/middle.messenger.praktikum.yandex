@@ -1,5 +1,5 @@
-<div class='card'>
-  <div class="card__title">{{title}}</div>
+<section class='card' role="{{title}}-dialog" aria-labelledby="{{title}}-title">
+  <h1 class="card__title" id="{{title}}-title">{{title}}</h1>
 
   {{#if contentBlock }}
     <div class="card__content">
@@ -12,4 +12,4 @@
       {{> (resolveSlot "footerBlock") }}
     </div>
   {{/if}}
-</div>
+</section>

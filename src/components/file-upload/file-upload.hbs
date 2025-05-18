@@ -1,8 +1,8 @@
-<div class="file-upload {{#if error}}file-upload_error{{/if}}">
+<div class="file-upload{{#if error}} file-upload_error{{/if}}">
   <label class="file-upload__label">
     <input type="file" class="file-upload__input" name="{{name}}" />
     {{> Button
-      tag="span"
+      tag="div"
       text="Choose file"
       icon="upload"
       variant="plain"
@@ -16,6 +16,6 @@
   {{/if}}
 
   {{#if error}}
-    <div class="file-upload__error">{{error}}</div>
+    <div class="file-upload__error-message">{{error}}</div>
   {{/if}}
 </div>

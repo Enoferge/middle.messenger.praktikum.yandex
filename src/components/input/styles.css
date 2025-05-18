@@ -3,9 +3,10 @@
   display: flex;
   flex-direction: column;
 
+  font-size: 12px;
+  line-height: 12px;
+
   &__label {
-    font-size: 12px;
-    line-height: 12px;
     display: block;
     margin-bottom: 6px;
   }
@@ -20,8 +21,6 @@
   }
 
   &__error-caption {
-    font-size: 12px;
-    line-height: 12px;
     color: var(--color-error-accent);
     margin-top: 6px;
   }
