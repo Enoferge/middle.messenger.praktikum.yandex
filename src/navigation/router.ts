@@ -25,11 +25,11 @@ export const pages: Record<PageName, PageData> = {
       formFields: registrationFields,
       formId: 'registration-form',
       submitAction: {
-        name: 'register',
-        text: 'Register',
+        name: 'sign_up',
+        text: 'Sign up',
       },
       secondaryAction: {
-        name: 'register',
+        name: 'sign_in',
         text: 'Sign in',
         page: PAGE_NAMES.LOGIN,
       },
@@ -38,16 +38,16 @@ export const pages: Record<PageName, PageData> = {
   login: {
     template: AuthPage,
     context: {
-      title: 'Login',
+      title: 'Sign in',
       formFields: loginFields,
       formId: 'login-form',
       submitAction: {
-        name: 'login',
+        name: 'sign_in',
         text: 'Sign in',
       },
       secondaryAction: {
-        name: 'register',
-        text: 'Register',
+        name: 'sign_up',
+        text: 'Sign up',
         page: PAGE_NAMES.REGISTRATION,
       },
     },

@@ -9,11 +9,9 @@
   border: 2px solid var(--color-border-main);
   border-radius: var(--radius-large);
 
-  width: 40%;
-  max-width: 520px;
-  min-width: 420px;
+  width: 440px;
 
-  padding: 32px 48px 24px;
+  padding: 24px 32px;
   overflow: hidden;
 
   &__content,
@@ -24,6 +22,7 @@
   &__content {
     overflow-y: auto;
     flex: 1 1 auto;
+    padding: 0 16px;
   }
 
   &__footer {
