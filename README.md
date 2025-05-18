@@ -3,8 +3,8 @@
 A tiny minimalist messenger with a touch of *kawaii* aesthetics.
 
 ## Pages Sprint 1
-- [Sign up page](https://kawaii-messenger.netlify.app/registration)
-- [Sign in page](https://kawaii-messenger.netlify.app/login)
+- [Sign up page](https://kawaii-messenger.netlify.app/signUp)
+- [Sign in page](https://kawaii-messenger.netlify.app/signIn)
 - [Home page](https://kawaii-messenger.netlify.app/home)
 - [Profile read-only](https://kawaii-messenger.netlify.app/profileRead)
 - [Profile edit](https://kawaii-messenger.netlify.app/profileEdit)

@@ -1,5 +1,4 @@
-import { loginFields } from '../data/authFields';
-import { registrationFields } from '../data/authFields';
+import { signInFields, signUpFields } from '../data/authFields';
 import { AuthPage } from '../pages/auth';
 import { ErrorPage } from '../pages/error';
 import { HomePage } from '../pages/home';
@@ -19,12 +18,12 @@ const currentPages = Object.values(PAGE_NAMES).map((page) => ({
 }));
 
 export const pages: Record<PageName, PageData> = {
-  registration: {
+  signUp: {
     template: AuthPage,
     context: {
-      title: 'Registration',
-      formFields: registrationFields,
-      formId: 'registration-form',
+      title: 'Sign up',
+      formFields: signUpFields,
+      formId: 'sign-up-form',
       submitAction: {
         name: 'sign_up',
         text: 'Sign up',
@@ -32,16 +31,16 @@ export const pages: Record<PageName, PageData> = {
       secondaryAction: {
         name: 'sign_in',
         text: 'Sign in',
-        page: PAGE_NAMES.LOGIN,
+        page: PAGE_NAMES.SIGN_IN,
       },
     },
   },
-  login: {
+  signIn: {
     template: AuthPage,
     context: {
       title: 'Sign in',
-      formFields: loginFields,
-      formId: 'login-form',
+      formFields: signInFields,
+      formId: 'sign-in-form',
       submitAction: {
         name: 'sign_in',
         text: 'Sign in',
@@ -49,7 +48,7 @@ export const pages: Record<PageName, PageData> = {
       secondaryAction: {
         name: 'sign_up',
         text: 'Sign up',
-        page: PAGE_NAMES.REGISTRATION,
+        page: PAGE_NAMES.SIGN_IN,
       },
     },
   },

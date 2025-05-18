@@ -15,9 +15,9 @@ const commonPasswordField = {
   placeholder: 'Your password',
 };
 
-export const loginFields: Array<InputField> = [commonLoginField, commonPasswordField];
+export const signInFields: Array<InputField> = [commonLoginField, commonPasswordField];
 
-export const registrationFields: Array<InputField> = [
+export const signUpFields: Array<InputField> = [
   {
     label: 'First Name',
     name: 'first_name',
