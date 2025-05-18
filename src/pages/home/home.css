@@ -1,5 +1,3 @@
-.home {
-  display: flex;
-  flex-direction: column;
-  row-gap: 8px;
+.home-nav {
+  text-align: center;
 }
