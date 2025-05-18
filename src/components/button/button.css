@@ -1,5 +1,7 @@
 .button {
-  /* flex */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s ease;
 
   &_default {
@@ -12,9 +14,14 @@
     border: 2px solid var(--color-button-active-accent);
     border-radius: var(--radius-small);
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--color-button-active-hovered);
       border-color: var(--color-button-active-accent-hovered);
+    }
+
+    &:disabled {
+      background-color: var(--color-button-active);
+      border-color: var(--color-button-active-accent);
     }
   }
 
@@ -23,10 +30,16 @@
     font-weight: 500;
     line-height: 24px;
     color: var(--color-button-active-accent);
+    background: none;
 
-    &:hover {
+    &:hover:not(:disabled) {
       color: var(--color-button-active-accent-hovered);
       text-decoration: underline;
+    }
+
+    &:disabled {
+      color: var(--color-button-active-accent);
+      text-decoration: none;
     }
   }
 
@@ -39,28 +52,22 @@
   }
 
   &_with-icon {
-    display: flex;
+    display: inline-flex;
     gap: 8px;
     align-items: center;
   }
 
   &__icon {
-    /* fix height-width */
     width: 20px;
     height: 20px;
     fill: currentColor;
     stroke: currentColor;
   }
 
-  &[disabled],
-  &[disabled]:hover {
+  &:disabled {
+    opacity: 0.5;
     cursor: default;
     user-select: none;
-    opacity: 0.5;
-  }
-
-  &[disabled]:hover {
-    background-color: var(--color-button-active);
-    border-color: var(--color-button-active-accent);
+    pointer-events: none;
   }
 }

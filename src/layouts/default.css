@@ -16,6 +16,7 @@
   align-items: center;
   row-gap: 24px;
 
+  height: 100%;
   max-height: calc(100vh - 64px);
   width: 100%;
 }
