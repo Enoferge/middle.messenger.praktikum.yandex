@@ -4,6 +4,7 @@ import { AuthPage } from '../pages/auth';
 import { ErrorPage } from '../pages/error';
 import { HomePage } from '../pages/home';
 import { ProfilePage } from '../pages/profile';
+import { MessengerPage } from '../pages/messenger';
 import {
   profileChangePassFields,
   profileEditFields,
@@ -136,5 +137,8 @@ export const pages: Record<PageName, PageData> = {
       },
       formId: 'avatar-form',
     },
+  },
+  messenger: {
+    template: MessengerPage,
   },
 };

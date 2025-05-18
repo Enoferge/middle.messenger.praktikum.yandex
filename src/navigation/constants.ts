@@ -8,6 +8,7 @@ export const PAGE_NAMES = {
   PROFILE_CHANGE_AVATAR: 'profileChangeAvatar',
   PROFILE_CHANGE_AVATAR_ERROR: 'profileChangeAvatarError',
   PROFILE_CHANGE_AVATAR_UPLOADED: 'profileChangeAvatarUploaded',
+  MESSENGER: 'messenger',
   500: '500',
   400: '400',
   404: '404',
