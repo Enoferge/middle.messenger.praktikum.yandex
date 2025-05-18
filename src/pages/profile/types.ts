@@ -9,6 +9,7 @@ export interface ProfileContext extends BaseContext {
     | 'CHANGE_AVATAR_ERROR'
     | 'CHANGE_AVATAR_UPLOADED';
   isFormInvalid?: boolean;
+  submitButtonText?: string;
   fileData: {
     name: string;
     error?: string;

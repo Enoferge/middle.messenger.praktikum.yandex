@@ -43,11 +43,7 @@
       </div>
 
       <div class="profile-card__form-footer">
-        {{#ifEquals mode "READ"}}
-          {{> Button name="edit" text="Edit" type="submit" fullWidth=true}}
-        {{else}}
-          {{> Button name="save" text="Save" type="submit" disabled=isFormInvalid fullWidth=true}}
-        {{/ifEquals}}
+        {{> Button name="save" text=submitButtonText type="submit" disabled=isFormInvalid fullWidth=true}}
       </div>
     </div>
 

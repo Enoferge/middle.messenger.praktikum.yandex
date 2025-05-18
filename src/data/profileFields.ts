@@ -64,3 +64,8 @@ export const profileChangePassFields = [
     name: 'repeatPassword',
   },
 ];
+
+export const profileChangeAvatarCommonContext = {
+  submitButtonText: 'Upload avatar',
+  formId: 'avatar-form',
+}
