@@ -1,4 +1,7 @@
 .input-field {
+  --input-readonly-color: #dedede;
+  --input-disabled-bg-color: #eee;
+
   padding: var(--space-xxs) 0;
   display: flex;
   flex-direction: column;
@@ -31,10 +34,10 @@
   }
 
   &_readonly {
-    color: var(--color-readonly);
+    color: var(--input-readonly-color);
 
     & .input-field__input {
-      border-color: var(--color-readonly);
+      border-color: var(--input-readonly-color);
       border-top: 2px solid transparent;
       border-left: none;
       border-right: none;
@@ -43,7 +46,7 @@
   }
 
   &_disabled &__input {
-    background-color: #eee;
+    background-color: var(--input-disabled-bg-color);
     opacity: 0.6;
     pointer-events: none;
   }
