@@ -13,7 +13,12 @@ registerPartials();
 registerHelpers();
 
 document.addEventListener('click', (e) => {
-  const target = e.target as HTMLElement;
+  const { target } = e;
+
+  if (!(target instanceof HTMLLinkElement)) {
+    return;
+  }
+
   if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('/')) {
     e.preventDefault();
     const page = target.getAttribute('href')!.slice(1);
