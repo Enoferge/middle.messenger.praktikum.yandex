@@ -1,0 +1,18 @@
+<{{#if tag}}{{tag}}{{else}}button{{/if}}
+  class="button button_{{#if variant}}{{variant}}{{else}}default{{/if}}{{#if fullWidth}} button_full{{/if}}{{#if isAccent}} button_accent{{/if}}{{#if icon}} button_with-icon{{/if}}{{#if class}} {{class}}{{/if}}"
+  type="{{#if type}}{{type}}{{else}}button{{/if}}"
+  name="{{name}}"
+  {{#if formId}}form="{{formId}}"{{/if}}
+
+  {{#if disabled}}
+    {{#unless tag}}disabled{{/unless}}                  
+    {{#if tag}}aria-disabled="true" tabindex="-1"{{/if}}
+  {{/if}}
+>
+  {{#if text}}
+    {{text}}
+  {{/if}}
+  {{#if icon}}
+    {{> Icon name=icon class="button__icon" }}
+  {{/if}}
+</{{#if tag}}{{tag}}{{else}}button{{/if}}>

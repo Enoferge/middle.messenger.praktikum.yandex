@@ -1,0 +1,9 @@
+<nav class="home-nav">
+  <ul role="list">
+    {{#each pages}}
+      <li>
+        {{> Link page=page text=buttonText }}
+      </li>
+    {{/each}}
+  </ul>
+</nav>
