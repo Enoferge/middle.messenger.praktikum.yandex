@@ -1,0 +1,40 @@
+.message-bubble {
+    --color-message-bubble-bg-incoming: #be6786;
+    --color-message-bubble-border-incoming: #ca7fa2;
+    --color-message-bubble-bg-outcoming: #645ea6;
+    --color-message-bubble-border-outcoming: #7e79bf;
+
+    position: relative;
+    padding: var(--space-xs);
+    padding-bottom: var(--space-s);
+
+    border: 2px solid;
+    border-radius: var(--radius-small);
+
+    &_incoming {
+        background-color: var(--color-message-bubble-bg-incoming); 
+        border-color: var(--color-message-bubble-border-incoming);
+        border-bottom-left-radius: 0;
+    }
+
+    &_outcoming {
+        background-color: var(--color-message-bubble-bg-outcoming); 
+        border-color: var(--color-message-bubble-border-outcoming);
+        border-bottom-right-radius: 0;
+    }
+
+    &__meta {
+        position: absolute;
+        bottom: var(--space-xxs);
+        right: var(--space-m);
+
+        font-size: 11px;
+        line-height: 11px;
+    }
+
+    &__status-icon {
+        height: 10px;
+        width: 18px;
+        margin-left: var(--space-xxs);
+    }
+}

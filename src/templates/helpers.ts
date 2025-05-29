@@ -22,4 +22,10 @@ export function registerHelpers() {
       return Array.isArray(list) && list.includes(value) ? options.fn(this) : options.inverse(this);
     }
   );
+
+   Handlebars.registerHelper('formatTime', function (isoString: string) {
+      const date = new Date(isoString);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+  );
 }

@@ -1,0 +1,9 @@
+<div class="message-bubble message-bubble_{{#if isIncoming}}incoming{{else}}outcoming{{/if}}">
+    <p class="message-bubble__text">{{text}}</p>
+    <div class="message-bubble__meta">
+        <span>{{formatTime time}}</span>
+        {{#if status}}
+            {{> Icon name=status class="message-bubble__status-icon"}}
+        {{/if}}
+    </div>
+</div>

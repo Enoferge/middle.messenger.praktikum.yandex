@@ -20,8 +20,12 @@
             </div>
             {{> IconButton icon="settings" variant="plain"}}
         </div>
-        <div class="messenger__content">
-
+        <div class="messenger__content messenger__active-chat">
+            {{#each activeChat.messages}}
+                <div class="messenger__message-bubble messenger__message-bubble_{{#if this.isIncoming}}incoming{{else}}outcoming{{/if}}">
+                    {{> MessageBubble this}}
+                </div>
+            {{/each}}
         </div>
         <div class="messenger__footer">
             {{> IconButton icon="file" variant="plain"}}

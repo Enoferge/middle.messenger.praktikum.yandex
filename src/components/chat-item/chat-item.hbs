@@ -7,9 +7,9 @@
     </div>
     <div class="chat-item__info-row chat-item__info-row-bottom">
       <div>{{lastMessagePreview}}</div>
-      {{#if newMessagesCount}}
-        <div class="chat-item__unread-count" aria-label='{{newMessagesCount}} unread messages'>
-          {{newMessagesCount}}
+      {{#if unreadMsgCount}}
+        <div class="chat-item__unread-count" aria-label='{{unreadMsgCount}} unread messages'>
+          {{unreadMsgCount}}
         </div>
       {{/if}}
     </div>
