@@ -1,0 +1,17 @@
+<div class="chat-item__wrapper">
+  {{> Avatar src="/assets/images/user1.png" alt="User avatar" size=60 }}
+  <div class="chat-item__info">
+    <div class="chat-item__info-row chat-item__info-row-top">
+      <span class="chat-item__name">{{contactName}}</span>
+      <span class="chat-item__msg-time">Пт</span>
+    </div>
+    <div class="chat-item__info-row chat-item__info-row-bottom">
+      <div>{{lastMessagePreview}}</div>
+      {{#if newMessagesCount}}
+        <div class="chat-item__unread-count" aria-label='{{newMessagesCount}} unread messages'>
+          {{newMessagesCount}}
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>

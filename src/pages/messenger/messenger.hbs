@@ -1,3 +1,32 @@
-<section>
- <div class="page-message">Here be messenger :)</div> 
-</section>
+<div class="messenger__wrapper">
+    <section class="messenger__section messenger__section_left">
+        <div class="messenger__header">
+            {{> Avatar src="/assets/images/user1.png" alt="User avatar" size=60 }}
+            <div>Здесь будет search</div>
+        </div>
+        <div class="messenger__content">
+            <div class="messenger__chats-list">
+                {{#each chats}}
+                    {{> ChatItem this}}
+                {{/each}}
+            </div>
+        </div>
+    </section>
+    <section class="messenger__section messenger__section_right">
+        <div class="messenger__header">
+            <div class="messenger__header-left-part">
+                {{> Avatar src="/assets/images/user1.png" alt="User avatar" size=60 }}
+                <div>Здесь будет Sakura</div>
+            </div>
+            {{> IconButton icon="settings" variant="plain"}}
+        </div>
+        <div class="messenger__content">
+
+        </div>
+        <div class="messenger__footer">
+            {{> IconButton icon="file" variant="plain"}}
+            <div class="messenger__user-msg-textarea">Здесь будет textarea</div>
+            {{> IconButton icon="send"}}
+        </div>
+    </section>
+</div>

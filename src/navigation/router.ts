@@ -10,6 +10,7 @@ import {
   profileReadFields,
   profileChangeAvatarCommonContext,
 } from '../data/profileFields';
+import { messengerChats } from '../data/messengerData';
 import { PAGE_NAMES } from './constants';
 import type { PageData, PageName } from './types';
 
@@ -155,5 +156,11 @@ export const pages: Record<PageName, PageData> = {
   },
   messenger: {
     template: MessengerPage,
+    context: {
+      chats: messengerChats
+    },
+    layoutContext: {
+      hideHomeButton: true,
+    }
   },
 };

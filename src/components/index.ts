@@ -8,3 +8,4 @@ export { FileUpload } from './file-upload';
 export { Icon } from './icon';
 export { IconButton } from './icon-button';
 export { Link } from './link';
+export { ChatItem } from './chat-item';
