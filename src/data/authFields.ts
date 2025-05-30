@@ -1,5 +1,6 @@
 import type { InputFieldProps } from '@/components/input/types';
 
+// TODO: move
 const commonLoginField = {
   label: 'Login',
   name: 'login',
@@ -14,8 +15,6 @@ const commonPasswordField = {
   minlength: 8,
   placeholder: 'Your password',
 };
-
-export const signInFields: Array<InputFieldProps> = [commonLoginField, commonPasswordField];
 
 export const signUpFields: Array<InputFieldProps> = [
   {
