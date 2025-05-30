@@ -1,3 +1,30 @@
-import './styles.css';
+import { Block } from '@/core/block/block';
+import { Button } from '@/components/button';
 
-export { default as FormFooter } from './form-footer.hbs?raw';
+import './styles.css';
+import template from './form-footer.hbs?raw';
+import type { FormFooterProps } from './types';
+
+export class FormFooter extends Block {
+  constructor(props: FormFooterProps) {
+    super('div', {
+      SubmitAction: new Button({
+        ...props.submitAction,
+        type: 'submit',
+        fullWidth: true,
+      }),
+      ...(props.secondaryAction
+        ? {
+            SecondaryAction: new Button({
+              ...props.secondaryAction,
+              variant: 'plain',
+            }),
+          }
+        : {}),
+    });
+  }
+
+  render() {
+    return template;
+  }
+}

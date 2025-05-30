@@ -120,6 +120,22 @@ export class Block {
     return this._element;
   }
 
+  _addEvents() {
+    const { events = {} } = this.props;
+
+    Object.keys(events).forEach((eventName) => {
+      this._element?.addEventListener(eventName, events[eventName]);
+    });
+  }
+
+  _removeEvents() {
+    const { events = {} } = this.props;
+
+    Object.keys(events).forEach((eventName) => {
+      this._element?.removeEventListener(eventName, events[eventName]);
+    });
+  }
+
   _compile() {
     const propsAndStubs = { ...this.props };
 
@@ -159,6 +175,8 @@ export class Block {
   }
 
   _render() {
+    this._removeEvents();
+
     const block = this._compile();
 
     if (this._element?.children.length === 0) {
@@ -166,6 +184,8 @@ export class Block {
     } else {
       this._element?.replaceChildren(block);
     }
+
+    this._addEvents();
   }
 
   render(): string {
@@ -190,7 +210,7 @@ export class Block {
         return true;
       },
       deleteProperty() {
-        throw new Error('Нет доступа');
+        throw new Error('No right to delete property');
       },
     });
   }

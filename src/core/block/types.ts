@@ -7,5 +7,9 @@ export type Meta = {
   props: unknown;
 };
 
-export type Props = Record<string | symbol, unknown>;
+export type Props = {
+  [key: string | symbol]: unknown;
+  events?: Record<string, (e: Event) => void>;
+};
+
 export type Children = Record<string | symbol, Block | Block[]>;
