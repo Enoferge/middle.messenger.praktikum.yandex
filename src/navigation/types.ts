@@ -9,8 +9,8 @@ export interface BasePageData<C extends Record<string, any>> {
   template: string;
   context?: C;
   layoutContext?: {
-    hideHomeButton?: boolean
-  }
+    hideHomeButton?: boolean;
+  };
   mountCb?: () => void;
 }
 
@@ -19,4 +19,6 @@ export interface BaseContext {
 }
 
 export type PageName = (typeof PAGE_NAMES)[keyof typeof PAGE_NAMES];
-export type PageData = BasePageData<CardContext | ErrorContext | HomeContext | ProfileContext | MessengerContext>;
+export type PageData = BasePageData<
+  CardContext | ErrorContext | HomeContext | ProfileContext | MessengerContext
+>;

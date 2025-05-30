@@ -1,25 +1,38 @@
-import Handlebars from 'handlebars';
 import { DefaultLayout } from '@/layouts/default';
-import { pages } from '@/navigation/router';
 import type { PageName } from '@/navigation/types';
-import { prepareForm } from '@/utils/form';
+import { AuthPage } from '@/pages/auth';
 
-export function renderPage(page: PageName) {
-  const { template, context = {}, layoutContext = {}, mountCb } = pages[page];
+export function renderPage(_page: PageName) {
+  // test Auth Page
+  const page = new AuthPage({});
 
-  const pageHTML = Handlebars.compile(template)(context);
-  const fullHTML = Handlebars.compile(DefaultLayout)({ body: pageHTML, ...layoutContext });
+  const layout = new DefaultLayout({
+    hideHomeButton: false,
+    PageContent: page,
+  });
 
   const root = document.getElementById('app');
+  const layoutContent = layout.getContent();
 
-  if (root) {
-    root.innerHTML = fullHTML;
+  if (root && layoutContent) {
+    root.appendChild(layoutContent);
+    page.dispatchComponentDidMount();
   }
+  // const { template, context = {}, layoutContext = {}, mountCb } = pages[page];
 
-  if (context.formId) {
-    prepareForm(context.formId, console.log);
-  }
-  if (typeof mountCb === 'function') {
-    mountCb();
-  }
+  // const pageHTML = Handlebars.compile(template)(context);
+  // const fullHTML = Handlebars.compile(DefaultLayout)({ body: pageHTML, ...layoutContext });
+
+  // const root = document.getElementById('app');
+
+  // if (root) {
+  //   root.innerHTML = fullHTML;
+  // }
+
+  // if (context.formId) {
+  //   prepareForm(context.formId, console.log);
+  // }
+  // if (typeof mountCb === 'function') {
+  //   mountCb();
+  // }
 }

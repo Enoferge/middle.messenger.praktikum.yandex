@@ -7,7 +7,7 @@ import template from './auth.hbs?raw';
 
 export class AuthPage extends Block {
   constructor(props: AuthPageProps) {
-    super('div', {
+    super('fragment', {
       ...props,
       Card: new Card({
         title: 'Sign in',

@@ -1,4 +1,4 @@
-import { signInFields, signUpFields } from '../data/authFields';
+import { signUpFields } from '../data/authFields';
 import { AuthPage } from '../pages/auth';
 import { ErrorPage } from '../pages/error';
 import { HomePage } from '../pages/home';
@@ -20,40 +20,40 @@ const currentPages = Object.values(PAGE_NAMES).map((page) => ({
 }));
 
 export const pages: Record<PageName, PageData> = {
-  signUp: {
-    template: AuthPage,
-    context: {
-      title: 'Sign up',
-      formFields: signUpFields,
-      formId: 'sign-up-form',
-      submitAction: {
-        name: 'sign_up',
-        text: 'Sign up',
-      },
-      secondaryAction: {
-        name: 'sign_in',
-        text: 'Sign in',
-        page: PAGE_NAMES.SIGN_IN,
-      },
-    },
-  },
-  signIn: {
-    template: AuthPage,
-    context: {
-      title: 'Sign in',
-      formFields: signInFields,
-      formId: 'sign-in-form',
-      submitAction: {
-        name: 'sign_in',
-        text: 'Sign in',
-      },
-      secondaryAction: {
-        name: 'sign_up',
-        text: 'Sign up',
-        page: PAGE_NAMES.SIGN_IN,
-      },
-    },
-  },
+  // signUp: {
+  //   template: AuthPage,
+  //   context: {
+  //     title: 'Sign up',
+  //     formFields: signUpFields,
+  //     formId: 'sign-up-form',
+  //     submitAction: {
+  //       name: 'sign_up',
+  //       text: 'Sign up',
+  //     },
+  //     secondaryAction: {
+  //       name: 'sign_in',
+  //       text: 'Sign in',
+  //       page: PAGE_NAMES.SIGN_IN,
+  //     },
+  //   },
+  // },
+  // signIn: {
+  //   template: AuthPage,
+  //   context: {
+  //     title: 'Sign in',
+  //     formFields: signInFields,
+  //     formId: 'sign-in-form',
+  //     submitAction: {
+  //       name: 'sign_in',
+  //       text: 'Sign in',
+  //     },
+  //     secondaryAction: {
+  //       name: 'sign_up',
+  //       text: 'Sign up',
+  //       page: PAGE_NAMES.SIGN_IN,
+  //     },
+  //   },
+  // },
   home: {
     template: HomePage,
     context: {
@@ -61,37 +61,37 @@ export const pages: Record<PageName, PageData> = {
     },
     layoutContext: {
       hideHomeButton: true,
-    }
+    },
   },
   500: {
     template: ErrorPage,
     context: {
-      code: "500",
+      code: '500',
       message: 'Fixes are coming',
     },
     layoutContext: {
       hideHomeButton: true,
-    }
+    },
   },
   400: {
     template: ErrorPage,
     context: {
-      code: "400",
+      code: '400',
       message: 'Oops',
     },
     layoutContext: {
       hideHomeButton: true,
-    }
+    },
   },
   404: {
     template: ErrorPage,
     context: {
-      code: "404",
+      code: '404',
       message: 'Oops, page not found',
     },
     layoutContext: {
       hideHomeButton: true,
-    }
+    },
   },
   profileRead: {
     template: ProfilePage,
@@ -158,10 +158,10 @@ export const pages: Record<PageName, PageData> = {
     template: MessengerPage,
     context: {
       chats: messengerChats,
-      activeChat
+      activeChat,
     },
     layoutContext: {
       hideHomeButton: true,
-    }
+    },
   },
 };

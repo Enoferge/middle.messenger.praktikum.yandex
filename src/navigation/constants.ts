@@ -1,6 +1,6 @@
 export const PAGE_NAMES = {
-  SIGN_UP: 'signUp',
-  SIGN_IN: 'signIn',
+  // SIGN_UP: 'signUp',
+  // SIGN_IN: 'signIn',
   HOME: 'home',
   PROFILE_READ: 'profileRead',
   PROFILE_EDIT: 'profileEdit',

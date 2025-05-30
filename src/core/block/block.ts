@@ -76,8 +76,13 @@ export class Block {
   }
 
   _createResources() {
-    const tagName = (this._meta?.tagName ?? 'div') as keyof HTMLElementTagNameMap;
-    this._element = this._createDocumentElement(tagName);
+    if (this._meta?.tagName === 'fragment') {
+      this._element = document.createDocumentFragment() as unknown as HTMLElement;
+    } else {
+      this._element = this._createDocumentElement(
+        (this._meta?.tagName ?? 'div') as keyof HTMLElementTagNameMap
+      );
+    }
   }
 
   init() {

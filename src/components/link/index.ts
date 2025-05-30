@@ -1,3 +1,15 @@
-import './styles.css';
+import { Block } from '@/core/block/block';
 
-export { default as Link } from './link.hbs?raw';
+import './styles.css';
+import template from './link.hbs?raw';
+import type { LinkProps } from './types';
+
+export class Link extends Block {
+  constructor(props: LinkProps) {
+    super('fragment', props);
+  }
+
+  render() {
+    return template;
+  }
+}
