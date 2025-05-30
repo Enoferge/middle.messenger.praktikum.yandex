@@ -1,6 +1,10 @@
-import { EventBus } from '../../services/event-bus/event-bus';
-import { cloneDeep } from '../../utils/clone-deep';
-import type { Meta, Element, Props } from './types';
+import { nanoid } from 'nanoid';
+import Handlebars from 'handlebars';
+
+import { EventBus } from '@/services/event-bus/event-bus';
+import { cloneDeep } from '@/utils/clone-deep';
+
+import type { Meta, Element, Props, Children } from './types';
 
 export class Block {
   static EVENTS = {
@@ -13,24 +17,55 @@ export class Block {
   eventBus;
 
   _element: Element | null = null;
+  _id = nanoid(6);
   _meta: Meta | null = null;
 
+  children: Children;
   props: Props;
 
-  constructor(tagName = 'div', props = {}) {
+  constructor(tagName = 'div', propsWithChildren = {}) {
     const eventBus = new EventBus();
+    this.eventBus = () => eventBus;
+
+    const { props, children } = this._getChildrenAndProps(propsWithChildren);
+
+    this.children = children;
+    this.props = this._makePropsProxy(props);
 
     this._meta = {
       tagName,
       props,
     };
 
-    this.props = this._makePropsProxy(props);
-
-    this.eventBus = () => eventBus;
-
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
+  }
+
+  _getChildrenAndProps(propsAndChildren: Props | Children) {
+    const children: Children = {};
+    const props: Props = {};
+
+    Object.entries(propsAndChildren).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach((obj) => {
+          if (obj instanceof Block) {
+            children[key] = value;
+          } else {
+            props[key] = value;
+          }
+        });
+
+        return;
+      }
+
+      if (value instanceof Block) {
+        children[key] = value;
+      } else {
+        props[key] = value;
+      }
+    });
+
+    return { children, props };
   }
 
   _registerEvents(eventBus: EventBus) {
@@ -41,7 +76,7 @@ export class Block {
   }
 
   _createResources() {
-    const { tagName } = this._meta || { tagName: 'div' };
+    const tagName = (this._meta?.tagName ?? 'div') as keyof HTMLElementTagNameMap;
     this._element = this._createDocumentElement(tagName);
   }
 
@@ -85,10 +120,51 @@ export class Block {
     return this._element;
   }
 
+  _compile() {
+    const propsAndStubs = { ...this.props };
+
+    Object.entries(this.children).forEach(([key, child]) => {
+      if (Array.isArray(child)) {
+        propsAndStubs[key] = child.map((component) => `<div data-id="${component._id}"></div>`);
+      } else {
+        propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
+      }
+    });
+
+    const fragment: HTMLTemplateElement = this._createDocumentElement('template');
+    const template = Handlebars.compile(this.render());
+    fragment.innerHTML = template(propsAndStubs);
+
+    Object.values(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((component) => {
+          const stub = fragment.content.querySelector(`[data-id="${component._id}"]`);
+          const content = component.getContent();
+
+          if (content) {
+            stub?.replaceWith(content);
+          }
+        });
+      } else {
+        const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
+        const content = child.getContent();
+
+        if (content) {
+          stub?.replaceWith(content);
+        }
+      }
+    });
+
+    return fragment.content;
+  }
+
   _render() {
-    const block = this.render();
-    if (this._element) {
-      this._element.innerHTML = block;
+    const block = this._compile();
+
+    if (this._element?.children.length === 0) {
+      this._element.appendChild(block);
+    } else {
+      this._element?.replaceChildren(block);
     }
   }
 
@@ -119,8 +195,9 @@ export class Block {
     });
   }
 
-  _createDocumentElement(tagName: string) {
-    // TODO: several elements?
+  _createDocumentElement<T extends keyof HTMLElementTagNameMap>(
+    tagName: T
+  ): HTMLElementTagNameMap[T] {
     return document.createElement(tagName);
   }
 
