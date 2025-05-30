@@ -1,11 +1,9 @@
 import type { BaseContext, PageName } from '@/navigation/types';
-import type { InputFieldProps } from '@/components/input/types';
+import type { Block } from '@/core/block/block';
+import type { Children } from '@/core/block/types';
 
-export interface CardContext extends BaseContext {
+export interface Props extends BaseContext {
   title: string;
-  contentBlock?: string;
-  footerBlock?: string;
-  formFields: Array<InputFieldProps>;
   submitAction: {
     name: string;
     text: string;
@@ -16,3 +14,10 @@ export interface CardContext extends BaseContext {
     page: PageName;
   };
 }
+
+export interface CardSlots {
+  ContentBlock: Block;
+  FooterBlock: Block;
+}
+
+export type CardProps = Props | CardSlots | Children;

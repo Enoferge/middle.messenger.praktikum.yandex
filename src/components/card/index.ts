@@ -1,3 +1,15 @@
-import './styles.css';
+import { Block } from '@/core/block/block';
+import type { CardProps } from './types';
 
-export { default as Card } from './card.hbs?raw';
+import './styles.css';
+import template from './card.hbs?raw';
+
+export class Card extends Block {
+  constructor(props: CardProps) {
+    super('div', props);
+  }
+
+  render() {
+    return template;
+  }
+}
