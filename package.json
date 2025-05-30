@@ -13,6 +13,7 @@
     "start": "npm run build && npm run preview"
   },
   "devDependencies": {
+    "@types/node": "^22.15.27",
     "postcss": "^8.5.3",
     "postcss-nested": "^7.0.2",
     "postcss-preset-env": "^10.1.6",

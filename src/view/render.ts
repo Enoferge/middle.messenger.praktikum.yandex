@@ -1,8 +1,8 @@
 import Handlebars from 'handlebars';
-import { DefaultLayout } from '../layouts/default';
-import { pages } from '../navigation/router';
-import type { PageName } from '../navigation/types';
-import { prepareForm } from '../utils/form';
+import { DefaultLayout } from '@/layouts/default';
+import { pages } from '@/navigation/router';
+import type { PageName } from '@/navigation/types';
+import { prepareForm } from '@/utils/form';
 
 export function renderPage(page: PageName) {
   const { template, context = {}, layoutContext = {}, mountCb } = pages[page];
