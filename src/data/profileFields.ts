@@ -1,6 +1,6 @@
-import type { InputField } from '../components/input/types';
+import type { InputFieldProps } from '@/components/input/types';
 
-export const profileEditFields: Array<InputField> = [
+export const profileEditFields: Array<InputFieldProps> = [
   {
     label: 'First name',
     name: 'first_name',
@@ -68,4 +68,4 @@ export const profileChangePassFields = [
 export const profileChangeAvatarCommonContext = {
   submitButtonText: 'Upload avatar',
   formId: 'avatar-form',
-}
+};

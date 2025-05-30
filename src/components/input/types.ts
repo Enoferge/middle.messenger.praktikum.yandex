@@ -1,4 +1,4 @@
-export interface InputField {
+export interface InputFieldProps {
   label: string;
   name: string;
   value?: string;

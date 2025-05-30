@@ -1,4 +1,4 @@
-import type { InputField } from '../components/input/types';
+import type { InputFieldProps } from '@/components/input/types';
 
 const commonLoginField = {
   label: 'Login',
@@ -15,9 +15,9 @@ const commonPasswordField = {
   placeholder: 'Your password',
 };
 
-export const signInFields: Array<InputField> = [commonLoginField, commonPasswordField];
+export const signInFields: Array<InputFieldProps> = [commonLoginField, commonPasswordField];
 
-export const signUpFields: Array<InputField> = [
+export const signUpFields: Array<InputFieldProps> = [
   {
     label: 'First Name',
     name: 'first_name',
