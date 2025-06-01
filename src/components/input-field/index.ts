@@ -4,11 +4,10 @@ import { Input } from '@/components/input';
 import './styles.css';
 import template from './input.hbs?raw';
 import type { InputFieldProps } from './types';
-import { validateField } from '@/services/validation/validation';
 
 export class InputField extends Block {
   constructor(props: InputFieldProps) {
-    const { label, error, ...inputProps } = props;
+    const { label, onFieldChange, onFieldBlur, ...inputProps } = props;
 
     super('div', {
       ...props,
@@ -16,14 +15,13 @@ export class InputField extends Block {
         Input: new Input({
           ...inputProps,
           class: 'input-field__input',
-          onChange: (e: InputEvent) => {
-            const target = e.target as HTMLInputElement;
-            const error = validateField(target.name, target.value);
-
-            console.log('input changed ');
-            console.log(target.name);
-
-            this.setProps({ error });
+          onChange: (e: Event) => {
+            const { name, value } = e.target as HTMLInputElement;
+            onFieldChange?.({ name, value });
+          },
+          onBlur: (e: FocusEvent) => {
+            const { name, value } = e.target as HTMLInputElement;
+            onFieldBlur?.({ name, value });
           },
         }),
       },
@@ -37,7 +35,7 @@ export class InputField extends Block {
 
     for (let state of states) {
       if (this.props[state]) {
-        classes.push(`input-field_${state}`);
+        classes.push(`input-field_${String(state)}`);
       }
     }
 

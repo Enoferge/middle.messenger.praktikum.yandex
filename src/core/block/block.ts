@@ -90,8 +90,8 @@ export class Block {
     });
   }
 
-  _componentDidUpdate(oldProps: Props, newProps: Props) {
-    const isPropsChanged = this.componentDidUpdate(oldProps, newProps);
+  _componentDidUpdate(oldProps: Props) {
+    const isPropsChanged = this.componentDidUpdate(oldProps, this.props);
 
     if (isPropsChanged) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
