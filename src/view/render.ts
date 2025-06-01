@@ -8,7 +8,9 @@ export function renderPage(_page: PageName) {
 
   const layout = new DefaultLayout({
     hideHomeButton: false,
-    PageContent: page,
+    children: {
+      PageContent: page,
+    },
   });
 
   const root = document.getElementById('app');

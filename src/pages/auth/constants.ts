@@ -1,4 +1,4 @@
-import type { InputFieldProps } from '@/components/input/types';
+import type { InputFieldProps } from '@/components/input-field/types';
 
 const commonLoginField = {
   label: 'Login',

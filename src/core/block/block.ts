@@ -4,7 +4,7 @@ import Handlebars from 'handlebars';
 import { EventBus } from '@/services/event-bus/event-bus';
 import { cloneDeep } from '@/utils/clone-deep';
 
-import type { Meta, Element, Props, Children } from './types';
+import type { Meta, Element, Props, RawPropsWithChildren, Children } from './types';
 
 export class Block {
   static EVENTS = {
@@ -23,14 +23,14 @@ export class Block {
   children: Children;
   props: Props;
 
-  constructor(tagName = 'div', propsWithChildren = {}) {
+  constructor(tagName = 'div', propsWithChildren: RawPropsWithChildren = {}) {
     const eventBus = new EventBus();
     this.eventBus = () => eventBus;
 
-    const { props, children } = this._getChildrenAndProps(propsWithChildren);
+    const { children, ...props } = propsWithChildren;
 
-    this.children = children;
-    this.props = this._makePropsProxy(props);
+    this.children = children || {};
+    this.props = this._makePropsProxy({ ...props });
 
     this._meta = {
       tagName,
@@ -41,33 +41,6 @@ export class Block {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  _getChildrenAndProps(propsAndChildren: Props | Children) {
-    const children: Children = {};
-    const props: Props = {};
-
-    Object.entries(propsAndChildren).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        value.forEach((obj) => {
-          if (obj instanceof Block) {
-            children[key] = value;
-          } else {
-            props[key] = value;
-          }
-        });
-
-        return;
-      }
-
-      if (value instanceof Block) {
-        children[key] = value;
-      } else {
-        props[key] = value;
-      }
-    });
-
-    return { children, props };
-  }
-
   _registerEvents(eventBus: EventBus) {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
@@ -76,12 +49,20 @@ export class Block {
   }
 
   _createResources() {
-    if (this._meta?.tagName === 'fragment') {
+    const { tagName, props } = this._meta || {};
+
+    if (tagName === 'fragment') {
       this._element = document.createDocumentFragment() as unknown as HTMLElement;
     } else {
       this._element = this._createDocumentElement(
-        (this._meta?.tagName ?? 'div') as keyof HTMLElementTagNameMap
+        (tagName ?? 'div') as keyof HTMLElementTagNameMap
       );
+    }
+
+    if (typeof props?.attrs === 'object') {
+      Object.entries(props.attrs).forEach(([attrName, attrValue]) => {
+        this._element?.setAttribute(attrName, String(attrValue));
+      });
     }
   }
 
@@ -99,6 +80,14 @@ export class Block {
 
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+
+    Object.values(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((component) => component.dispatchComponentDidMount());
+      } else {
+        child.dispatchComponentDidMount();
+      }
+    });
   }
 
   _componentDidUpdate(oldProps: Props, newProps: Props) {
@@ -184,6 +173,12 @@ export class Block {
 
     const block = this._compile();
 
+    const className = this.computeClass();
+
+    if (className) {
+      this._element?.setAttribute('class', className);
+    }
+
     if (this._element?.children.length === 0) {
       this._element.appendChild(block);
     } else {
@@ -195,6 +190,10 @@ export class Block {
 
   render(): string {
     return '';
+  }
+
+  computeClass(): string {
+    return this.props.class || '';
   }
 
   getContent() {

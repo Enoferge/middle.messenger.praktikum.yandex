@@ -8,19 +8,21 @@ import type { FormFooterProps } from './types';
 export class FormFooter extends Block {
   constructor(props: FormFooterProps) {
     super('div', {
-      SubmitAction: new Button({
-        ...props.submitAction,
-        type: 'submit',
-        fullWidth: true,
-      }),
-      ...(props.secondaryAction
-        ? {
-            SecondaryAction: new Button({
-              ...props.secondaryAction,
-              variant: 'plain',
-            }),
-          }
-        : {}),
+      children: {
+        SubmitAction: new Button({
+          ...props.submitAction,
+          type: 'submit',
+          fullWidth: true,
+        }),
+        ...(props.secondaryAction
+          ? {
+              SecondaryAction: new Button({
+                ...props.secondaryAction,
+                variant: 'plain',
+              }),
+            }
+          : {}),
+      },
     });
   }
 

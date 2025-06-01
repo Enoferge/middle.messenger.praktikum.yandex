@@ -1,27 +1,15 @@
 import type { BaseContext, PageName } from '@/navigation/types';
 import type { Block } from '@/core/block/block';
-import type { Children } from '@/core/block/types';
-import type { InputFieldProps } from '../input/types';
+import type { RawPropsWithChildren } from '@/core/block/types';
+import type { InputFieldProps } from '@/components/input-field/types';
 
-export interface Props extends BaseContext {
+export interface CardProps extends RawPropsWithChildren {
   title: string;
-  submitAction: {
-    name: string;
-    text: string;
-  };
-  secondaryAction: {
-    name: string;
-    text: string;
-    page: PageName;
+  children: {
+    ContentBlock: Block;
+    FooterBlock: Block;
   };
 }
-
-export interface CardSlots {
-  ContentBlock: Block;
-  FooterBlock: Block;
-}
-
-export type CardProps = Props | CardSlots | Children;
 
 // TODO: remove
 export interface CardContext extends BaseContext {

@@ -6,7 +6,7 @@ import type { LinkProps } from './types';
 
 export class Link extends Block {
   constructor(props: LinkProps) {
-    super('fragment', props);
+    super('div', props); //TODO: refac tagName
   }
 
   render() {

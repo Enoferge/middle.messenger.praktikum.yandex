@@ -1,14 +1,12 @@
-import type { Block } from '@/core/block/block';
-import type { Children } from '@/core/block/types';
+import type { RawPropsWithChildren } from '@/core/block/types';
+import type { InputFieldProps } from '@/components/input-field/types';
 
-interface Props {
+export interface FormProps extends RawPropsWithChildren {
   formId: string;
-  autocomplete?: boolean;
+  formFields?: InputFieldProps[];
+  formState: Record<string, string | undefined>;
+  formErrors?: Record<string, string | undefined>;
+  errors?: Record<string, string>;
   class?: string;
+  onSubmit?: (e: Event) => void;
 }
-
-export interface FormSlots {
-  FormFields: Block[];
-}
-
-export type FormProps = Props | FormSlots | Children;

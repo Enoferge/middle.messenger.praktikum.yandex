@@ -4,12 +4,18 @@ export type Element = HTMLElement;
 
 export type Meta = {
   tagName: string;
-  props: unknown;
+  props: Props;
 };
 
-export type Props = {
-  [key: string | symbol]: unknown;
+export interface Props extends RawProps {
+  class?: string;
   events?: Record<string, (e: Event) => void>;
-};
+  attrs?: Record<string, unknown>;
+}
 
-export type Children = Record<string | symbol, Block | Block[]>;
+export type RawProps = Record<string | symbol, unknown>;
+export interface RawPropsWithChildren extends RawProps {
+  children?: Children;
+}
+
+export type Children = Record<string, Block | Block[]>;
