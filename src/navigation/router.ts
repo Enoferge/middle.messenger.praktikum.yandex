@@ -41,7 +41,7 @@ export const pages: Record<PageName, PageData> = {
           text: 'Sign in',
         },
         secondaryAction: {
-          name: 'sign_up',
+          link: PAGE_NAMES.SIGN_UP,
           text: 'Sign up',
         },
       },
@@ -78,7 +78,7 @@ export const pages: Record<PageName, PageData> = {
           text: 'Sign up',
         },
         secondaryAction: {
-          name: 'sign_in',
+          link: PAGE_NAMES.SIGN_IN,
           text: 'Sign in',
         },
       },

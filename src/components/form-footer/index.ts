@@ -1,5 +1,6 @@
 import { Block } from '@/core/block/block';
 import { Button } from '@/components/button';
+import { Link } from '@/components/link';
 
 import './styles.css';
 import template from './form-footer.hbs?raw';
@@ -16,9 +17,8 @@ export class FormFooter extends Block {
         }),
         ...(props.secondaryAction
           ? {
-              SecondaryAction: new Button({
+              SecondaryAction: new Link({
                 ...props.secondaryAction,
-                variant: 'plain',
               }),
             }
           : {}),
