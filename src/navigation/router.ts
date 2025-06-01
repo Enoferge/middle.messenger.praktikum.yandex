@@ -16,7 +16,7 @@ import type { PageData, PageName } from './types';
 
 const currentPages = Object.values(PAGE_NAMES).map((page) => ({
   page,
-  buttonText: `Page ${page}`,
+  linkText: `Page ${page}`,
 }));
 
 export const pages: Record<PageName, PageData> = {
@@ -84,16 +84,12 @@ export const pages: Record<PageName, PageData> = {
       },
     }),
   },
-
-  // home: {
-  //   template: new HomePage({}),
-  //   context: {
-  //     pages: currentPages,
-  //   },
-  //   layoutContext: {
-  //     hideHomeButton: true,
-  //   },
-  // },
+  home: {
+    pageBlock: new HomePage({ pages: currentPages }),
+    layoutContext: {
+      hideHomeButton: true,
+    },
+  },
   // 500: {
   //   template: ErrorPage,
   //   context: {

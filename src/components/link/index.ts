@@ -6,7 +6,13 @@ import type { LinkProps } from './types';
 
 export class Link extends Block {
   constructor(props: LinkProps) {
-    super('div', props); //TODO: refac tagName
+    super('a', {
+      ...props,
+      class: `link${props.class ? ' ' + props.class : ''}`,
+      attrs: {
+        href: `/${props.link}`,
+      },
+    });
   }
 
   render() {

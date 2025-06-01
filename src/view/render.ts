@@ -5,7 +5,7 @@ import type { PageName } from '@/navigation/types';
 export function renderPage(page: PageName) {
   const { pageBlock, layoutContext = {} } = pages[page];
   const layout = new DefaultLayout({
-    hideHomeButton: false,
+    hideHomeButton: layoutContext.hideHomeButton,
     children: {
       PageContent: pageBlock,
     },
