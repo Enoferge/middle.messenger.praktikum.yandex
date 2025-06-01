@@ -1,12 +1,9 @@
 import type { Block } from '@/core/block/block';
+import type { RawPropsWithChildren } from '@/core/block/types';
 
 type ButtonVariant = 'default' | 'plain';
 
-export interface BlockSlots {
-  Icon?: Block;
-}
-
-export interface ButtonProps extends BlockSlots {
+export interface ButtonProps extends RawPropsWithChildren {
   name: string;
   type?: HTMLButtonElement['type'];
   tag?: keyof HTMLElementTagNameMap;
@@ -20,4 +17,8 @@ export interface ButtonProps extends BlockSlots {
   onClick?: (e: Event) => void;
   onBlur?: (e: Event) => void;
   onFocus?: (e: Event) => void;
+
+  children?: {
+    Icon?: Block;
+  };
 }
