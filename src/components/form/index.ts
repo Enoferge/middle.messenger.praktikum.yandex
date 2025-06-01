@@ -25,7 +25,11 @@ export class Form extends Block {
             });
           },
           onFieldBlur: ({ name, value }) => {
-            const error = validateField(name, value);
+            const error = validateField(
+              name,
+              value,
+              this.props.formState as Record<string, string>
+            );
             this.setProps({
               formErrors: {
                 ...(this.props.formErrors || {}), // TODO: add generic
@@ -75,7 +79,11 @@ export class Form extends Block {
         const inputEl = inputField.getContent()?.querySelector('input') as HTMLInputElement;
         if (!inputEl) return;
 
-        const error = validateField(inputEl.name, inputEl.value);
+        const error = validateField(
+          inputEl.name,
+          inputEl.value,
+          this.props.formState as Record<string, string>
+        );
         inputField.setProps({ error });
 
         if (error) {
