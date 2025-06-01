@@ -7,6 +7,5 @@ export interface FormProps extends RawPropsWithChildren {
   formState: Record<string, string | undefined>;
   formErrors?: Record<string, string | undefined>;
   errors?: Record<string, string>;
-  class?: string;
   onSubmit?: (e: Event) => void;
 }

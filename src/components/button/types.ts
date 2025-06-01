@@ -16,7 +16,7 @@ export interface ButtonProps extends BlockSlots {
   fullWidth?: boolean;
   isAccent?: boolean;
   formId?: string;
-  class?: string;
+
   onClick?: (e: Event) => void;
   onBlur?: (e: Event) => void;
   onFocus?: (e: Event) => void;

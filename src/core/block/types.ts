@@ -8,12 +8,15 @@ export type Meta = {
 };
 
 export interface Props extends RawProps {
-  class?: string;
   events?: Record<string, (e: Event) => void>;
   attrs?: Record<string, unknown>;
 }
 
-export type RawProps = Record<string | symbol, unknown>;
+export interface RawProps {
+  [key: string | symbol]: unknown;
+  class?: string;
+}
+
 export interface RawPropsWithChildren extends RawProps {
   children?: Children;
 }

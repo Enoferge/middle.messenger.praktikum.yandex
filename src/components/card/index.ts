@@ -6,7 +6,11 @@ import template from './card.hbs?raw';
 
 export class Card extends Block {
   constructor(props: CardProps) {
-    super('div', props);
+    super('section', {
+      ...props,
+      class: 'card',
+      attrs: { role: `${props.title}-dialog`, 'aria-labelledby': `${props.title}-title` },
+    });
   }
 
   render() {

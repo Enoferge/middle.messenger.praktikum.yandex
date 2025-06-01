@@ -1,15 +1,13 @@
-<section class='card' role='{{title}}-dialog' aria-labelledby='{{title}}-title'>
-  <h1 class='page-title' id='{{title}}-title'>{{title}}</h1>
+<h1 class='page-title' id='{{title}}-title'>{{title}}</h1>
 
-  {{#if ContentBlock}}
-    <div class='card__content'>
-      {{{ ContentBlock }}}
-    </div>
-  {{/if}}
+{{#if ContentBlock}}
+  <div class='card__content'>
+    {{{ContentBlock}}}
+  </div>
+{{/if}}
 
-  {{#if FooterBlock}}
-    <div class='card__footer'>
-      {{{ FooterBlock }}}
-    </div>
-  {{/if}}
-</section>
+{{#if FooterBlock}}
+  <div class='card__footer'>
+    {{{FooterBlock}}}
+  </div>
+{{/if}}
