@@ -9,6 +9,7 @@ import {
   profileEditFields,
   profileReadFields,
   profileChangeAvatarCommonContext,
+  profileFormStateInitial,
 } from '../data/profileFields';
 import { messengerChats, activeChat } from '../data/messengerData';
 import { PAGE_NAMES } from './constants';
@@ -120,67 +121,63 @@ export const pages: Record<PageName, PageData> = {
   //     hideHomeButton: true,
   //   },
   // },
-  // profileRead: {
-  //   template: ProfilePage,
-  //   context: {
-  //     mode: 'READ',
-  //     submitButtonText: 'Edit',
-  //     formFields: profileReadFields,
-  //     formId: 'profile-form',
-  //   },
-  // },
-  // profileEdit: {
-  //   template: ProfilePage,
-  //   context: {
-  //     mode: 'EDIT',
-  //     submitButtonText: 'Save',
-  //     formFields: profileEditFields,
-  //     formId: 'profile-form',
-  //   },
-  // },
-  // profileChangePass: {
-  //   template: ProfilePage,
-  //   context: {
-  //     mode: 'CHANGE_PASS',
-  //     submitButtonText: 'Save',
-  //     formFields: profileChangePassFields,
-  //     formId: 'profile-form',
-  //   },
-  // },
-  // profileChangeAvatar: {
-  //   template: ProfilePage,
-  //   context: {
-  //     ...profileChangeAvatarCommonContext,
-  //     mode: 'CHANGE_AVATAR',
-  //     isFormInvalid: true,
-  //     fileData: {
-  //       name: 'avatar',
-  //     },
-  //   },
-  // },
-  // profileChangeAvatarError: {
-  //   template: ProfilePage,
-  //   context: {
-  //     ...profileChangeAvatarCommonContext,
-  //     mode: 'CHANGE_AVATAR_ERROR',
-  //     isFormInvalid: true,
-  //     fileData: {
-  //       name: 'avatar',
-  //       error: 'Error while uploading, please try again',
-  //     },
-  //   },
-  // },
-  // profileChangeAvatarUploaded: {
-  //   template: ProfilePage,
-  //   context: {
-  //     ...profileChangeAvatarCommonContext,
-  //     mode: 'CHANGE_AVATAR_UPLOADED',
-  //     fileData: {
-  //       name: 'avatar',
-  //       filename: 'avatar.png',
-  //     },
-  //   },
-  // },
+  profileRead: {
+    pageBlock: new ProfilePage({
+      mode: 'READ',
+      submitButtonText: 'Edit',
+      formFields: profileReadFields,
+      formState: profileFormStateInitial,
+      formId: 'profile-form',
+    }),
+  },
+  profileEdit: {
+    pageBlock: new ProfilePage({
+      mode: 'EDIT',
+      submitButtonText: 'Save',
+      formFields: profileEditFields,
+      formState: profileFormStateInitial,
+      formId: 'profile-form',
+    }),
+  },
+  profileChangePass: {
+    pageBlock: new ProfilePage({
+      mode: 'CHANGE_PASS',
+      submitButtonText: 'Save',
+      formFields: profileChangePassFields,
+      formId: 'profile-form',
+    }),
+  },
+  profileChangeAvatar: {
+    pageBlock: new ProfilePage({
+      ...profileChangeAvatarCommonContext,
+      mode: 'CHANGE_AVATAR',
+      isFormInvalid: true,
+      fileData: {
+        name: 'avatar',
+      },
+    }),
+  },
+  profileChangeAvatarError: {
+    pageBlock: new ProfilePage({
+      ...profileChangeAvatarCommonContext,
+      mode: 'CHANGE_AVATAR_ERROR',
+      isFormInvalid: true,
+      fileData: {
+        name: 'avatar',
+        error: 'Error while uploading, please try again',
+      },
+    }),
+  },
+  profileChangeAvatarUploaded: {
+    pageBlock: new ProfilePage({
+      ...profileChangeAvatarCommonContext,
+      mode: 'CHANGE_AVATAR_UPLOADED',
+      fileData: {
+        name: 'avatar',
+        filename: 'avatar.png',
+      },
+    }),
+  },
   // messenger: {
   //   template: MessengerPage,
   //   context: {

@@ -1,4 +1,4 @@
-<section class="profile-card" role="profile-dialog" aria-labelledby="profile-title">
+{{!-- <section class="profile-card" role="profile-dialog" aria-labelledby="profile-title">
   <h1 class="page-title" id="profile-title">Profile</h1>
 
   <div class="profile-card__content">
@@ -50,4 +50,30 @@
   <div class="profile-card__close-button">
     {{> IconButton icon="close" variant="plain"}}
   </div>
-</section>
+</section> --}}
+
+<h1 class='page-title' id='profile-title'>Profile</h1>
+
+<div class='profile-card__content'>
+  <div class='profile-card__avatar'>
+    <div class='profile-card__avatar-image'>
+      {{{Avatar}}}
+    </div>
+    {{! <ul role='list' class='profile-card__avatar-actions'> }}
+    {{{AvatarActions}}}
+    {{! </ul> }}
+  </div>
+
+  <div class='profile-card__form-wrapper'>
+    <div class='profile-card__form-scroll'>
+      {{{FormBlock}}}
+    </div>
+    <div class='profile-card__form-footer'>
+      {{{Footer}}}
+    </div>
+  </div>
+</div>
+
+<div class='profile-card__close-button'>
+  {{{CloseButton}}}
+</div>

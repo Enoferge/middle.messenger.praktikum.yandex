@@ -65,6 +65,11 @@ select {
   border-radius: 0;
 }
 
+input[readonly] {
+  pointer-events: none;
+  user-select: none;
+}
+
 button {
   cursor: pointer;
 }

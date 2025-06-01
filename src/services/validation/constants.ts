@@ -3,6 +3,7 @@ const nameValidator = {
   errorMsg:
     'Type any letters and hyphens, first letter must be uppercase. No spaces ot digits, no other special characters',
 };
+
 export const INPUT_VALIDATORS: Record<string, { validator: RegExp; errorMsg: string }> = {
   login: {
     validator: /^(?!\d+$)[a-zA-Z0-9_-]{3,20}$/,

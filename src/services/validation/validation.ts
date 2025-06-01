@@ -6,10 +6,16 @@ export function validateField(name: string, value: string, formState: FormProps[
     return value === formState.password ? '' : 'Typed passwords are not equal';
   }
 
+  let preparedValue = value;
+
+  if (name === 'phone') {
+    preparedValue = preparedValue.replace(/\s+/g, '');
+  }
+
   const { validator, errorMsg } = INPUT_VALIDATORS[name] || {};
 
   if (validator) {
-    return validator.test(value) ? '' : errorMsg;
+    return validator.test(preparedValue) ? '' : errorMsg;
   }
 
   return '';

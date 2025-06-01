@@ -4,7 +4,7 @@ import type { RawPropsWithChildren } from '@/core/block/types';
 type ButtonVariant = 'default' | 'plain';
 
 export interface ButtonProps extends RawPropsWithChildren {
-  name: string;
+  name?: string;
   type?: HTMLButtonElement['type'];
   tag?: keyof HTMLElementTagNameMap;
   text?: string;
