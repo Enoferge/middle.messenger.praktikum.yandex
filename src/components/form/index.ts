@@ -8,16 +8,16 @@ import type { FormProps } from './types';
 import './styles.css';
 import template from './form.hbs?raw';
 
-function getGeneratedInputs(props: FormProps, setProps: (props: Partial<FormProps>) => void) {
+function getGeneratedInputs(props: FormProps, setProps: (p: Partial<FormProps>) => void) {
   return (
     props.formFields?.map((fieldProps: InputFieldProps) => {
-      const { name, readonly } = fieldProps;
+      const { name: fName, readonly: fReadonly } = fieldProps;
 
       return new InputField({
         ...fieldProps,
-        value: props.formState?.[name],
+        value: props.formState?.[fName],
         error: '',
-        readonly: readonly || props.isFormReadonly,
+        readonly: fReadonly || props.isFormReadonly,
         onFieldChange: ({ name, value }) => {
           setProps({
             formState: {
@@ -50,10 +50,10 @@ export class Form extends Block<FormProps> {
         acc[field] = '';
         return acc;
       },
-      {}
+      {},
     );
 
-    const inputs = getGeneratedInputs(props, (props) => this.setProps(props));
+    const inputs = getGeneratedInputs(props, (p) => this.setProps(p));
 
     super('form', {
       ...props,
@@ -78,7 +78,7 @@ export class Form extends Block<FormProps> {
             });
           }
 
-          console.log('SUBMIT FORM ' + this.props.formId);
+          console.log(`SUBMIT FORM ${this.props.formId}`);
           console.log(this.props.formState);
           console.log(`Form is ${this.isFormInvalid ? 'invalid' : 'valid'}`);
         },
@@ -96,7 +96,7 @@ export class Form extends Block<FormProps> {
         acc[name] = validateField(name, value, this.props.formState);
         return acc;
       },
-      {}
+      {},
     );
   }
 
@@ -114,7 +114,7 @@ export class Form extends Block<FormProps> {
     const fields = (this.children.FormFields || []) as Block[];
 
     fields.forEach((inputField: InputField) => {
-      const name = inputField.props.name;
+      const { name } = inputField.props;
 
       if (oldProps.formErrors?.[String(name)] !== newProps.formErrors?.[String(name)]) {
         inputField.setProps({

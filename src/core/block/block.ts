@@ -4,7 +4,9 @@ import Handlebars from 'handlebars';
 import { EventBus } from '@/services/event-bus/event-bus';
 import { cloneDeep } from '@/utils/clone-deep';
 
-import type { Meta, Element, Props, Children } from './types';
+import type {
+  Meta, Element, Props, Children,
+} from './types';
 
 export class Block<T extends Props = Props> {
   static EVENTS = {
@@ -17,13 +19,16 @@ export class Block<T extends Props = Props> {
   eventBus;
 
   _element: Element | null = null;
+
   _id = nanoid(6);
+
   _meta: Meta | null = null;
 
   children: Children;
+
   props: T;
 
-  constructor(tagName = 'div', propsWithChildren: T) {
+  constructor(tagName = 'div', propsWithChildren: T = {} as T) {
     const eventBus = new EventBus();
     this.eventBus = () => eventBus;
 
@@ -55,7 +60,7 @@ export class Block<T extends Props = Props> {
       this._element = document.createDocumentFragment() as unknown as HTMLElement;
     } else {
       this._element = this._createDocumentElement(
-        (tagName ?? 'div') as keyof HTMLElementTagNameMap
+        (tagName ?? 'div') as keyof HTMLElementTagNameMap,
       );
     }
 
@@ -80,14 +85,6 @@ export class Block<T extends Props = Props> {
 
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
-
-    // Object.values(this.children).forEach((child) => {
-    //   if (Array.isArray(child)) {
-    //     child.forEach((component) => component.dispatchComponentDidMount());
-    //   } else {
-    //     child.dispatchComponentDidMount();
-    //   }
-    // });
   }
 
   _componentDidUpdate(oldProps: T, newProps: T) {
@@ -98,7 +95,7 @@ export class Block<T extends Props = Props> {
     }
   }
 
-  componentDidUpdate(oldProps: T, newProps: T) {
+  componentDidUpdate(_oldProps: T, _newProps: T) {
     return true;
   }
 
@@ -113,7 +110,7 @@ export class Block<T extends Props = Props> {
       };
     }
 
-    const { attrs, ...restNextProps } = nextProps;
+    const { attr: _attrs, ...restNextProps } = nextProps;
 
     Object.assign(this.props, restNextProps);
   };
@@ -214,10 +211,10 @@ export class Block<T extends Props = Props> {
 
     Object.entries({ ...(this.props.attrs || {}), ...computedAttributes }).forEach(
       ([attrName, attrValue]) => {
-        if (attrValue != null && attrValue != false) {
+        if (attrValue != null && attrValue !== false) {
           this._element!.setAttribute(attrName, attrValue);
         }
-      }
+      },
     );
   }
 
@@ -251,8 +248,8 @@ export class Block<T extends Props = Props> {
       set: (target: any, prop, value) => {
         const oldProps = cloneDeep(target);
 
-        target[prop] = value;
-        emitBind(Block.EVENTS.FLOW_CDU, oldProps, target);
+        // target[prop] = value;
+        emitBind(Block.EVENTS.FLOW_CDU, oldProps, { ...target, [prop]: value });
 
         return true;
       },
@@ -262,9 +259,9 @@ export class Block<T extends Props = Props> {
     });
   }
 
-  _createDocumentElement<T extends keyof HTMLElementTagNameMap>(
-    tagName: T
-  ): HTMLElementTagNameMap[T] {
+  _createDocumentElement<U extends keyof HTMLElementTagNameMap>(
+    tagName: U,
+  ): HTMLElementTagNameMap[U] {
     return document.createElement(tagName);
   }
 

@@ -7,8 +7,7 @@ import './home.css';
 
 export class HomePage extends Block {
   constructor(props: HomePageProps) {
-    const links =
-      props.pages?.map(({ linkText, page }) => new Link({ link: page, text: linkText })) || [];
+    const links = props.pages?.map(({ linkText, page }) => new Link({ link: page, text: linkText })) || [];
 
     super('nav', {
       ...props,

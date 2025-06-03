@@ -77,8 +77,9 @@ export class ProfilePage extends Block<ProfilePageProps> {
     if (oldProps.mode !== newProps.mode) {
       this.showCorrectProfileForm(newProps);
 
-      const { isFormReadonly, formFields, formState, submitButtonText } =
-        profilePagePropsByMode[newProps.mode];
+      const {
+        isFormReadonly, formFields, formState, submitButtonText,
+      } = profilePagePropsByMode[newProps.mode];
 
       (this.children.AvatarActions as Block).setProps({
         mode: newProps.mode,

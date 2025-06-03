@@ -17,10 +17,10 @@ export class FormFooter extends Block {
         }),
         ...(props.secondaryAction
           ? {
-              SecondaryAction: new Link({
-                ...props.secondaryAction,
-              }),
-            }
+            SecondaryAction: new Link({
+              ...props.secondaryAction,
+            }),
+          }
           : {}),
       },
     });

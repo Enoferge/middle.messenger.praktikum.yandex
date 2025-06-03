@@ -1,11 +1,6 @@
 import type { RawPropsWithChildren } from '@/core/block/types';
 import type { LinkProps } from '../link/types';
 
-export interface FormFooterProps extends RawPropsWithChildren {
-  submitAction: SubmitAction;
-  secondaryAction?: LinkProps;
-}
-
 interface Action {
   name: string;
   text: string;
@@ -14,4 +9,9 @@ interface Action {
 
 interface SubmitAction extends Action {
   formId?: string;
+}
+
+export interface FormFooterProps extends RawPropsWithChildren {
+  submitAction: SubmitAction;
+  secondaryAction?: LinkProps;
 }

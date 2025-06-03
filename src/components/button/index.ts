@@ -41,9 +41,9 @@ export class Button extends Block {
     if (this.props.disabled) {
       if (this.props.tag) {
         attrs['aria-disabled'] = 'true';
-        attrs['tabindex'] = '-1';
+        attrs.tabindex = '-1';
       } else {
-        attrs['disabled'] = true;
+        attrs.disabled = true;
       }
     }
 

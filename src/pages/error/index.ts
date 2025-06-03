@@ -7,8 +7,7 @@ import type { ErrorPageProps } from './types';
 
 export class ErrorPage extends Block<ErrorPageProps> {
   constructor(props: ErrorPageProps) {
-    const pageTitleClass =
-      props.code === '400' || props.code === '404' ? 'page-title_warning' : 'page-title_error';
+    const pageTitleClass = props.code === '400' || props.code === '404' ? 'page-title_warning' : 'page-title_error';
 
     super('div', {
       ...props,

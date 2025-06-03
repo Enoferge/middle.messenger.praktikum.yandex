@@ -1,6 +1,6 @@
 export function prepareForm(
   formId: string,
-  submitCb: (data: Record<string, FormDataEntryValue>) => void
+  submitCb: (data: Record<string, FormDataEntryValue>) => void,
 ) {
   const form = document.getElementById(formId) as HTMLFormElement | undefined;
 

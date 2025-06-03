@@ -30,7 +30,7 @@ export class EventBus {
   emit(event: string, ...args: Array<unknown>) {
     checkEventExists(this.listeners, event);
 
-    this.listeners[event].forEach(function (listener) {
+    this.listeners[event].forEach((listener) => {
       listener(...args);
     });
   }

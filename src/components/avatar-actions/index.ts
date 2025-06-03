@@ -13,7 +13,7 @@ function getButtons(props: AvatarActionsProps) {
         variant: 'plain',
         text: 'Back',
         onClick: props.onBackToProfile,
-      })
+      }),
     );
   } else {
     buttons.push(
@@ -32,7 +32,7 @@ function getButtons(props: AvatarActionsProps) {
         text: 'Sign out',
         isAccent: true,
         onClick: props.onSignOut,
-      })
+      }),
     );
   }
 

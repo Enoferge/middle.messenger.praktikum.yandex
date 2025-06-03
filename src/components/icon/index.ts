@@ -5,7 +5,7 @@ import type { IconProps } from './types';
 
 export class Icon extends Block {
   constructor(props: IconProps) {
-    super('div', props); //TODO: refac tagName
+    super('div', props); // TODO: refac tagName
   }
 
   render() {

@@ -16,11 +16,11 @@ export class MessageBubble extends Block<MessageBubbleProps> {
       children: {
         ...(props.status
           ? {
-              StatusIcon: new Icon({
-                name: props.status,
-                class: 'message-bubble__status-icon',
-              }),
-            }
+            StatusIcon: new Icon({
+              name: props.status,
+              class: 'message-bubble__status-icon',
+            }),
+          }
           : {}),
       },
     });

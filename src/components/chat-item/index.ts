@@ -1,10 +1,10 @@
 import { Block } from '@/core/block/block';
 import { Avatar } from '@/components/avatar';
+import { formatTime } from '@/utils/format-time';
 
 import template from './chat-item.hbs?raw';
 import './styles.css';
 import type { ChatItemProps } from './types';
-import { formatTime } from '@/utils/format-time';
 
 export class ChatItem extends Block<ChatItemProps> {
   constructor(props: ChatItemProps) {

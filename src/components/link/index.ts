@@ -8,7 +8,7 @@ export class Link extends Block {
   constructor(props: LinkProps) {
     super('a', {
       ...props,
-      class: `link${props.class ? ' ' + props.class : ''}`,
+      class: `link${props.class ? ` ${props.class}` : ''}`,
       attrs: {
         href: `/${props.link}`,
       },

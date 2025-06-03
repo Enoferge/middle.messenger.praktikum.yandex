@@ -7,7 +7,6 @@ import { ChatItem } from '@/components/chat-item';
 import { MessageBubble } from '@/components/message-bubble';
 
 import template from './messenger.hbs?raw';
-import './styles.css';
 import type { MessengerPageProps } from './types';
 
 export class MessengerPage extends Block<MessengerPageProps> {

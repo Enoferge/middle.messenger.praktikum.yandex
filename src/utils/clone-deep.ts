@@ -7,13 +7,11 @@ export function cloneDeep<T>(obj: T): T {
     return obj.map((item) => cloneDeep(item)) as unknown as T;
   }
 
-  const cloned: any = {};
+  const cloned: Record<string, unknown> = {};
 
-  for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      cloned[key] = cloneDeep(obj[key]);
-    }
-  }
+  Object.keys(obj).forEach((key) => {
+    (cloned as any)[key] = cloneDeep((obj as any)[key]);
+  });
 
-  return cloned;
+  return cloned as T;
 }
