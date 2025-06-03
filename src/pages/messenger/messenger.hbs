@@ -22,14 +22,12 @@
     </div>
     <div class='messenger__content messenger__active-chat'>
       {{#each activeChatMessages}}
-        {{! <div class='messenger__message-bubble'> }}
         {{{this}}}
-        {{! </div> }}
       {{/each}}
     </div>
     <div class='messenger__footer'>
       {{{FileButton}}}
-      <div class='messenger__user-msg-textarea'>Here be textarea</div>
+      <div class='messenger__user-msg-textarea'>{{{MessageField}}}</div>
       {{{SendButton}}}
     </div>
   </section>
