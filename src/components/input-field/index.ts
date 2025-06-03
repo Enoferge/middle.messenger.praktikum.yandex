@@ -4,6 +4,7 @@ import { Input } from '@/components/input';
 import './styles.css';
 import template from './input.hbs?raw';
 import type { InputFieldProps } from './types';
+import { Icon } from '../icon';
 
 export class InputField extends Block {
   constructor(props: InputFieldProps) {
@@ -22,9 +23,12 @@ export class InputField extends Block {
       ['input-field__input'],
     );
 
+    const isSearch = props.type === 'search';
+
     super('div', {
       ...inputProps,
       label,
+      isSearch,
       children: {
         Input: new Input({
           ...inputProps,
@@ -37,6 +41,10 @@ export class InputField extends Block {
             const { name, value } = e.target as HTMLInputElement;
             onFieldBlur?.({ name, value });
           },
+        }),
+        IconSearch: new Icon({
+          name: 'search',
+          class: 'input-field__icon-search',
         }),
       },
     });

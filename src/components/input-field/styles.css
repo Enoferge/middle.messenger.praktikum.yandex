@@ -10,6 +10,12 @@
     margin-bottom: var(--space-xxs);
   }
 
+  &__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
   &__input {
     font-size: 14px;
     line-height: 16px;
@@ -19,6 +25,10 @@
     border: var(--border-width) solid var(--color-border-main);
     border-radius: var(--radius-large);
 
+    &[type="search"] {
+      padding-left: var(--space-xl);
+    }
+
     &_readonly {
       border-color: var(--color-form-field-readonly);
       border-top: 2px solid transparent;
@@ -26,6 +36,15 @@
       border-right: none;
       border-radius: 0;
     }
+  }
+
+  &__icon-search {
+    position: absolute;
+    left: var(--space-xs);
+    width: var(--size-icon-s);
+    height: var(--size-icon-s);
+    fill: var(--color-border-main);
+    pointer-events: none;
   }
 
   &__error-caption {

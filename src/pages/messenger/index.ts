@@ -7,6 +7,7 @@ import { ChatItem } from '@/components/chat-item';
 import { MessageBubble } from '@/components/message-bubble';
 
 import { TextareaField } from '@/components/textarea/textarea-field';
+import { InputField } from '@/components/input-field';
 import template from './messenger.hbs?raw';
 import type { MessengerPageProps } from './types';
 
@@ -37,6 +38,7 @@ export class MessengerPage extends Block<MessengerPageProps> {
         SendButton: new IconButton({
           iconName: 'send',
         }),
+        Search: new InputField({ name: 'search', type: 'search' }),
         chats: props.chats.map((chat) => new ChatItem(chat)),
         activeChatMessages: props.activeChatMessages.map((msg) => new MessageBubble(msg)),
         MessageField: new TextareaField({ placeholder: 'Type your message here' }),

@@ -8,7 +8,8 @@ export type IconName =
   | 'close'
   | 'settings'
   | 'delivered'
-  | 'seen';
+  | 'seen'
+  | 'search';
 
 export interface IconProps extends RawPropsWithChildren {
   name?: IconName;
