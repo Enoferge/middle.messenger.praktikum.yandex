@@ -35,14 +35,13 @@ export class ProfilePage extends Block<ProfilePageProps> {
           onChangePassword: () => this.setProps({ mode: 'CHANGE_PASS' }),
           onSignOut: () => console.log('sign out'),
         }),
-        FormBlock: props.mode.startsWith('CHANGE_AVATAR')
-          ? new FileUpload({ name: 'file_upload' })
-          : new Form({
-              formId: 'profile-form',
-              formFields,
-              formState,
-              isFormReadonly,
-            }),
+        FileUpload: new FileUpload({ name: 'profile-avatar' }),
+        FormBlock: new Form({
+          formId: 'profile-form',
+          formFields,
+          formState,
+          isFormReadonly,
+        }),
         Footer: new Button({
           formId: 'profile-form',
           name: 'profile-save',
@@ -60,9 +59,24 @@ export class ProfilePage extends Block<ProfilePageProps> {
     });
   }
 
+  showCorrectProfileForm(props: ProfilePageProps) {
+    if (props.mode === 'CHANGE_AVATAR') {
+      this.children.FormBlock.hide();
+      this.children.FileUpload.show();
+    } else {
+      this.children.FormBlock.show();
+      this.children.FileUpload.hide();
+    }
+  }
+
+  componentDidMount(): void {
+    this.showCorrectProfileForm(this.props);
+  }
+
   componentDidUpdate(oldProps: ProfilePageProps, newProps: ProfilePageProps) {
-    console.log(newProps.mode);
     if (oldProps.mode !== newProps.mode) {
+      this.showCorrectProfileForm(newProps);
+
       const { isFormReadonly, formFields, formState, submitButtonText } =
         profilePagePropsByMode[newProps.mode];
 
@@ -76,8 +90,6 @@ export class ProfilePage extends Block<ProfilePageProps> {
         onClick: newProps.mode === 'READ' ? () => this.setProps({ mode: 'EDIT' }) : undefined,
       });
 
-      console.log('HALP');
-      console.log(formState);
       this.children.FormBlock.setProps({
         isFormReadonly,
         formFields,
