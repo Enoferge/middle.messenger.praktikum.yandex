@@ -60,8 +60,6 @@
   &__footer {
     display: flex;
     align-items: center;
-    padding-left: var(--space-xs);
-    padding-right: var(--space-xs);
     border-width: 0;
     border-style: solid;
     border-color: var(--color-border-section);
@@ -69,15 +67,13 @@
 
   &__header {
     justify-content: space-between;
-    padding-top: var(--space-xs);
-    padding-bottom: var(--space-xs);
+    padding: var(--space-xs);
     border-bottom-width: var(--border-width);
   }
 
   &__footer {
     gap: var(--space-m);
-    padding-top: var(--space-m);
-    padding-bottom: var(--space-m);
+    padding: var(--space-m);
     border-top-width: var(--border-width);
   }
 

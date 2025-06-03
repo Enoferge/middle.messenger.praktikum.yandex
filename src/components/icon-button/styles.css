@@ -1,8 +1,9 @@
 .icon-button {
   --icon-size: 32px;
+  --button-size: 48px;
 
-  width: var(--icon-size);
-  height: var(--icon-size);
+  width: var( --button-size);
+  height: var( --button-size);
   display: inline-flex;
   align-items: center;
   justify-content: center;
