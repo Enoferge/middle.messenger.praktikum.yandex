@@ -43,7 +43,7 @@
     left: var(--space-xs);
     width: var(--size-icon-s);
     height: var(--size-icon-s);
-    fill: var(--color-border-main);
+    color: var(--color-text-main);
     pointer-events: none;
   }
 

@@ -15,7 +15,7 @@ export class MessengerPage extends Block<MessengerPageProps> {
   constructor(props: MessengerPageProps) {
     super('div', {
       ...props,
-      class: 'messenger__wrapper',
+      class: 'messenger messenger__wrapper',
       children: {
         Avatar: new Avatar({
           src: '/assets/images/user1.png',
@@ -41,7 +41,7 @@ export class MessengerPage extends Block<MessengerPageProps> {
         Search: new InputField({ name: 'search', type: 'search' }),
         chats: props.chats.map((chat) => new ChatItem(chat)),
         activeChatMessages: props.activeChatMessages.map((msg) => new MessageBubble(msg)),
-        MessageField: new TextareaField({ placeholder: 'Type your message here' }),
+        MessageField: new TextareaField({ placeholder: 'Search in chats...' }),
       },
     });
   }

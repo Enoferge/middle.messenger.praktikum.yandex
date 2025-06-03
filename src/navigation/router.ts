@@ -133,6 +133,7 @@ export const pages: Record<PageName, PageData> = {
   messenger: {
     pageBlock: new MessengerPage({
       chats: messengerChats,
+      activeChatContactName: 'Sakura',
       activeChatMessages,
     }),
   },

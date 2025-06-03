@@ -8,7 +8,6 @@ export interface AuthPageProps extends Props {
   formProps: {
     formFields: Array<InputFieldProps>;
     formState: Record<string, string>;
-    // formErrors?: Record<string, string>; TODO: remove
   };
   footerProps: FormFooterProps;
 }

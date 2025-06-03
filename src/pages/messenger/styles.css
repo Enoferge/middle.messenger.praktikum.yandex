@@ -1,4 +1,7 @@
 .messenger {
+  --title-color: #c1969e;
+  --title-color-stroke: #563ab6;
+
   &__wrapper {
     flex: 1 1 auto;
     display: flex;
@@ -16,7 +19,7 @@
     overflow: hidden;
 
     &_left {
-      flex: 0 0 30%;
+      flex: 0 0 25%;
       min-width: 340px;
       max-width: 420px;
     }
@@ -41,14 +44,6 @@
 
   &__message-bubble {
     max-width: 50%;
-
-    /* &_incoming {
-            align-self: flex-start;
-        }
-
-        &_outcoming {
-            align-self: flex-end;
-        } */
   }
 
   &__chats-list {
@@ -69,6 +64,14 @@
     justify-content: space-between;
     padding: var(--space-xs);
     border-bottom-width: var(--border-width);
+  }
+
+  &__header-title {
+    color: var(--title-color);
+    -webkit-text-stroke: 1px var(--title-color-stroke);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 24px;
   }
 
   &__footer {
