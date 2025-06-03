@@ -12,7 +12,7 @@ A tiny minimalist messenger with a touch of *kawaii* aesthetics.
 - [Profile change avatar](https://kawaii-messenger.netlify.app/profileChangeAvatar)
 - [Profile change avatar error](https://kawaii-messenger.netlify.app/profileChangeAvatarError)
 - [Profile change avatar uploaded](https://kawaii-messenger.netlify.app/profileChangeAvatarUploaded)
-- [Messenger (placeholder for now)](https://kawaii-messenger.netlify.app/messenger)
+- [Messenger](https://kawaii-messenger.netlify.app/messenger)
 - [500 error page](https://kawaii-messenger.netlify.app/500)
 - [400 error page](https://kawaii-messenger.netlify.app/400)
 - [404 error page](https://kawaii-messenger.netlify.app/404)
@@ -20,10 +20,10 @@ A tiny minimalist messenger with a touch of *kawaii* aesthetics.
 ## 🛠 Tech Stack
 
 Client:  
-TypeScript, JavaScript
+TypeScript, JavaScript, component-based architecture with custom Block class and EventBus.
 
 Tools:  
-Vite, PostCSS, Netlify
+Vite, PostCSS, Netlify, ESLint, Stylelint, TypeScript (tsc type checking).
 
 ## 🎨 Design
 
@@ -44,6 +44,24 @@ npm run preview
 
 # Build and preview
 npm start
+
+# Type check with TypeScript
+npm run type-check
+
+# Run ESLint
+npm run eslint
+
+# Auto-fix ESLint issues
+npm run eslint:fix
+
+# Run Stylelint
+npm run stylelint
+
+# Auto-fix Stylelint issues
+npm run stylelint:fix
+
+# Full lint: ESLint, Stylelint, and TypeScript check
+npm run lint
 ```
 
 ## 🐉 Developer
