@@ -17,11 +17,11 @@ export class FileUpload extends Block {
       children: {
         ChooseFileButton: new Button({
           tag: 'div',
+          type: 'button',
           text: 'Choose file',
-          icon: 'upload',
+          iconName: 'upload',
           variant: 'plain',
           class: 'file-upload__button',
-          type: 'button',
         }),
       },
     });

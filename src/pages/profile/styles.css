@@ -11,13 +11,14 @@
   min-width: 720px;
   height: 540px;
   padding: var(--space-l) var(--space-l) calc(var(--space-xl) + 2 * var(--space-l));
+  overflow: auto;
 
   &__content {
     display: flex;
     flex: 1 1 auto;
-    gap: var(--space-xxxl);
+    gap: var(--space-xxxxl);
     overflow: hidden;
-    padding: var(--space-m) var(--space-xxxl);
+    padding: var(--space-m) var(--space-xxxxl);
     justify-content: space-between;
     align-items: center;
   }
@@ -69,8 +70,8 @@
 
   &__close-button {
     position: absolute;
-    top: var(--space-m);
-    right: var(--space-m);
+    top: var(--space-xs);
+    right: var(--space-xs);
     cursor: pointer;
   }
 }

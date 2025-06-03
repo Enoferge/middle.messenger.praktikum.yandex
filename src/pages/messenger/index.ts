@@ -38,10 +38,10 @@ export class MessengerPage extends Block<MessengerPageProps> {
         SendButton: new IconButton({
           iconName: 'send',
         }),
-        Search: new InputField({ name: 'search', type: 'search' }),
+        Search: new InputField({ name: 'search', type: 'search', placeholder: 'Search in chats...' }),
         chats: props.chats.map((chat) => new ChatItem(chat)),
         activeChatMessages: props.activeChatMessages.map((msg) => new MessageBubble(msg)),
-        MessageField: new TextareaField({ placeholder: 'Search in chats...' }),
+        MessageField: new TextareaField({ placeholder: 'Type your message here...' }),
       },
     });
   }

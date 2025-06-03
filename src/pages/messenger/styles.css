@@ -64,6 +64,11 @@
     justify-content: space-between;
     padding: var(--space-xs);
     border-bottom-width: var(--border-width);
+    gap: var(--space-l)
+  }
+
+  &__header-avatar {
+    flex: 0 0 auto;
   }
 
   &__header-title {

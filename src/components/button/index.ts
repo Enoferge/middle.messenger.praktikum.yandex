@@ -3,8 +3,9 @@ import { Block } from '@/core/block/block';
 import type { ButtonProps } from './types';
 import template from './button.hbs?raw';
 import './styles.css';
+import { Icon } from '../icon';
 
-export class Button extends Block {
+export class Button extends Block<ButtonProps> {
   constructor(props: ButtonProps) {
     const tagName = props.tag || 'button';
 
@@ -30,6 +31,7 @@ export class Button extends Block {
       props.isAccent ? 'button_accent' : '',
       props.icon ? 'button_with-icon' : '',
       props.class || '',
+      props.iconName ? 'button_with-icon' : '',
     ].filter(Boolean).join(' ');
 
     super(tagName, {
@@ -37,9 +39,17 @@ export class Button extends Block {
       class: classes,
       attrs,
       events: {
-        click: (e) => props.onClick?.(e),
-        blur: (e) => props.onBlur?.(e),
-        focus: (e) => props.onFocus?.(e),
+        click: (e: Event) => props.onClick?.(e),
+        blur: (e: Event) => props.onBlur?.(e),
+        focus: (e: Event) => props.onFocus?.(e),
+      },
+      children: {
+        ...(props.iconName ? {
+          Icon: new Icon({
+            name: props.iconName,
+            class: 'button__icon',
+          }),
+        } : {}),
       },
     });
   }

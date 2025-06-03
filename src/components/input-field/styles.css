@@ -26,7 +26,7 @@
     border-radius: var(--radius-large);
 
     &[type="search"] {
-      padding-left: var(--space-xl);
+      padding-left: var(--space-xxl);
     }
 
     &_readonly {

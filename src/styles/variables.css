@@ -25,7 +25,8 @@
   --space-m: 16px;
   --space-l: 24px;
   --space-xl: 32px;
-  --space-xxl: 64px;
-  --space-xxxl: 96px;
+  --space-xxl: 48px;
+  --space-xxxl: 64px;
+  --space-xxxxl: 96px;
   --size-icon-s: 16px;
 }
