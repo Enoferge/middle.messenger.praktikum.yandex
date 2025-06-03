@@ -202,9 +202,10 @@ export class Block<T extends Props = Props> {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
+      // any - dynamic access to any possible keys for Proxy
       set: (target: any, prop, value) => {
         const oldProps = cloneDeep(target);
-
+        // eslint-disable-next-line no-param-reassign
         target[prop] = value;
         emitBind(Block.EVENTS.FLOW_CDU, oldProps, target);
 

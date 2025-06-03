@@ -9,8 +9,8 @@ export function cloneDeep<T>(obj: T): T {
 
   const cloned: Record<string, unknown> = {};
 
-  Object.keys(obj).forEach((key) => {
-    (cloned as any)[key] = cloneDeep((obj as any)[key]);
+  Object.entries(obj as Record<string, unknown>).forEach(([key, value]) => {
+    cloned[key] = cloneDeep(value);
   });
 
   return cloned as T;

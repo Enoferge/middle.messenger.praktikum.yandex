@@ -3,12 +3,16 @@ import Handlebars, { type HelperOptions } from 'handlebars';
 export function registerHelpers() {
   Handlebars.registerHelper(
     'resolveSlot',
-    function (this: { [key: string]: any }, slotName: string, fallback: string) {
+    function (
+      this: { [key: string]: Record<string, unknown> },
+      slotName: string,
+      fallback: string,
+    ) {
       return this[slotName] ?? fallback;
     },
   );
 
-  Handlebars.registerHelper('ifEquals', function (this: any, arg1, arg2, options) {
+  Handlebars.registerHelper('ifEquals', function (this: Record<string, unknown>, arg1, arg2, options) {
     return arg1 === arg2 ? options.fn(this) : options.inverse(this);
   });
 
@@ -16,7 +20,12 @@ export function registerHelpers() {
 
   Handlebars.registerHelper(
     'ifIn',
-    function (this: any, value: unknown, list: unknown[], options: HelperOptions) {
+    function (
+      this: Record<string, unknown>,
+      value: unknown,
+      list: unknown[],
+      options: HelperOptions,
+    ) {
       return Array.isArray(list) && list.includes(value) ? options.fn(this) : options.inverse(this);
     },
   );
