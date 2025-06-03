@@ -1,19 +1,8 @@
-import type { ChatItemInfo } from '../../components/chat-item/types';
-import type { BaseContext } from '../../navigation/types';
+import type { ChatItemProps } from '@/components/chat-item/types';
+import type { MessageBubbleProps } from '@/components/message-bubble/types';
+import type { Props } from '@/core/block/types';
 
-interface Message {
-  id: string
-  isIncoming: boolean
-  text: string
-  time: string
-  status?: string
-}
-
-export interface MessengerContext extends BaseContext {
-  chats: Array<ChatItemInfo>
-  activeChat?: {
-    id: string
-    name: string,
-    messages: Array<Message>
-  }
+export interface MessengerPageProps extends Props {
+  chats: Array<ChatItemProps>;
+  activeChatMessages: Array<MessageBubbleProps>;
 }

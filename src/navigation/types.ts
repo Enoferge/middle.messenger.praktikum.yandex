@@ -1,15 +1,12 @@
 import type { Block } from '@/core/block/block';
-import type { ErrorContext } from '../pages/error/types';
-import type { MessengerContext } from '../pages/messenger/types';
+
 import { PAGE_NAMES } from './constants';
 
-export interface BasePageData<C extends Record<string, any>> {
+export interface PageData {
   pageBlock: Block;
-  context?: C;
   layoutContext?: {
     hideHomeButton?: boolean;
   };
 }
 
 export type PageName = (typeof PAGE_NAMES)[keyof typeof PAGE_NAMES];
-export type PageData = BasePageData<ErrorContext | MessengerContext>;

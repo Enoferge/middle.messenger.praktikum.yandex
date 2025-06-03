@@ -8,5 +8,5 @@ export interface IconButtonProps {
   name?: string;
   disabled?: boolean;
 
-  onClick: (e: Event) => void;
+  onClick?: (e: Event) => void;
 }

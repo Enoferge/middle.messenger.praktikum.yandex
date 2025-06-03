@@ -1,8 +1,10 @@
-export interface ChatItemInfo {
-  id: number,
-  contactName: string,
-  contactAvatar: string,
-  lastMessagePreview: string,
-  unreadMsgCount: number,
-  lastMessageTime: string
+import type { Props } from '@/core/block/types';
+import type { IconName } from '@/components/icon/types';
+
+export interface MessageBubbleProps extends Props {
+  id: string;
+  text: string;
+  time: string;
+  status?: IconName;
+  isIncoming: boolean;
 }

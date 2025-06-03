@@ -1,10 +1,11 @@
 import { ErrorPage } from '@/pages/error';
-import { signUpFields, signInFields } from '../data/authFields';
-import { AuthPage } from '../pages/auth';
-import { HomePage } from '../pages/home';
-import { ProfilePage } from '../pages/profile';
-// import { MessengerPage } from '../pages/messenger';
-// import { messengerChats, activeChat } from '../data/messengerData';
+import { MessengerPage } from '@/pages/messenger';
+import { AuthPage } from '@/pages/auth';
+import { HomePage } from '@/pages/home';
+import { ProfilePage } from '@/pages/profile';
+import { signUpFields, signInFields } from '@/data/authFields';
+import { messengerChats, activeChatMessages } from '@/data/messengerData';
+
 import { PAGE_NAMES } from './constants';
 import type { PageData, PageName } from './types';
 
@@ -104,14 +105,10 @@ export const pages: Record<PageName, PageData> = {
       hideHomeButton: true,
     },
   },
-  // messenger: {
-  //   template: MessengerPage,
-  //   context: {
-  //     chats: messengerChats,
-  //     activeChat,
-  //   },
-  //   layoutContext: {
-  //     hideHomeButton: true,
-  //   },
-  // },
+  messenger: {
+    pageBlock: new MessengerPage({
+      chats: messengerChats,
+      activeChatMessages,
+    }),
+  },
 };

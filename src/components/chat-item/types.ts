@@ -1,8 +1,10 @@
-export interface ChatItemInfo {
-  id: number,
-  contactName: string,
-  contactAvatar: string,
-  lastMessagePreview: string,
-  unreadMsgCount: number,
-  lastMessageTime: string
+import type { Props } from '@/core/block/types';
+
+export interface ChatItemProps extends Props {
+  id: string;
+  contactName: string;
+  contactAvatar?: string;
+  lastMsgPreview?: string;
+  unreadMsgCount?: number;
+  lastMsgTime?: string;
 }
