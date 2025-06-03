@@ -4,9 +4,9 @@ import Handlebars from 'handlebars';
 import { EventBus } from '@/services/event-bus/event-bus';
 import { cloneDeep } from '@/utils/clone-deep';
 
-import type { Meta, Element, Props, RawPropsWithChildren, Children } from './types';
+import type { Meta, Element, Props, Children } from './types';
 
-export class Block {
+export class Block<T extends Props = Props> {
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',
@@ -21,16 +21,16 @@ export class Block {
   _meta: Meta | null = null;
 
   children: Children;
-  props: Props;
+  props: T;
 
-  constructor(tagName = 'div', propsWithChildren: RawPropsWithChildren = {}) {
+  constructor(tagName = 'div', propsWithChildren: T) {
     const eventBus = new EventBus();
     this.eventBus = () => eventBus;
 
     const { children, ...props } = propsWithChildren;
 
     this.children = children || {};
-    this.props = this._makePropsProxy({ ...props });
+    this.props = this._makePropsProxy({ ...props } as T);
 
     this._meta = {
       tagName,
@@ -81,28 +81,28 @@ export class Block {
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
 
-    Object.values(this.children).forEach((child) => {
-      if (Array.isArray(child)) {
-        child.forEach((component) => component.dispatchComponentDidMount());
-      } else {
-        child.dispatchComponentDidMount();
-      }
-    });
+    // Object.values(this.children).forEach((child) => {
+    //   if (Array.isArray(child)) {
+    //     child.forEach((component) => component.dispatchComponentDidMount());
+    //   } else {
+    //     child.dispatchComponentDidMount();
+    //   }
+    // });
   }
 
-  _componentDidUpdate(oldProps: Props) {
-    const isPropsChanged = this.componentDidUpdate(oldProps, this.props);
+  _componentDidUpdate(oldProps: T, newProps: T) {
+    const isPropsChanged = this.componentDidUpdate(oldProps, newProps);
 
     if (isPropsChanged) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   }
 
-  componentDidUpdate(oldProps: Props, newProps: Props) {
+  componentDidUpdate(oldProps: T, newProps: T) {
     return true;
   }
 
-  setProps = (nextProps: Props) => {
+  setProps = (nextProps: Partial<T>) => {
     if (!nextProps) {
       return;
     }
@@ -131,7 +131,7 @@ export class Block {
   }
 
   _compile() {
-    const propsAndStubs = { ...this.props };
+    const propsAndStubs: Record<string, unknown> = { ...this.props };
 
     Object.entries(this.children).forEach(([key, child]) => {
       if (Array.isArray(child)) {
@@ -171,6 +171,8 @@ export class Block {
   _render() {
     this._removeEvents();
 
+    this.beforeRender();
+
     const block = this._compile();
 
     const className = this.computeClass();
@@ -192,6 +194,8 @@ export class Block {
     return '';
   }
 
+  beforeRender() {}
+
   computeClass(): string {
     return this.props.class || '';
   }
@@ -200,16 +204,20 @@ export class Block {
     return this.element;
   }
 
-  _makePropsProxy(props: Props) {
+  _makePropsProxy(props: T) {
+    const eventBus = this.eventBus();
+    const emitBind = eventBus.emit.bind(eventBus);
+
     return new Proxy(props, {
       get: (target, prop) => {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      set: (target, prop, value) => {
+      set: (target: any, prop, value) => {
         const oldProps = cloneDeep(target);
+
         target[prop] = value;
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, value);
+        emitBind(Block.EVENTS.FLOW_CDU, oldProps, target);
 
         return true;
       },

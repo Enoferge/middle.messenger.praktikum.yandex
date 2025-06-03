@@ -14,7 +14,7 @@ export interface ButtonProps extends RawPropsWithChildren {
   isAccent?: boolean;
   formId?: string;
 
-  onClick?: (e: Event) => void;
+  onClick: (e: Event) => void;
   onBlur?: (e: Event) => void;
   onFocus?: (e: Event) => void;
 

@@ -4,7 +4,7 @@ import { Block } from '@/core/block/block';
 import template from './auth.hbs?raw';
 import type { AuthPageProps } from './types';
 
-export class AuthPage extends Block {
+export class AuthPage extends Block<AuthPageProps> {
   constructor(props: AuthPageProps) {
     const {
       title,

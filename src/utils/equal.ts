@@ -1,4 +1,4 @@
-export function areFormErrorsEqual(
+export function areSimpleObjectsEqual(
   obj1: Record<string, string | undefined>,
   obj2: Record<string, string | undefined>
 ): boolean {

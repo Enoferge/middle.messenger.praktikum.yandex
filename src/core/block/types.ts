@@ -7,7 +7,7 @@ export type Meta = {
   props: Props;
 };
 
-export interface Props extends RawProps {
+export interface Props extends RawPropsWithChildren {
   events?: Record<string, (e: Event) => void>;
   attrs?: Record<string, unknown>;
 }

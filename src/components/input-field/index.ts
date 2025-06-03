@@ -19,7 +19,7 @@ export class InputField extends Block {
             const { name, value } = e.target as HTMLInputElement;
             onFieldChange?.({ name, value });
           },
-          onBlur: (e: FocusEvent) => {
+          onBlur: (e: Event) => {
             const { name, value } = e.target as HTMLInputElement;
             onFieldBlur?.({ name, value });
           },

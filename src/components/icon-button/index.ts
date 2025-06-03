@@ -26,8 +26,6 @@ export class IconButton extends Block {
       attrs,
       events: {
         click: props.onClick,
-        focus: props.onFocus,
-        blur: props.onBlur,
       },
       children: {
         Icon: new Icon({ class: 'icon-button__icon', name: props.iconName }),

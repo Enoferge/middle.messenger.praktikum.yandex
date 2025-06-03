@@ -1,17 +1,10 @@
 import { signUpFields, signInFields } from '../data/authFields';
 import { AuthPage } from '../pages/auth';
-import { ErrorPage } from '../pages/error';
 import { HomePage } from '../pages/home';
 import { ProfilePage } from '../pages/profile';
-import { MessengerPage } from '../pages/messenger';
-import {
-  profileChangePassFields,
-  profileEditFields,
-  profileReadFields,
-  profileChangeAvatarCommonContext,
-  profileFormStateInitial,
-} from '../data/profileFields';
-import { messengerChats, activeChat } from '../data/messengerData';
+// import { ErrorPage } from '../pages/error';
+// import { MessengerPage } from '../pages/messenger';
+// import { messengerChats, activeChat } from '../data/messengerData';
 import { PAGE_NAMES } from './constants';
 import type { PageData, PageName } from './types';
 
@@ -21,6 +14,12 @@ const currentPages = Object.values(PAGE_NAMES).map((page) => ({
 }));
 
 export const pages: Record<PageName, PageData> = {
+  home: {
+    pageBlock: new HomePage({ pages: currentPages }),
+    layoutContext: {
+      hideHomeButton: true,
+    },
+  },
   signIn: {
     pageBlock: new AuthPage({
       title: 'Sign in',
@@ -28,10 +27,6 @@ export const pages: Record<PageName, PageData> = {
       formProps: {
         formFields: signInFields,
         formState: {
-          login: '',
-          password: '',
-        },
-        formErrors: {
           login: '',
           password: '',
         },
@@ -63,15 +58,6 @@ export const pages: Record<PageName, PageData> = {
           password: '',
           password_confirm: '',
         },
-        formErrors: {
-          first_name: '',
-          second_name: '',
-          login: '',
-          email: '',
-          phone: '',
-          password: '',
-          password_confirm: '',
-        },
       },
       footerProps: {
         submitAction: {
@@ -85,11 +71,11 @@ export const pages: Record<PageName, PageData> = {
       },
     }),
   },
-  home: {
-    pageBlock: new HomePage({ pages: currentPages }),
-    layoutContext: {
-      hideHomeButton: true,
-    },
+  profile: {
+    pageBlock: new ProfilePage({
+      mode: 'READ',
+      onClose: () => console.log('close'),
+    }),
   },
   // 500: {
   //   template: ErrorPage,
@@ -121,63 +107,6 @@ export const pages: Record<PageName, PageData> = {
   //     hideHomeButton: true,
   //   },
   // },
-  profileRead: {
-    pageBlock: new ProfilePage({
-      mode: 'READ',
-      submitButtonText: 'Edit',
-      formFields: profileReadFields,
-      formState: profileFormStateInitial,
-      formId: 'profile-form',
-    }),
-  },
-  profileEdit: {
-    pageBlock: new ProfilePage({
-      mode: 'EDIT',
-      submitButtonText: 'Save',
-      formFields: profileEditFields,
-      formState: profileFormStateInitial,
-      formId: 'profile-form',
-    }),
-  },
-  profileChangePass: {
-    pageBlock: new ProfilePage({
-      mode: 'CHANGE_PASS',
-      submitButtonText: 'Save',
-      formFields: profileChangePassFields,
-      formId: 'profile-form',
-    }),
-  },
-  profileChangeAvatar: {
-    pageBlock: new ProfilePage({
-      ...profileChangeAvatarCommonContext,
-      mode: 'CHANGE_AVATAR',
-      isFormInvalid: true,
-      fileData: {
-        name: 'avatar',
-      },
-    }),
-  },
-  profileChangeAvatarError: {
-    pageBlock: new ProfilePage({
-      ...profileChangeAvatarCommonContext,
-      mode: 'CHANGE_AVATAR_ERROR',
-      isFormInvalid: true,
-      fileData: {
-        name: 'avatar',
-        error: 'Error while uploading, please try again',
-      },
-    }),
-  },
-  profileChangeAvatarUploaded: {
-    pageBlock: new ProfilePage({
-      ...profileChangeAvatarCommonContext,
-      mode: 'CHANGE_AVATAR_UPLOADED',
-      fileData: {
-        name: 'avatar',
-        filename: 'avatar.png',
-      },
-    }),
-  },
   // messenger: {
   //   template: MessengerPage,
   //   context: {

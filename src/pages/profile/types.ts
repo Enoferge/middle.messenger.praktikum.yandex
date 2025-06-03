@@ -1,22 +1,8 @@
-import type { InputFieldProps } from '@/components/input-field/types';
+import type { Props } from '@/core/block/types';
 
-export interface ProfilePageProps {
-  mode: 'READ' | 'EDIT' | 'CHANGE_AVATAR' | 'CHANGE_AVATAR_ERROR' | 'CHANGE_AVATAR_UPLOADED';
-  formId: string;
-  formFields?: InputFieldProps[];
-  formState?: Record<string, string>;
-  formErrors?: Record<string, string>;
-  fileData?: {
-    name: string;
-    filename?: string;
-    // fileUrl?: string;
-    error?: string;
-  };
-  submitButtonText?: string;
-  isFormInvalid?: boolean;
+export type ProfileMode = 'READ' | 'EDIT' | 'CHANGE_PASS' | 'CHANGE_AVATAR';
 
-  onSignOut?: () => void;
-  onChangeAvatar?: () => void;
-  onChangePassword?: () => void;
-  onClose?: () => void;
+export interface ProfilePageProps extends Props {
+  mode: ProfileMode;
+  onClose: () => void;
 }

@@ -7,56 +7,13 @@ import { Form } from '@/components/form';
 import { FileUpload } from '@/components/file-upload';
 
 import template from './profile.hbs?raw';
-import type { ProfilePageProps } from './types';
 import './styles.css';
+import type { ProfilePageProps } from './types';
+import { profilePagePropsByMode } from './constants';
 
-export class ProfilePage extends Block {
+export class ProfilePage extends Block<ProfilePageProps> {
   constructor(props: ProfilePageProps) {
-    const isAvatarMode = [
-      'CHANGE_AVATAR',
-      'CHANGE_AVATAR_ERROR',
-      'CHANGE_AVATAR_UPLOADED',
-    ].includes(props.mode);
-
-    const avatar = new Avatar({
-      src: '/assets/images/user1.png',
-      alt: 'User avatar',
-      size: 160,
-    });
-
-    const avatarActions = new AvatarActions({
-      mode: props.mode,
-      onSignOut: props.onSignOut,
-      onChangeAvatar: props.onChangeAvatar,
-      onChangePassword: props.onChangePassword,
-    });
-
-    // TODO: use generic
-    const formBlock = isAvatarMode
-      ? new FileUpload({
-          ...(props.fileData || { name: 'file_upload' }),
-        })
-      : new Form({
-          formId: props.formId,
-          formFields: props.formFields,
-          formState: props.formState || {},
-          formErrors: props.formErrors,
-        });
-
-    const submitButton = new Button({
-      formId: props.formId,
-      name: 'save',
-      type: 'submit',
-      text: props.submitButtonText,
-      disabled: props.isFormInvalid,
-      fullWidth: true,
-    });
-
-    const closeButton = new IconButton({
-      iconName: 'close',
-      variant: 'plain',
-      onClick: props.onClose,
-    });
+    const { formFields, formState, isFormReadonly } = profilePagePropsByMode[props.mode];
 
     super('section', {
       ...props,
@@ -66,13 +23,60 @@ export class ProfilePage extends Block {
         'aria-labelledby': 'profile-title',
       },
       children: {
-        Avatar: avatar,
-        AvatarActions: avatarActions,
-        FormBlock: formBlock,
-        Footer: submitButton,
-        CloseButton: closeButton,
+        Avatar: new Avatar({
+          src: '/assets/images/user1.png',
+          alt: 'User avatar',
+          size: 160,
+        }),
+        AvatarActions: new AvatarActions({
+          mode: props.mode,
+          onBackToProfile: () => this.setProps({ mode: 'READ' }),
+          onChangeAvatar: () => this.setProps({ mode: 'CHANGE_AVATAR' }),
+          onChangePassword: () => this.setProps({ mode: 'CHANGE_PASS' }),
+          onSignOut: () => console.log('sign out'),
+        }),
+        FormBlock: props.mode.startsWith('CHANGE_AVATAR')
+          ? new FileUpload({ name: 'file_upload' })
+          : new Form({
+              formId: 'profile-form',
+              formFields,
+              formState,
+              isFormReadonly,
+            }),
+        Footer: new Button({
+          formId: 'profile-form',
+          name: 'profile-save',
+          type: props.mode === 'READ' ? 'button' : 'submit',
+          text: 'FIRST TEXT',
+          fullWidth: true,
+          onClick: props.mode === 'READ' ? () => this.setProps({ mode: 'EDIT' }) : undefined,
+        }),
+        CloseButton: new IconButton({
+          iconName: 'close',
+          variant: 'plain',
+          onClick: props.onClose,
+        }),
       },
     });
+  }
+
+  componentDidUpdate(oldProps: ProfilePageProps, newProps: ProfilePageProps) {
+    if (oldProps.mode !== newProps.mode) {
+      const { isFormReadonly } = profilePagePropsByMode[newProps.mode];
+
+      (this.children.AvatarActions as Block).setProps({
+        mode: newProps.mode,
+      });
+
+      // update form, footer button
+      (this.children.Footer as Block).setProps({ text: 'SECOND TEXT' });
+
+      this.children.FormBlock.setProps({
+        isFormReadonly,
+      });
+    }
+
+    return false;
   }
 
   render() {

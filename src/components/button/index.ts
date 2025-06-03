@@ -1,4 +1,5 @@
 import { Block } from '@/core/block/block';
+
 import type { ButtonProps } from './types';
 import template from './button.hbs?raw';
 import './styles.css';
@@ -27,8 +28,8 @@ export class Button extends Block {
       attrs,
       events: {
         click: props.onClick,
-        blur: props.onBlur,
-        focus: props.onFocus,
+        blur: props.onBlur || (() => {}),
+        focus: props.onFocus || (() => {}),
       },
     });
   }

@@ -1,8 +1,6 @@
 import type { Block } from '@/core/block/block';
-import type { CardContext } from '../components/card/types';
 import type { ErrorContext } from '../pages/error/types';
 import type { MessengerContext } from '../pages/messenger/types';
-import type { ProfileContext } from '../pages/profile/types';
 import { PAGE_NAMES } from './constants';
 
 export interface BasePageData<C extends Record<string, any>> {
@@ -14,4 +12,4 @@ export interface BasePageData<C extends Record<string, any>> {
 }
 
 export type PageName = (typeof PAGE_NAMES)[keyof typeof PAGE_NAMES];
-export type PageData = BasePageData<CardContext | ErrorContext | ProfileContext | MessengerContext>;
+export type PageData = BasePageData<ErrorContext | MessengerContext>;

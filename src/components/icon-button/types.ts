@@ -8,7 +8,5 @@ export interface IconButtonProps {
   name?: string;
   disabled?: boolean;
 
-  onClick?: (e: MouseEvent) => void;
-  onFocus?: (e: FocusEvent) => void;
-  onBlur?: (e: FocusEvent) => void;
+  onClick: (e: Event) => void;
 }
