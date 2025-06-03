@@ -8,7 +8,6 @@ import type { MessageBubbleProps } from './types';
 
 export class MessageBubble extends Block<MessageBubbleProps> {
   constructor(props: MessageBubbleProps) {
-    console.log(props.isIncoming);
     super('div', {
       ...props,
       time: formatTime(props.time),

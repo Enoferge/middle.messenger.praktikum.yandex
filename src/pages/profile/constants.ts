@@ -1,6 +1,7 @@
 import type { InputFieldProps } from '@/components/input-field/types';
-
 import type { FormProps } from '@/components/form/types';
+
+import type { ProfileMode } from './types';
 
 export const profileInfoFields: Array<InputFieldProps> = [
   {
@@ -77,26 +78,45 @@ type PropsByMode = {
   formFields?: Array<InputFieldProps>;
   formState?: FormProps['formState'];
   isFormReadonly?: boolean;
+  isFileError?: boolean
+  isButtonDisabled?: boolean
+  filename?: string
 };
 
-export const profilePagePropsByMode: Record<string, PropsByMode> = {
+export const profilePagePropsByMode: Record<ProfileMode, PropsByMode> = {
   READ: {
     submitButtonText: 'Edit',
     formFields: profileInfoFields,
     formState: profileInfoStateInitial,
     isFormReadonly: true,
+    isButtonDisabled: false,
   },
   EDIT: {
     submitButtonText: 'Save',
     formFields: profileInfoFields,
     formState: profileInfoStateInitial,
+    isButtonDisabled: false,
   },
   CHANGE_PASS: {
     submitButtonText: 'Save',
     formFields: profilePasswordFields,
     formState: profilePasswordStateInitial,
+    isButtonDisabled: false,
   },
   CHANGE_AVATAR: {
     submitButtonText: 'Upload avatar',
+    isFileError: false,
+    isButtonDisabled: true,
+  },
+  CHANGE_AVATAR_ERROR: {
+    submitButtonText: 'Upload avatar',
+    isFileError: true,
+    isButtonDisabled: true,
+  },
+  CHANGE_AVATAR_UPLOADED: {
+    submitButtonText: 'Upload avatar',
+    isFileError: false,
+    isButtonDisabled: false,
+    filename: 'avatar.png',
   },
 };

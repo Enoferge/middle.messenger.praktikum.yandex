@@ -6,7 +6,7 @@ export interface FormProps extends Props {
   formId: string;
   formFields?: InputFieldProps[];
   formState?: Record<string, string>;
-  formErrors?: Record<string, string>; // TODO: remove
+  formErrors?: Record<string, string>;
   isFormReadonly?: boolean;
   onSubmit?: (e: Event) => void;
 

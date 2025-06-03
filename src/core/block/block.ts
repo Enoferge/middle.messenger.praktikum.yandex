@@ -100,20 +100,12 @@ export class Block<T extends Props = Props> {
     return true;
   }
 
-  setProps = (nextProps: Partial<T>) => {
+  setProps = (nextProps: Props) => {
     if (!nextProps) {
       return;
     }
-    if ('attrs' in nextProps && typeof nextProps.attrs === 'object') {
-      this.props.attrs = {
-        ...(this.props.attrs || {}),
-        ...nextProps.attrs,
-      };
-    }
 
-    const { attr: _attrs, ...restNextProps } = nextProps;
-
-    Object.assign(this.props, restNextProps);
+    Object.assign(this.props, nextProps);
   };
 
   get element() {
@@ -176,11 +168,8 @@ export class Block<T extends Props = Props> {
 
   _render() {
     this._removeEvents();
-    this.beforeRender();
 
     const block = this._compile();
-
-    this._updateAttributes();
 
     const className = this.computeClass();
     if (className) {
@@ -196,38 +185,9 @@ export class Block<T extends Props = Props> {
     this._addEvents();
   }
 
-  _updateAttributes() {
-    if (!this._element) {
-      return;
-    }
-
-    const preservedAttrs = ['data-id', 'class'];
-    Array.from(this._element.attributes || {}).forEach((attr) => {
-      if (!preservedAttrs.includes(attr.name) && this._element?.hasAttribute(attr.name)) {
-        this._element!.removeAttribute(attr.name);
-      }
-    });
-
-    const computedAttributes = this.getComputedAttributes();
-
-    Object.entries({ ...(this.props.attrs || {}), ...computedAttributes }).forEach(
-      ([attrName, attrValue]) => {
-        if (attrValue != null && attrValue !== false) {
-          this._element!.setAttribute(attrName, attrValue.toString());
-        }
-      },
-    );
-  }
-
-  getComputedAttributes(): Record<string, unknown> {
-    return {};
-  }
-
   render(): string {
     return '';
   }
-
-  beforeRender() {}
 
   computeClass(): string {
     return this.props.class || '';

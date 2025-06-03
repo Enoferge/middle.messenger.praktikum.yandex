@@ -2,9 +2,9 @@ import { ErrorPage } from '@/pages/error';
 import { MessengerPage } from '@/pages/messenger';
 import { AuthPage } from '@/pages/auth';
 import { HomePage } from '@/pages/home';
-import { ProfilePage } from '@/pages/profile';
 import { signUpFields, signInFields } from '@/data/authFields';
 import { messengerChats, activeChatMessages } from '@/data/messengerData';
+import { ProfilePage } from '@/pages/profile';
 
 import { PAGE_NAMES } from './constants';
 import type { PageData, PageName } from './types';
@@ -72,10 +72,34 @@ export const pages: Record<PageName, PageData> = {
       },
     }),
   },
-  profile: {
+  profileRead: {
     pageBlock: new ProfilePage({
       mode: 'READ',
-      onClose: () => console.log('close'),
+    }),
+  },
+  profileEdit: {
+    pageBlock: new ProfilePage({
+      mode: 'EDIT',
+    }),
+  },
+  profileChangePass: {
+    pageBlock: new ProfilePage({
+      mode: 'CHANGE_PASS',
+    }),
+  },
+  profileChangeAvatar: {
+    pageBlock: new ProfilePage({
+      mode: 'CHANGE_AVATAR',
+    }),
+  },
+  profileChangeAvatarError: {
+    pageBlock: new ProfilePage({
+      mode: 'CHANGE_AVATAR_ERROR',
+    }),
+  },
+  profileChangeAvatarUploaded: {
+    pageBlock: new ProfilePage({
+      mode: 'CHANGE_AVATAR_UPLOADED',
     }),
   },
   500: {

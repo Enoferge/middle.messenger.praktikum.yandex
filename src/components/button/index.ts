@@ -8,8 +8,23 @@ export class Button extends Block {
   constructor(props: ButtonProps) {
     const tagName = props.tag || 'button';
 
+    const attrs: Record<string, unknown> = {
+      type: props.type || 'button',
+      name: props.name,
+      form: props.formId,
+    };
+
+    if (props.disabled) {
+      if (props.tag) {
+        attrs['aria-disabled'] = 'true';
+        attrs.tabindex = '-1';
+      } else {
+        attrs.disabled = true;
+      }
+    }
     super(tagName, {
       ...props,
+      attrs,
       events: {
         click: (e) => props.onClick?.(e),
         blur: (e) => props.onBlur?.(e),
@@ -31,24 +46,24 @@ export class Button extends Block {
       .join(' ');
   }
 
-  getComputedAttributes() {
-    const attrs: Record<string, unknown> = {
-      type: this.props.type || 'button',
-      name: this.props.name,
-      form: this.props.formId,
-    };
+  // getComputedAttributes() {
+  //   const attrs: Record<string, unknown> = {
+  //     type: this.props.type || 'button',
+  //     name: this.props.name,
+  //     form: this.props.formId,
+  //   };
 
-    if (this.props.disabled) {
-      if (this.props.tag) {
-        attrs['aria-disabled'] = 'true';
-        attrs.tabindex = '-1';
-      } else {
-        attrs.disabled = true;
-      }
-    }
+  //   if (this.props.disabled) {
+  //     if (this.props.tag) {
+  //       attrs['aria-disabled'] = 'true';
+  //       attrs.tabindex = '-1';
+  //     } else {
+  //       attrs.disabled = true;
+  //     }
+  //   }
 
-    return attrs;
-  }
+  //   return attrs;
+  // }
 
   render() {
     return template;

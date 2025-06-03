@@ -4,7 +4,7 @@ import { AvatarActions } from '@/components/avatar-actions';
 import { Button } from '@/components/button';
 import { IconButton } from '@/components/icon-button';
 import { Form } from '@/components/form';
-import { FileUpload } from '@/components/file-upload';
+import { FileUpload } from '@/components';
 
 import template from './profile.hbs?raw';
 import './styles.css';
@@ -13,7 +13,15 @@ import { profilePagePropsByMode } from './constants';
 
 export class ProfilePage extends Block<ProfilePageProps> {
   constructor(props: ProfilePageProps) {
-    const { formFields, formState, isFormReadonly } = profilePagePropsByMode[props.mode];
+    const {
+      formFields,
+      formState,
+      isFormReadonly,
+      submitButtonText,
+      isButtonDisabled,
+      isFileError,
+      filename,
+    } = profilePagePropsByMode[props.mode];
 
     super('section', {
       ...props,
@@ -35,73 +43,29 @@ export class ProfilePage extends Block<ProfilePageProps> {
           onChangePassword: () => this.setProps({ mode: 'CHANGE_PASS' }),
           onSignOut: () => console.log('sign out'),
         }),
-        FileUpload: new FileUpload({ name: 'profile-avatar' }),
-        FormBlock: new Form({
-          formId: 'profile-form',
-          formFields,
-          formState,
-          isFormReadonly,
-        }),
+        Content: props.mode.startsWith('CHANGE_AVATAR')
+          ? new FileUpload({ name: 'profile-avatar', error: isFileError ? 'Error while uploading, please try again' : '', filename })
+          : new Form({
+            formId: 'profile-form',
+            formFields,
+            formState,
+            isFormReadonly,
+          }),
         Footer: new Button({
-          formId: 'profile-form',
-          name: 'profile-save',
+          formId: props.mode === 'READ' ? undefined : 'profile-form',
           type: props.mode === 'READ' ? 'button' : 'submit',
-          text: 'Edit',
+          name: 'profile-main-button',
+          text: submitButtonText,
           fullWidth: true,
-          onClick: props.mode === 'READ' ? () => this.setProps({ mode: 'EDIT' }) : undefined,
+          disabled: isButtonDisabled,
         }),
         CloseButton: new IconButton({
           iconName: 'close',
           variant: 'plain',
-          onClick: props.onClose,
+          onClick: () => console.log('onClose'),
         }),
       },
     });
-  }
-
-  showCorrectProfileForm(props: ProfilePageProps) {
-    const fileUpload = this.getBlockChild(this.children.FileUpload);
-    const formBlock = this.getBlockChild(this.children.FormBlock);
-
-    if (props.mode === 'CHANGE_AVATAR') {
-      formBlock.hide();
-      fileUpload.show();
-    } else {
-      fileUpload.show();
-      fileUpload.hide();
-    }
-  }
-
-  componentDidMount(): void {
-    this.showCorrectProfileForm(this.props);
-  }
-
-  componentDidUpdate(oldProps: ProfilePageProps, newProps: ProfilePageProps) {
-    if (oldProps.mode !== newProps.mode) {
-      this.showCorrectProfileForm(newProps);
-
-      const {
-        isFormReadonly, formFields, formState, submitButtonText,
-      } = profilePagePropsByMode[newProps.mode];
-
-      (this.children.AvatarActions as Block).setProps({
-        mode: newProps.mode,
-      });
-
-      (this.children.Footer as Block).setProps({
-        text: submitButtonText,
-        type: newProps.mode === 'READ' ? 'button' : 'submit',
-        onClick: newProps.mode === 'READ' ? () => this.setProps({ mode: 'EDIT' }) : undefined,
-      });
-
-      this.getBlockChild(this.children.FormBlock).setProps({
-        isFormReadonly,
-        formFields,
-        formState,
-      });
-    }
-
-    return false;
   }
 
   render() {
