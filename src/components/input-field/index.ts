@@ -1,5 +1,6 @@
 import { Block } from '@/core/block/block';
 import { Input } from '@/components/input';
+import type { Props } from '@/core/block/types';
 
 import './styles.css';
 import template from './input.hbs?raw';
@@ -40,6 +41,14 @@ export class InputField extends Block {
     }
 
     return classes.join(' ');
+  }
+
+  componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+    const { label, error, onFieldChange, onFieldBlur, ...attrs } = newProps;
+
+    (this.children.Input as Block).setProps({ attrs });
+
+    return true;
   }
 
   render() {

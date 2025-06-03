@@ -8,6 +8,41 @@ import type { FormProps } from './types';
 import './styles.css';
 import template from './form.hbs?raw';
 
+function getGeneratedInputs(props: FormProps, setProps: (props: Partial<FormProps>) => void) {
+  return (
+    props.formFields?.map((fieldProps: InputFieldProps) => {
+      const { name, readonly } = fieldProps;
+
+      return new InputField({
+        ...fieldProps,
+        value: props.formState?.[name],
+        error: '',
+        readonly: readonly || props.isFormReadonly,
+        onFieldChange: ({ name, value }) => {
+          setProps({
+            formState: {
+              ...(props.formState || {}),
+              [name]: value,
+            },
+          });
+        },
+        onFieldBlur: ({ name, value }) => {
+          const error = validateField(name, value, props.formState as Record<string, string>);
+
+          if (props.formErrors?.[name] !== error) {
+            setProps({
+              formErrors: {
+                ...(props.formErrors || {}),
+                [name]: error,
+              },
+            });
+          }
+        },
+      });
+    }) || []
+  );
+}
+
 export class Form extends Block<FormProps> {
   constructor(props: FormProps) {
     const formErrors = Object.keys(props.formState || {}).reduce<Record<string, string>>(
@@ -18,41 +53,7 @@ export class Form extends Block<FormProps> {
       {}
     );
 
-    const inputs =
-      props.formFields?.map((fieldProps: InputFieldProps) => {
-        const { name, readonly } = fieldProps;
-
-        return new InputField({
-          ...fieldProps,
-          value: props.formState?.[name],
-          error: '',
-          readonly: readonly || props.isFormReadonly,
-          onFieldChange: ({ name, value }) => {
-            this.setProps({
-              formState: {
-                ...(this.props.formState || {}),
-                [name]: value,
-              },
-            });
-          },
-          onFieldBlur: ({ name, value }) => {
-            const error = validateField(
-              name,
-              value,
-              this.props.formState as Record<string, string>
-            );
-
-            if (this.props.formErrors?.[name] !== error) {
-              this.setProps({
-                formErrors: {
-                  ...(this.props.formErrors || {}),
-                  [name]: error,
-                },
-              });
-            }
-          },
-        });
-      }) || [];
+    const inputs = getGeneratedInputs(props, (props) => this.setProps(props));
 
     super('form', {
       ...props,
@@ -77,6 +78,7 @@ export class Form extends Block<FormProps> {
             });
           }
 
+          console.log('SUBMIT FORM ' + this.props.formId);
           console.log(this.props.formState);
           console.log(`Form is ${this.isFormInvalid ? 'invalid' : 'valid'}`);
         },
@@ -99,6 +101,16 @@ export class Form extends Block<FormProps> {
   }
 
   componentDidUpdate(oldProps: FormProps, newProps: FormProps) {
+    let response = false;
+    const oldFieldNames = oldProps.formFields?.map(({ name }) => name);
+    const newFieldNames = newProps.formFields?.map(({ name }) => name);
+
+    if (JSON.stringify(oldFieldNames) !== JSON.stringify(newFieldNames)) {
+      const inputs = getGeneratedInputs(newProps, (props) => this.setProps(props));
+      this.children.FormFields = inputs;
+      response = true;
+    }
+
     const fields = (this.children.FormFields || []) as Block[];
 
     fields.forEach((inputField: InputField) => {
@@ -109,9 +121,21 @@ export class Form extends Block<FormProps> {
           error: newProps.formErrors?.[String(name)] || '',
         });
       }
+
+      if (oldProps.isFormReadonly !== newProps.isFormReadonly) {
+        inputField.setProps({
+          readonly: newProps.isFormReadonly,
+        });
+      }
+
+      if (oldProps.formState?.[String(name)] !== newProps.formState?.[String(name)]) {
+        inputField.setProps({
+          value: newProps.formState?.[String(name)],
+        });
+      }
     });
 
-    return false;
+    return response;
   }
 
   render() {

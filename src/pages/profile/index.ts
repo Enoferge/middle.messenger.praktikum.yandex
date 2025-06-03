@@ -47,7 +47,7 @@ export class ProfilePage extends Block<ProfilePageProps> {
           formId: 'profile-form',
           name: 'profile-save',
           type: props.mode === 'READ' ? 'button' : 'submit',
-          text: 'FIRST TEXT',
+          text: 'Edit',
           fullWidth: true,
           onClick: props.mode === 'READ' ? () => this.setProps({ mode: 'EDIT' }) : undefined,
         }),
@@ -61,18 +61,27 @@ export class ProfilePage extends Block<ProfilePageProps> {
   }
 
   componentDidUpdate(oldProps: ProfilePageProps, newProps: ProfilePageProps) {
+    console.log(newProps.mode);
     if (oldProps.mode !== newProps.mode) {
-      const { isFormReadonly } = profilePagePropsByMode[newProps.mode];
+      const { isFormReadonly, formFields, formState, submitButtonText } =
+        profilePagePropsByMode[newProps.mode];
 
       (this.children.AvatarActions as Block).setProps({
         mode: newProps.mode,
       });
 
-      // update form, footer button
-      (this.children.Footer as Block).setProps({ text: 'SECOND TEXT' });
+      (this.children.Footer as Block).setProps({
+        text: submitButtonText,
+        type: newProps.mode === 'READ' ? 'button' : 'submit',
+        onClick: newProps.mode === 'READ' ? () => this.setProps({ mode: 'EDIT' }) : undefined,
+      });
 
+      console.log('HALP');
+      console.log(formState);
       this.children.FormBlock.setProps({
         isFormReadonly,
+        formFields,
+        formState,
       });
     }
 

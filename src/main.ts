@@ -33,9 +33,9 @@ document.addEventListener('click', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderPage(getCurrentPageNameFromPath())
+  renderPage(getCurrentPageNameFromPath());
 });
 
 window.addEventListener('popstate', () => {
-  renderPage(getCurrentPageNameFromPath())
-})
+  renderPage(getCurrentPageNameFromPath());
+});

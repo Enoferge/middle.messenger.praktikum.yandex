@@ -106,8 +106,16 @@ export class Block<T extends Props = Props> {
     if (!nextProps) {
       return;
     }
+    if ('attrs' in nextProps && typeof nextProps.attrs === 'object') {
+      this.props.attrs = {
+        ...(this.props.attrs || {}),
+        ...nextProps.attrs,
+      };
+    }
 
-    Object.assign(this.props, nextProps);
+    const { attrs, ...restNextProps } = nextProps;
+
+    Object.assign(this.props, restNextProps);
   };
 
   get element() {
@@ -170,13 +178,13 @@ export class Block<T extends Props = Props> {
 
   _render() {
     this._removeEvents();
-
     this.beforeRender();
 
     const block = this._compile();
 
-    const className = this.computeClass();
+    this._updateAttributes();
 
+    const className = this.computeClass();
     if (className) {
       this._element?.setAttribute('class', className);
     }
@@ -188,6 +196,33 @@ export class Block<T extends Props = Props> {
     }
 
     this._addEvents();
+  }
+
+  _updateAttributes() {
+    if (!this._element) {
+      return;
+    }
+
+    const preservedAttrs = ['data-id', 'class'];
+    Array.from(this._element.attributes || {}).forEach((attr) => {
+      if (!preservedAttrs.includes(attr.name) && this._element?.hasAttribute(attr.name)) {
+        this._element!.removeAttribute(attr.name);
+      }
+    });
+
+    const computedAttributes = this.getComputedAttributes();
+
+    Object.entries({ ...(this.props.attrs || {}), ...computedAttributes }).forEach(
+      ([attrName, attrValue]) => {
+        if (attrValue != null && attrValue != false) {
+          this._element!.setAttribute(attrName, attrValue);
+        }
+      }
+    );
+  }
+
+  getComputedAttributes(): Record<string, unknown> {
+    return {};
   }
 
   render(): string {

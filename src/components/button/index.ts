@@ -8,28 +8,12 @@ export class Button extends Block {
   constructor(props: ButtonProps) {
     const tagName = props.tag || 'button';
 
-    const attrs: Record<string, unknown> = {
-      type: props.type || 'button',
-      name: props.name,
-      form: props.formId,
-    };
-
-    if (props.disabled) {
-      if (props.tag) {
-        attrs['aria-disabled'] = 'true';
-        attrs['tabindex'] = '-1';
-      } else {
-        attrs['disabled'] = true;
-      }
-    }
-
     super(tagName, {
       ...props,
-      attrs,
       events: {
-        click: props.onClick,
-        blur: props.onBlur || (() => {}),
-        focus: props.onFocus || (() => {}),
+        click: (e) => props.onClick?.(e),
+        blur: (e) => props.onBlur?.(e),
+        focus: (e) => props.onFocus?.(e),
       },
     });
   }
@@ -45,6 +29,25 @@ export class Button extends Block {
     ]
       .filter(Boolean)
       .join(' ');
+  }
+
+  getComputedAttributes() {
+    const attrs: Record<string, unknown> = {
+      type: this.props.type || 'button',
+      name: this.props.name,
+      form: this.props.formId,
+    };
+
+    if (this.props.disabled) {
+      if (this.props.tag) {
+        attrs['aria-disabled'] = 'true';
+        attrs['tabindex'] = '-1';
+      } else {
+        attrs['disabled'] = true;
+      }
+    }
+
+    return attrs;
   }
 
   render() {
