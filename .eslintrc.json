@@ -39,7 +39,8 @@
       { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
     ],
     "func-names": "off",
-    "max-len": "warn"
+    "max-len": "warn",
+    "no-param-reassign": "warn"
   },
   "overrides": [
     {

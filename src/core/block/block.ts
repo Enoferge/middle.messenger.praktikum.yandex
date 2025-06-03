@@ -249,8 +249,8 @@ export class Block<T extends Props = Props> {
       set: (target: any, prop, value) => {
         const oldProps = cloneDeep(target);
 
-        // target[prop] = value;
-        emitBind(Block.EVENTS.FLOW_CDU, oldProps, { ...target, [prop]: value });
+        target[prop] = value;
+        emitBind(Block.EVENTS.FLOW_CDU, oldProps, target);
 
         return true;
       },
