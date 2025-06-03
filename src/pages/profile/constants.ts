@@ -1,87 +1,73 @@
 import type { InputFieldProps } from '@/components/input-field/types';
-import type { FormProps } from '@/components/form/types';
+import { FormFieldName } from '@/constants/formFields';
 
-import type { ProfileMode } from './types';
+import type { ProfileMode, PropsByMode } from './types';
 
 export const profileInfoFields: Array<InputFieldProps> = [
   {
     label: 'First name',
-    name: 'first_name',
+    name: FormFieldName.FirstName,
     type: 'text',
   },
   {
     label: 'Second name',
-    name: 'second_name',
+    name: FormFieldName.SecondName,
     type: 'text',
   },
   {
     label: 'Display name',
-    name: 'display_name',
+    name: FormFieldName.DisplayName,
     type: 'text',
   },
   {
     label: 'Login',
-    name: 'login',
+    name: FormFieldName.Login,
     type: 'text',
   },
   {
     label: 'Email',
-    name: 'email',
+    name: FormFieldName.Email,
     type: 'email',
   },
   {
     label: 'Phone',
-    name: 'phone',
+    name: FormFieldName.Phone,
     type: 'tel',
   },
 ];
 
 export const profileInfoStateInitial = {
-  first_name: 'Lana',
-  second_name: 'Rodionova',
-  display_name: 'enoferge',
-  login: 'svrodionova',
-  email: 'niceemail@yandex.ru',
-  phone: '7 999 888 77 66',
+  [FormFieldName.FirstName]: 'Lana',
+  [FormFieldName.SecondName]: 'Rodionova',
+  [FormFieldName.DisplayName]: 'enoferge',
+  [FormFieldName.Login]: 'svrodionova',
+  [FormFieldName.Email]: 'niceemail@yandex.ru',
+  [FormFieldName.Phone]: '7 999 888 77 66',
 };
 
 export const profilePasswordStateInitial = {
-  old_password: '',
-  password: '',
-  password_confirm: '',
-};
-
-const commonPasswordField = {
-  type: 'password',
+  [FormFieldName.OldPassword]: '',
+  [FormFieldName.Password]: '',
+  [FormFieldName.PasswordConfirm]: '',
 };
 
 export const profilePasswordFields = [
   {
-    ...commonPasswordField,
+    type: 'password',
     label: 'Old password',
-    name: 'old_password',
+    name: FormFieldName.OldPassword,
   },
   {
-    ...commonPasswordField,
+    type: 'password',
     label: 'New password',
-    name: 'password',
+    name: FormFieldName.Password,
   },
   {
-    ...commonPasswordField,
+    type: 'password',
     label: 'Repeat password',
-    name: 'password_confirm',
+    name: FormFieldName.PasswordConfirm,
   },
 ];
-
-type PropsByMode = {
-  submitButtonText: string;
-  formFields?: Array<InputFieldProps>;
-  formState?: FormProps['formState'];
-  isFormReadonly?: boolean;
-  isFileError?: boolean
-  isButtonDisabled?: boolean
-  filename?: string
-};
 
 export const profilePagePropsByMode: Record<ProfileMode, PropsByMode> = {
   READ: {

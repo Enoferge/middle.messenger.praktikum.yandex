@@ -2,8 +2,8 @@ import { ErrorPage } from '@/pages/error';
 import { MessengerPage } from '@/pages/messenger';
 import { AuthPage } from '@/pages/auth';
 import { HomePage } from '@/pages/home';
-import { signUpFields, signInFields } from '@/data/authFields';
-import { messengerChats, activeChatMessages } from '@/data/messengerData';
+import { signUpFields, signInFields } from '@/pages/auth/constants';
+import { messengerChats, activeChatMessages } from '@/pages/messenger/constants';
 import { ProfilePage } from '@/pages/profile';
 
 import { PAGE_NAMES } from './constants';
@@ -54,6 +54,7 @@ export const pages: Record<PageName, PageData> = {
           first_name: '',
           second_name: '',
           login: '',
+          display_name: '',
           email: '',
           phone: '',
           password: '',
