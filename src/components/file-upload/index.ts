@@ -7,8 +7,13 @@ import './styles.css';
 
 export class FileUpload extends Block {
   constructor(props: FileUploadProps) {
+    const classes = ['file-upload', props.error ? 'file-upload_error' : '', props.class || '']
+      .filter(Boolean)
+      .join(' ');
+
     super('div', {
       ...props,
+      class: classes,
       children: {
         ChooseFileButton: new Button({
           tag: 'div',
@@ -20,12 +25,6 @@ export class FileUpload extends Block {
         }),
       },
     });
-  }
-
-  computeClass(): string {
-    return ['file-upload', this.props.error ? 'file-upload_error' : '', this.props.class || '']
-      .filter(Boolean)
-      .join(' ');
   }
 
   render() {

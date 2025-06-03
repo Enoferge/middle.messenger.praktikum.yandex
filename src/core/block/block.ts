@@ -69,6 +69,11 @@ export class Block<T extends Props = Props> {
         this._element?.setAttribute(attrName, String(attrValue));
       });
     }
+
+    if (typeof props?.class === 'string') {
+      const classes = props.class.split(' ');
+      this._element.classList.add(...classes);
+    }
   }
 
   init() {
@@ -171,11 +176,6 @@ export class Block<T extends Props = Props> {
 
     const block = this._compile();
 
-    const className = this.computeClass();
-    if (className) {
-      this._element?.setAttribute('class', className);
-    }
-
     if (this._element?.children.length === 0) {
       this._element.appendChild(block);
     } else {
@@ -187,10 +187,6 @@ export class Block<T extends Props = Props> {
 
   render(): string {
     return '';
-  }
-
-  computeClass(): string {
-    return this.props.class || '';
   }
 
   getContent() {

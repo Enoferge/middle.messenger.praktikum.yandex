@@ -7,14 +7,28 @@ import type { InputFieldProps } from './types';
 
 export class InputField extends Block {
   constructor(props: InputFieldProps) {
-    const { label, onFieldChange, onFieldBlur, ...inputProps } = props;
+    const {
+      label, onFieldChange, onFieldBlur, ...inputProps
+    } = props;
+
+    const states: Array<keyof InputFieldProps> = ['error', 'readonly', 'disabled'];
+    const inputClasses = states.reduce<string[]>(
+      (acc, state) => {
+        if (props[state]) {
+          acc.push(`input-field__input_${String(state)}`);
+        }
+        return acc;
+      },
+      ['input-field__input'],
+    );
 
     super('div', {
-      ...props,
+      ...inputProps,
+      label,
       children: {
         Input: new Input({
           ...inputProps,
-          class: 'input-field__input',
+          class: inputClasses.join(' '),
           onChange: (e: Event) => {
             const { name, value } = e.target as HTMLInputElement;
             onFieldChange?.({ name, value });
@@ -26,20 +40,6 @@ export class InputField extends Block {
         }),
       },
     });
-  }
-
-  computeClass(): string {
-    const classes = ['input-field'];
-
-    const states: Array<keyof InputFieldProps> = ['error', 'readonly', 'disabled'];
-
-    for (let state of states) {
-      if (this.props[state]) {
-        classes.push(`input-field_${String(state)}`);
-      }
-    }
-
-    return classes.join(' ');
   }
 
   render() {

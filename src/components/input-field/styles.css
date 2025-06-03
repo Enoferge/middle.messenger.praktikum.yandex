@@ -22,6 +22,14 @@
     padding: var(--space-xs) var(--space-s);
     border: var(--border-width) solid var(--color-border-main);
     border-radius: var(--radius-large);
+
+    &_readonly {
+      border-color: var(--input-readonly-color);
+      border-top: 2px solid transparent;
+      border-left: none;
+      border-right: none;
+      border-radius: 0;
+    }
   }
 
   &__error-caption {
@@ -35,14 +43,6 @@
 
   &_readonly {
     color: var(--input-readonly-color);
-
-    & .input-field__input {
-      border-color: var(--input-readonly-color);
-      border-top: 2px solid transparent;
-      border-left: none;
-      border-right: none;
-      border-radius: 0;
-    }
   }
 
   &_disabled &__input {

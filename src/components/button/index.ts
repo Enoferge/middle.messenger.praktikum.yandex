@@ -22,8 +22,19 @@ export class Button extends Block {
         attrs.disabled = true;
       }
     }
+
+    const classes = [
+      'button',
+      `button_${props.variant || 'default'}`,
+      props.fullWidth ? 'button_full' : '',
+      props.isAccent ? 'button_accent' : '',
+      props.icon ? 'button_with-icon' : '',
+      props.class || '',
+    ].filter(Boolean).join(' ');
+
     super(tagName, {
       ...props,
+      class: classes,
       attrs,
       events: {
         click: (e) => props.onClick?.(e),
@@ -32,38 +43,6 @@ export class Button extends Block {
       },
     });
   }
-
-  computeClass(): string {
-    return [
-      'button',
-      `button_${this.props.variant || 'default'}`,
-      this.props.fullWidth ? 'button_full' : '',
-      this.props.isAccent ? 'button_accent' : '',
-      this.props.icon ? 'button_with-icon' : '',
-      this.props.class || '',
-    ]
-      .filter(Boolean)
-      .join(' ');
-  }
-
-  // getComputedAttributes() {
-  //   const attrs: Record<string, unknown> = {
-  //     type: this.props.type || 'button',
-  //     name: this.props.name,
-  //     form: this.props.formId,
-  //   };
-
-  //   if (this.props.disabled) {
-  //     if (this.props.tag) {
-  //       attrs['aria-disabled'] = 'true';
-  //       attrs.tabindex = '-1';
-  //     } else {
-  //       attrs.disabled = true;
-  //     }
-  //   }
-
-  //   return attrs;
-  // }
 
   render() {
     return template;
