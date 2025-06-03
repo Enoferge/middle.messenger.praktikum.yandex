@@ -48,7 +48,7 @@ export class InputField extends Block {
     return classes.join(' ');
   }
 
-  componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+  componentDidUpdate(_oldProps: Props, newProps: Props): boolean {
     const {
       label: _l, error: _e, onFieldChange: _ofC, onFieldBlur: _ofB, ...attrs
     } = newProps;

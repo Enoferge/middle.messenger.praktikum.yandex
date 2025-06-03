@@ -87,13 +87,14 @@ export class Block<T extends Props = Props> {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  _componentDidUpdate(oldProps: T, newProps: T) {
+  _componentDidUpdate = (...args: unknown[]) => {
+    const [oldProps, newProps] = args as [T, T];
     const isPropsChanged = this.componentDidUpdate(oldProps, newProps);
 
     if (isPropsChanged) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
-  }
+  };
 
   componentDidUpdate(_oldProps: T, _newProps: T) {
     return true;
@@ -212,7 +213,7 @@ export class Block<T extends Props = Props> {
     Object.entries({ ...(this.props.attrs || {}), ...computedAttributes }).forEach(
       ([attrName, attrValue]) => {
         if (attrValue != null && attrValue !== false) {
-          this._element!.setAttribute(attrName, attrValue);
+          this._element!.setAttribute(attrName, attrValue.toString());
         }
       },
     );
@@ -263,6 +264,10 @@ export class Block<T extends Props = Props> {
     tagName: U,
   ): HTMLElementTagNameMap[U] {
     return document.createElement(tagName);
+  }
+
+  getBlockChild<B extends Block>(child: Block | Block[]): B {
+    return Array.isArray(child) ? child[0] as B : child as B;
   }
 
   show() {

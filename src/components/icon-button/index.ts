@@ -25,7 +25,7 @@ export class IconButton extends Block {
       ...props,
       attrs,
       events: {
-        click: props.onClick,
+        click: (e) => props.onClick?.(e),
       },
       children: {
         Icon: new Icon({ class: 'icon-button__icon', name: props.iconName }),

@@ -11,7 +11,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "npm run build && npm run preview",
-    "lint": "eslint . --ext .ts,.js"
+    "type-check": "tsc --noEmit",
+    "lint:eslint": "eslint . --ext .ts,.js",
+    "lint": "npm run lint:eslint && npm run type-check"
   },
   "devDependencies": {
     "@types/node": "^22.15.27",

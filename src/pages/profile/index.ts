@@ -60,12 +60,15 @@ export class ProfilePage extends Block<ProfilePageProps> {
   }
 
   showCorrectProfileForm(props: ProfilePageProps) {
+    const fileUpload = this.getBlockChild(this.children.FileUpload);
+    const formBlock = this.getBlockChild(this.children.FormBlock);
+
     if (props.mode === 'CHANGE_AVATAR') {
-      this.children.FormBlock.hide();
-      this.children.FileUpload.show();
+      formBlock.hide();
+      fileUpload.show();
     } else {
-      this.children.FormBlock.show();
-      this.children.FileUpload.hide();
+      fileUpload.show();
+      fileUpload.hide();
     }
   }
 
@@ -91,7 +94,7 @@ export class ProfilePage extends Block<ProfilePageProps> {
         onClick: newProps.mode === 'READ' ? () => this.setProps({ mode: 'EDIT' }) : undefined,
       });
 
-      this.children.FormBlock.setProps({
+      this.getBlockChild(this.children.FormBlock).setProps({
         isFormReadonly,
         formFields,
         formState,

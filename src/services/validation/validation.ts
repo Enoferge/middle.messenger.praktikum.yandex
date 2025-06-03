@@ -3,7 +3,7 @@ import { INPUT_VALIDATORS } from './constants';
 
 export function validateField(name: string, value: string, formState: FormProps['formState']) {
   if (name === 'password_confirm') {
-    return value === formState.password ? '' : 'Typed passwords are not equal';
+    return value === formState?.password ? '' : 'Typed passwords are not equal';
   }
 
   let preparedValue = value;

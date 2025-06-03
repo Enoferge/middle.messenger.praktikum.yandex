@@ -4,12 +4,10 @@ import './styles/fonts.css';
 import './styles/ui';
 import { renderPage } from './view/render';
 import { isPageName } from './utils/isPageName';
-import { registerPartials } from './templates/partials';
 import { registerHelpers } from './templates/helpers';
 import { pages } from './navigation/router';
 import { getCurrentPageNameFromPath } from './utils/getCurrentPageFromPath';
 
-registerPartials();
 registerHelpers();
 
 document.addEventListener('click', (e) => {
