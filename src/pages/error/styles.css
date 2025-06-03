@@ -3,7 +3,6 @@
     display: flex;
     flex-direction: column;
     row-gap: var(--space-m);
-
     text-align: center;
   }
 }

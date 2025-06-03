@@ -13,7 +13,6 @@
     flex-direction: column;
     border: var(--border-width) solid var(--color-border-section);
     border-radius: var(--radius-large);
-
     overflow: hidden;
 
     &_left {
@@ -37,7 +36,6 @@
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
-
     padding: var(--space-m);
   }
 
@@ -64,7 +62,6 @@
     align-items: center;
     padding-left: var(--space-xs);
     padding-right: var(--space-xs);
-
     border-width: 0;
     border-style: solid;
     border-color: var(--color-border-section);
@@ -72,10 +69,8 @@
 
   &__header {
     justify-content: space-between;
-
     padding-top: var(--space-xs);
     padding-bottom: var(--space-xs);
-
     border-bottom-width: var(--border-width);
   }
 
@@ -83,7 +78,6 @@
     gap: var(--space-m);
     padding-top: var(--space-m);
     padding-bottom: var(--space-m);
-
     border-top-width: var(--border-width);
   }
 

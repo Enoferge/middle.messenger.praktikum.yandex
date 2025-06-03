@@ -18,7 +18,7 @@
   &__icon {
     width: var(--icon-size);
     height: var(--icon-size);
-    color: currentColor;
+    color: currentcolor;
   }
 
   &_filled {

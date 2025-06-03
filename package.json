@@ -12,8 +12,11 @@
     "preview": "vite preview",
     "start": "npm run build && npm run preview",
     "type-check": "tsc --noEmit",
-    "lint:eslint": "eslint . --ext .ts,.js",
-    "lint": "npm run lint:eslint && npm run type-check"
+    "eslint": "eslint . --ext .ts,.js",
+    "eslint:fix": "eslint . --ext .ts,.js --fix",
+    "stylelint": "stylelint '**/*.{css,scss}'",
+    "stylelint:fix": "stylelint \"**/*.{css,scss}\" --fix",
+    "lint": "npm run eslint && npm run stylelint && npm run type-check"
   },
   "devDependencies": {
     "@types/node": "^22.15.27",
@@ -27,6 +30,8 @@
     "postcss-nested": "^7.0.2",
     "postcss-preset-env": "^10.1.6",
     "prettier": "^3.5.3",
+    "stylelint": "^16.20.0",
+    "stylelint-config-standard": "^38.0.0",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
   },
