@@ -4,7 +4,7 @@ export const PAGE_NAMES = {
   HOME: 'home',
   PROFILE: 'profile',
   // MESSENGER: 'messenger',
-  // 500: '500',
-  // 400: '400',
-  // 404: '404',
+  500: '500',
+  400: '400',
+  404: '404',
 } as const;

@@ -1,8 +1,8 @@
+import { ErrorPage } from '@/pages/error';
 import { signUpFields, signInFields } from '../data/authFields';
 import { AuthPage } from '../pages/auth';
 import { HomePage } from '../pages/home';
 import { ProfilePage } from '../pages/profile';
-// import { ErrorPage } from '../pages/error';
 // import { MessengerPage } from '../pages/messenger';
 // import { messengerChats, activeChat } from '../data/messengerData';
 import { PAGE_NAMES } from './constants';
@@ -77,36 +77,33 @@ export const pages: Record<PageName, PageData> = {
       onClose: () => console.log('close'),
     }),
   },
-  // 500: {
-  //   template: ErrorPage,
-  //   context: {
-  //     code: '500',
-  //     message: 'Fixes are coming',
-  //   },
-  //   layoutContext: {
-  //     hideHomeButton: true,
-  //   },
-  // },
-  // 400: {
-  //   template: ErrorPage,
-  //   context: {
-  //     code: '400',
-  //     message: 'Oops',
-  //   },
-  //   layoutContext: {
-  //     hideHomeButton: true,
-  //   },
-  // },
-  // 404: {
-  //   template: ErrorPage,
-  //   context: {
-  //     code: '404',
-  //     message: 'Oops, page not found',
-  //   },
-  //   layoutContext: {
-  //     hideHomeButton: true,
-  //   },
-  // },
+  500: {
+    pageBlock: new ErrorPage({
+      code: '500',
+      message: 'Fixes are coming',
+    }),
+    layoutContext: {
+      hideHomeButton: true,
+    },
+  },
+  404: {
+    pageBlock: new ErrorPage({
+      code: '404',
+      message: 'Oops, page not found!',
+    }),
+    layoutContext: {
+      hideHomeButton: true,
+    },
+  },
+  400: {
+    pageBlock: new ErrorPage({
+      code: '400',
+      message: 'Oops!',
+    }),
+    layoutContext: {
+      hideHomeButton: true,
+    },
+  },
   // messenger: {
   //   template: MessengerPage,
   //   context: {
