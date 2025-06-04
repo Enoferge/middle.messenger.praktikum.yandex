@@ -23,7 +23,7 @@ Client:
 TypeScript, JavaScript, component-based architecture with custom Block class and EventBus.
 
 Tools:  
-Vite, PostCSS, Netlify, ESLint, Stylelint, TypeScript (tsc type checking).
+Vite, PostCSS, Sass, Netlify, ESLint, Stylelint, TypeScript (tsc type checking).
 
 ## 🎨 Design
 
