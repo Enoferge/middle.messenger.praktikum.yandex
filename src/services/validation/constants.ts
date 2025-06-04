@@ -1,7 +1,7 @@
 import { FormFieldName } from '@/constants/formFields';
 
 const nameValidator = {
-  validator: /^[A-ZА-ЯЁ][a-zа-яё-]*$/,
+  validator: /^[A-ZА-ЯЁ][a-zA-Zа-яА-ЯёЁ-]*$/,
   errorMsg: 'Type any letters and hyphens, first letter must be uppercase. No spaces ot digits, no other special characters',
 };
 
@@ -24,7 +24,7 @@ export const INPUT_VALIDATORS: Record<string, { validator: RegExp; errorMsg: str
   [FormFieldName.FirstName]: nameValidator,
   [FormFieldName.SecondName]: nameValidator,
   [FormFieldName.Email]: {
-    validator: /^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)+\.[a-z]{2,}$/i,
+    validator: /^[a-z0-9._%+-]+@([a-z0-9-]*[a-z]+[a-z0-9-]*)+(\.[a-z0-9-]+)*\.[a-z]{2,}$/i,
     errorMsg:
       'Type any latin letters, digits, hyphens, underscores, dots. Must contain @, dot and at least one letter after dot',
   },
