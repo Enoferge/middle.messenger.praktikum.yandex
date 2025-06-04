@@ -1,27 +1,17 @@
 import { Block } from '@/core/block/block';
 import { Input } from '@/components/input';
+import { getStateModifierClasses } from '@/utils/get-state-modifier-classes';
 
 import './styles.css';
 import template from './input.hbs?raw';
 import type { InputFieldProps } from './types';
 import { Icon } from '../icon';
 
-export class InputField extends Block {
+export class InputField extends Block<InputFieldProps> {
   constructor(props: InputFieldProps) {
     const {
       label, onFieldChange, onFieldBlur, ...inputProps
     } = props;
-
-    const states: Array<keyof InputFieldProps> = ['error', 'readonly', 'disabled'];
-    const inputClasses = states.reduce<string[]>(
-      (acc, state) => {
-        if (props[state]) {
-          acc.push(`input-field__input_${String(state)}`);
-        }
-        return acc;
-      },
-      ['input-field__input'],
-    );
 
     const isSearch = props.type === 'search';
 
@@ -32,7 +22,6 @@ export class InputField extends Block {
       children: {
         Input: new Input({
           ...inputProps,
-          class: inputClasses.join(' '),
           onChange: (e: Event) => {
             const { name, value } = e.target as HTMLInputElement;
             onFieldChange?.({ name, value });
@@ -48,6 +37,10 @@ export class InputField extends Block {
         }),
       },
     });
+  }
+
+  computeClass() {
+    return getStateModifierClasses('input-field', this.props).join(' ');
   }
 
   render() {
