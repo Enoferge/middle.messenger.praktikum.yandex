@@ -6,7 +6,7 @@ import { IconButton } from '@/components/icon-button';
 import { ChatItem } from '@/components/chat-item';
 import { MessageBubble } from '@/components/message-bubble';
 
-import { TextareaField } from '@/components/textarea/textarea-field';
+import { TextareaField } from '@/components/textarea-field';
 import { InputField } from '@/components/input-field';
 import template from './messenger.hbs?raw';
 import type { MessengerPageProps } from './types';

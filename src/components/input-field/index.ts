@@ -2,8 +2,8 @@ import { Block } from '@/core/block/block';
 import { Input } from '@/components/input';
 import { getStateModifierClasses } from '@/utils/get-state-modifier-classes';
 
-import './styles.css';
-import template from './input.hbs?raw';
+import './styles.scss';
+import template from './input-field.hbs?raw';
 import type { InputFieldProps } from './types';
 import { Icon } from '../icon';
 
