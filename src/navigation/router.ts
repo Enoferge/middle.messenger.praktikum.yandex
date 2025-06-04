@@ -5,6 +5,7 @@ import { HomePage } from '@/pages/home';
 import { signUpFields, signInFields } from '@/pages/auth/constants';
 import { messengerChats, activeChatMessages } from '@/pages/messenger/constants';
 import { ProfilePage } from '@/pages/profile';
+import { FormFieldName } from '@/constants/formFields';
 
 import { PAGE_NAMES } from './constants';
 import type { PageData, PageName } from './types';
@@ -28,8 +29,8 @@ export const pages: Record<PageName, PageData> = {
       formProps: {
         formFields: signInFields,
         formState: {
-          login: '',
-          password: '',
+          [FormFieldName.Login]: '',
+          [FormFieldName.Password]: '',
         },
       },
       footerProps: {
@@ -51,14 +52,14 @@ export const pages: Record<PageName, PageData> = {
       formProps: {
         formFields: signUpFields,
         formState: {
-          first_name: '',
-          second_name: '',
-          login: '',
-          display_name: '',
-          email: '',
-          phone: '',
-          password: '',
-          password_confirm: '',
+          [FormFieldName.FirstName]: '',
+          [FormFieldName.SecondName]: '',
+          [FormFieldName.Login]: '',
+          [FormFieldName.DisplayName]: '',
+          [FormFieldName.Email]: '',
+          [FormFieldName.Phone]: '',
+          [FormFieldName.Password]: '',
+          [FormFieldName.PasswordConfirm]: '',
         },
       },
       footerProps: {

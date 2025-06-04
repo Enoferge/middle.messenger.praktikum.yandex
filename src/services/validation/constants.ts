@@ -24,7 +24,7 @@ export const INPUT_VALIDATORS: Record<string, { validator: RegExp; errorMsg: str
   [FormFieldName.FirstName]: nameValidator,
   [FormFieldName.SecondName]: nameValidator,
   [FormFieldName.Email]: {
-    validator: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/,
+    validator: /^[a-z0-9._%+-]+@[a-z0-9-]+(\.[a-z0-9-]+)+\.[a-z]{2,}$/i,
     errorMsg:
       'Type any latin letters, digits, hyphens, underscores, dots. Must contain @, dot and at least one letter after dot',
   },

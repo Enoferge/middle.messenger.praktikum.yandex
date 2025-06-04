@@ -5,9 +5,10 @@ import { Avatar } from '@/components/avatar';
 import { IconButton } from '@/components/icon-button';
 import { ChatItem } from '@/components/chat-item';
 import { MessageBubble } from '@/components/message-bubble';
-
 import { TextareaField } from '@/components/textarea-field';
 import { InputField } from '@/components/input-field';
+import { FormFieldName } from '@/constants/formFields';
+
 import template from './messenger.hbs?raw';
 import type { MessengerPageProps } from './types';
 
@@ -41,7 +42,7 @@ export class MessengerPage extends Block<MessengerPageProps> {
         Search: new InputField({ name: 'search', type: 'search', placeholder: 'Search in chats...' }),
         chats: props.chats.map((chat) => new ChatItem(chat)),
         activeChatMessages: props.activeChatMessages.map((msg) => new MessageBubble(msg)),
-        MessageField: new TextareaField({ placeholder: 'Type your message here...' }),
+        MessageField: new TextareaField({ placeholder: 'Type your message here...', name: FormFieldName.Message }),
       },
     });
   }

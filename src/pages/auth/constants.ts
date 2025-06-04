@@ -54,7 +54,7 @@ export const signUpFields: Array<InputFieldProps> = [
   commonPasswordField,
   {
     label: 'Password confirm',
-    name: 'password_confirm',
+    name: FormFieldName.PasswordConfirm,
     type: 'password',
     minlength: 8,
     placeholder: 'Repeat your password',

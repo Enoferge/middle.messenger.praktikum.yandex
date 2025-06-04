@@ -2,6 +2,7 @@ import { Block } from '@/core/block/block';
 import { InputField } from '@/components/input-field';
 import type { InputFieldProps } from '@/components/input-field/types';
 import { validateField } from '@/services/validation/validation';
+import { FormFieldName } from '@/constants/formFields';
 
 import type { FormProps } from './types';
 import './styles.scss';
@@ -59,7 +60,7 @@ export class Form extends Block<FormProps> {
           console.log('SUBMIT');
 
           const filledFields = Object.fromEntries(
-            Object.entries(this.props.formState || {}).filter(([name, value]) => value.trim() !== '' && name !== 'password_confirm'),
+            Object.entries(this.props.formState || {}).filter(([name, value]) => value.trim() !== '' && name !== FormFieldName.PasswordConfirm),
           );
 
           console.log(filledFields);
