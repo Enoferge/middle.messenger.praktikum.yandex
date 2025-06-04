@@ -1,0 +1,10 @@
+{{#if label}}<label for="{{name}}" class="input-field__label">{{label}}</label>{{/if}}
+<div class="input-field__wrapper">
+  {{{Input}}}
+  {{#if isSearch}}
+    {{{IconSearch}}}
+  {{/if}}
+</div>
+{{#if error}}
+  <div class="input-field__error-caption">{{error}}</div>
+{{/if}}

@@ -1,5 +1,5 @@
-<div class="error__wrapper">
-  <h1 class="page-title_{{#ifIn code (array "400" "404")}}warning{{else}}error{{/ifIn}}">{{code}}</h1>
-  <div class="page-message">{{message}}</div>
-  {{> Link page="messenger" text="Return to chats" }}
+<div class='error__wrapper'>
+  <h1 class='{{pageTitleClass}}'>{{code}}</h1>
+  <div class='page-message'>{{message}}</div>
+  {{{Link}}}
 </div>

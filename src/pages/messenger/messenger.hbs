@@ -1,3 +1,34 @@
-<section>
- <div class="page-message">Here be messenger :)</div> 
+<section class='messenger__section messenger__section_left'>
+  <div class='messenger__header'>
+    <div class='messenger__header-avatar'>
+      {{{Avatar}}}
+    </div>
+    {{{Search}}}
+  </div>
+  <div class='messenger__content'>
+    <div class='messenger__chats-list'>
+      {{#each chats}}
+        {{{this}}}
+      {{/each}}
+    </div>
+  </div>
+</section>
+<section class='messenger__section messenger__section_right'>
+  <div class='messenger__header'>
+    <div class='messenger__header-left-part'>
+      {{{ActiveChatAvatar}}}
+      <span class="messenger__header-title">{{{activeChatContactName}}}</span>
+    </div>
+    {{{SettingsButton}}}
+  </div>
+  <div class='messenger__content messenger__active-chat'>
+    {{#each activeChatMessages}}
+      {{{this}}}
+    {{/each}}
+  </div>
+  <div class='messenger__footer'>
+    {{{FileButton}}}
+    <div class='messenger__user-msg-textarea'>{{{MessageForm}}}</div>
+    {{{SendButton}}}
+  </div>
 </section>

@@ -1,0 +1,56 @@
+@use '@/styles/ui/form-field/_mixins' as *;
+
+.input-field {
+  @include form-field-base;
+
+  &__label {
+    display: block;
+    margin-bottom: var(--space-xxs);
+  }
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    @include form-field-element;
+
+    height: 36px;
+    padding: var(--space-xs) var(--space-s);
+
+    &_readonly {
+      @include form-field-readonly;
+    }
+
+    &[type="search"] {
+      padding-left: var(--space-xxl);
+    }
+  }
+
+  &__error-caption {
+    @include form-field-error-caption;
+  }
+
+  &_readonly {
+    @include form-field-readonly;
+  }
+
+  &_disabled &__input {
+    @include form-field-disabled;
+  }
+
+  &_error &__input {
+    @include form-field-error;
+  }
+
+  &__icon-search {
+    position: absolute;
+    left: var(--space-xs);
+    width: var(--size-icon-s);
+    height: var(--size-icon-s);
+    color: var(--color-text-main);
+    pointer-events: none;
+  }
+}

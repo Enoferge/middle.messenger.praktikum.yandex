@@ -1,8 +1,8 @@
 <div class='layout'>
   {{#unless hideHomeButton}}
-    {{> Link page="home" text="Back to Home" }}
+    {{{HomeLink}}}
   {{/unless}}
   <main class='main'>
-    {{{body}}}
+    {{{PageContent}}}
   </main>
 </div>

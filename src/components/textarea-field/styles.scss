@@ -1,0 +1,43 @@
+@use '@/styles/ui/form-field/_mixins' as *;
+
+.textarea-field {
+  @include form-field-base;
+
+  &__label {
+    display: block;
+    margin-bottom: var(--space-xxs);
+  }
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__textarea {
+    @include form-field-element;
+
+    height: 48px;
+    resize: vertical;
+
+    &_readonly {
+      @include form-field-readonly;
+    }
+  }
+
+  &__error-caption {
+    @include form-field-error-caption;
+  }
+
+  &_readonly {
+    @include form-field-readonly;
+  }
+
+  &_disabled &__textarea {
+    @include form-field-disabled;
+  }
+
+  &_error &__textarea {
+    @include form-field-error;
+  }
+}

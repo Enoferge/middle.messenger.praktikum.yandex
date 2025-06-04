@@ -1,18 +1,10 @@
-import type { BaseContext, PageName } from '../../navigation/types';
-import type { InputField } from '../input/types';
+import type { Block } from '@/core/block/block';
+import type { RawPropsWithChildren } from '@/core/block/types';
 
-export interface CardContext extends BaseContext {
+export interface CardProps extends RawPropsWithChildren {
   title: string;
-  contentBlock?: string;
-  footerBlock?: string;
-  formFields: Array<InputField>;
-  submitAction: {
-    name: string;
-    text: string;
-  };
-  secondaryAction: {
-    name: string;
-    text: string;
-    page: PageName;
+  children: {
+    ContentBlock: Block;
+    FooterBlock: Block;
   };
 }

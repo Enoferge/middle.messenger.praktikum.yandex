@@ -1,6 +1,6 @@
-import type { BaseContext } from '../../navigation/types';
+import type { Props } from '@/core/block/types';
 
-export interface ErrorContext extends BaseContext {
+export interface ErrorPageProps extends Props {
   code: string;
   message: string;
 }

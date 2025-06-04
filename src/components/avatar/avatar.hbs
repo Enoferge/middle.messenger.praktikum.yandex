@@ -1,9 +1,7 @@
-<div class='avatar {{class}}' style='--avatar-size: {{size}}px'>
-  {{#if src}}
-    <img src='{{src}}' alt='{{alt}}' class='avatar__image' />
-  {{else if initials}}
-    <div class='avatar__fallback'>{{initials}}</div>
-  {{else}}
-    <div class='avatar__fallback'>?</div>
-  {{/if}}
-</div>
+{{#if src}}
+  <img src='{{src}}' alt='{{alt}}' class='avatar__image' />
+{{else if initials}}
+  <div class='avatar__fallback'>{{initials}}</div>
+{{else}}
+  <div class='avatar__fallback'>?</div>
+{{/if}}

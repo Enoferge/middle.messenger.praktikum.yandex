@@ -1,0 +1,23 @@
+.layout {
+  height: 100vh;
+  min-width: 1024px;
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--space-l);
+  justify-content: center;
+  align-items: center;
+  padding: var(--space-m);
+  color: var(--color-text-main);
+  background-color: var(--color-bg-layout);
+  overflow: hidden;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex-grow: 1;
+  overflow: auto;
+}

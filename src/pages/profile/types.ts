@@ -1,18 +1,19 @@
-import type { BaseContext } from '../../navigation/types';
+import type { FormProps } from '@/components/form/types';
+import type { InputFieldProps } from '@/components/input-field/types';
+import type { Props } from '@/core/block/types';
 
-export interface ProfileContext extends BaseContext {
-  mode:
-    | 'READ'
-    | 'EDIT'
-    | 'CHANGE_PASS'
-    | 'CHANGE_AVATAR'
-    | 'CHANGE_AVATAR_ERROR'
-    | 'CHANGE_AVATAR_UPLOADED';
-  isFormInvalid?: boolean;
-  submitButtonText?: string;
-  fileData: {
-    name: string;
-    error?: string;
-    filename?: string;
-  };
+export type ProfileMode = 'READ' | 'EDIT' | 'CHANGE_PASS' | 'CHANGE_AVATAR' | 'CHANGE_AVATAR_ERROR' | 'CHANGE_AVATAR_UPLOADED';
+
+export interface ProfilePageProps extends Props {
+  mode: ProfileMode;
 }
+
+export type PropsByMode = {
+  submitButtonText: string;
+  formFields?: Array<InputFieldProps>;
+  formState?: FormProps['formState'];
+  isFormReadonly?: boolean;
+  isFileError?: boolean
+  isButtonDisabled?: boolean
+  filename?: string
+};
