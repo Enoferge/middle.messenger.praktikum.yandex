@@ -1,2 +1,2 @@
-export * from './page-message.css';
-export * from './page-title.css';
+export * from './page-message.scss';
+export * from './page-title.scss';

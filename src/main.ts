@@ -1,6 +1,6 @@
-import './styles/variables.css';
-import './styles/base.css';
-import './styles/fonts.css';
+import './styles/variables.scss';
+import './styles/base.scss';
+import './styles/fonts.scss';
 import './styles/ui';
 import { renderPage } from './view/render';
 import { isPageName } from './utils/isPageName';

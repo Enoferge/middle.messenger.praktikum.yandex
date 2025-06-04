@@ -2,7 +2,7 @@ import { Block } from '@/core/block/block';
 
 import type { AvatarProps } from './types';
 import template from './avatar.hbs?raw';
-import './styles.css';
+import './styles.scss';
 
 export class Avatar extends Block<AvatarProps> {
   constructor(props: AvatarProps) {

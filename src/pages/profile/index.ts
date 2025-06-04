@@ -7,7 +7,7 @@ import { Form } from '@/components/form';
 import { FileUpload } from '@/components';
 
 import template from './profile.hbs?raw';
-import './styles.css';
+import './styles.scss';
 import type { ProfilePageProps } from './types';
 import { profilePagePropsByMode } from './constants';
 

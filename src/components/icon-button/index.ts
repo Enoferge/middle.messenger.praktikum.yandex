@@ -3,7 +3,7 @@ import { Icon } from '@/components/icon';
 
 import type { IconButtonProps } from './types';
 import template from './icon-button.hbs?raw';
-import './styles.css';
+import './styles.scss';
 
 export class IconButton extends Block<IconButtonProps> {
   constructor(props: IconButtonProps) {

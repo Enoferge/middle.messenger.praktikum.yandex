@@ -1,6 +1,6 @@
 import { Block } from '@/core/block/block';
 
-import './styles.css';
+import './styles.scss';
 import template from './link.hbs?raw';
 import type { LinkProps } from './types';
 

@@ -1,7 +1,7 @@
 import { Block } from '@/core/block/block';
 import type { CardProps } from './types';
 
-import './styles.css';
+import './styles.scss';
 import template from './card.hbs?raw';
 
 export class Card extends Block<CardProps> {

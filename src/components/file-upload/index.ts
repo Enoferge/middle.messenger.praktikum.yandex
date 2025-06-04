@@ -3,7 +3,7 @@ import { Button } from '@/components/button';
 
 import type { FileUploadProps } from './types';
 import template from './file-upload.hbs?raw';
-import './styles.css';
+import './styles.scss';
 
 export class FileUpload extends Block<FileUploadProps> {
   constructor(props: FileUploadProps) {

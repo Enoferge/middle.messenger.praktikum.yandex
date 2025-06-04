@@ -4,7 +4,7 @@ import type { InputFieldProps } from '@/components/input-field/types';
 import { validateField } from '@/services/validation/validation';
 
 import type { FormProps } from './types';
-import './styles.css';
+import './styles.scss';
 import template from './form.hbs?raw';
 
 export class Form extends Block<FormProps> {

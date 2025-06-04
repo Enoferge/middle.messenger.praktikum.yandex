@@ -2,7 +2,7 @@ import { Block } from '@/core/block/block';
 import { Link } from '@/components/link';
 
 import template from './error.hbs?raw';
-import './styles.css';
+import './styles.scss';
 import type { ErrorPageProps } from './types';
 
 export class ErrorPage extends Block<ErrorPageProps> {

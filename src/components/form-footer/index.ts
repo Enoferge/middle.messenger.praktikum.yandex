@@ -2,7 +2,7 @@ import { Block } from '@/core/block/block';
 import { Button } from '@/components/button';
 import { Link } from '@/components/link';
 
-import './styles.css';
+import './styles.scss';
 import template from './form-footer.hbs?raw';
 import type { FormFooterProps } from './types';
 

@@ -1,4 +1,4 @@
-import './styles.css';
+import './styles.scss';
 
 import { Block } from '@/core/block/block';
 import { Avatar } from '@/components/avatar';

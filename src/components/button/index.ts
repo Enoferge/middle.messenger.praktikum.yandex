@@ -2,7 +2,7 @@ import { Block } from '@/core/block/block';
 
 import type { ButtonProps } from './types';
 import template from './button.hbs?raw';
-import './styles.css';
+import './styles.scss';
 import { Icon } from '../icon';
 
 export class Button extends Block<ButtonProps> {

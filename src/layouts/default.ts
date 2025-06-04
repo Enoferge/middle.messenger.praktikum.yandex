@@ -4,7 +4,7 @@ import { Link } from '@/components';
 import { PAGE_NAMES } from '@/navigation/constants';
 
 import template from './default.hbs?raw';
-import './styles.css';
+import './styles.scss';
 
 export class DefaultLayout extends Block {
   constructor(props: Props) {

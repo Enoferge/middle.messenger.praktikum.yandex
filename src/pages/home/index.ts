@@ -3,7 +3,7 @@ import { Block } from '@/core/block/block';
 
 import template from './home.hbs?raw';
 import type { HomePageProps } from './types';
-import './home.css';
+import './home.scss';
 
 export class HomePage extends Block<HomePageProps> {
   constructor(props: HomePageProps) {

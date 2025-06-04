@@ -3,7 +3,7 @@ import { Icon } from '@/components/icon';
 import { formatTime } from '@/utils/format-time';
 
 import template from './message-bubble.hbs?raw';
-import './styles.css';
+import './styles.scss';
 import type { MessageBubbleProps } from './types';
 
 export class MessageBubble extends Block<MessageBubbleProps> {
