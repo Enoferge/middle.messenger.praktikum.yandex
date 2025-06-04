@@ -1,6 +1,7 @@
 import type { IconName } from '@/components/icon/types';
+import type { Props } from '@/core/block/types';
 
-export interface IconButtonProps {
+export interface IconButtonProps extends Props{
   iconName: IconName;
   variant?: 'filled' | 'plain' | string;
   class?: string;

@@ -1,7 +1,7 @@
 import type { Props } from '@/core/block/types';
 
 export interface InputAttrs {
-  name?: string;
+  name: string;
   value?: string;
   type?: string;
   minlength?: number;

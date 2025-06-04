@@ -5,7 +5,7 @@ import type { IconButtonProps } from './types';
 import template from './icon-button.hbs?raw';
 import './styles.css';
 
-export class IconButton extends Block {
+export class IconButton extends Block<IconButtonProps> {
   constructor(props: IconButtonProps) {
     const classes = ['icon-button', `icon-button_${props.variant || 'filled'}`, props.class || '']
       .filter(Boolean)

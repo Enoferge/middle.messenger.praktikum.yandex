@@ -10,6 +10,7 @@ export class Input extends Block<InputProps> {
       onChange, onFocus, onBlur, ...attrs
     } = props;
     super('input', {
+      ...props,
       attrs: getPreparedAttrs(attrs),
       events: {
         change: (e) => onChange?.(e),

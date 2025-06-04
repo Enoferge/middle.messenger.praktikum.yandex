@@ -5,7 +5,7 @@ import template from './home.hbs?raw';
 import type { HomePageProps } from './types';
 import './home.css';
 
-export class HomePage extends Block {
+export class HomePage extends Block<HomePageProps> {
   constructor(props: HomePageProps) {
     const links = props.pages
       ?.map(({ linkText, page }) => new Link({ link: page, text: linkText })) || [];

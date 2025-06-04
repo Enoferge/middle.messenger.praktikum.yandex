@@ -84,7 +84,7 @@ export class Form extends Block<FormProps> {
   }
 
   componentDidUpdate(oldProps: FormProps, newProps: FormProps) {
-    const fields = (this.children.FormFields || []) as Block[];
+    const fields = (this.children.FormFields || []) as InputField[];
 
     fields.forEach((inputField: InputField) => {
       const { name } = inputField.props;

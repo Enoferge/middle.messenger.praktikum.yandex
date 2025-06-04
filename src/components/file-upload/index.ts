@@ -5,7 +5,7 @@ import type { FileUploadProps } from './types';
 import template from './file-upload.hbs?raw';
 import './styles.css';
 
-export class FileUpload extends Block {
+export class FileUpload extends Block<FileUploadProps> {
   constructor(props: FileUploadProps) {
     const classes = ['file-upload', props.error ? 'file-upload_error' : '', props.class || '']
       .filter(Boolean)

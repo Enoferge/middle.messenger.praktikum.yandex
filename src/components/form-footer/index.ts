@@ -6,9 +6,10 @@ import './styles.css';
 import template from './form-footer.hbs?raw';
 import type { FormFooterProps } from './types';
 
-export class FormFooter extends Block {
+export class FormFooter extends Block<FormFooterProps> {
   constructor(props: FormFooterProps) {
     super('div', {
+      ...props,
       children: {
         SubmitAction: new Button({
           ...props.submitAction,

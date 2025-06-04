@@ -4,7 +4,7 @@ import './styles.css';
 import template from './link.hbs?raw';
 import type { LinkProps } from './types';
 
-export class Link extends Block {
+export class Link extends Block<LinkProps> {
   constructor(props: LinkProps) {
     super('a', {
       ...props,

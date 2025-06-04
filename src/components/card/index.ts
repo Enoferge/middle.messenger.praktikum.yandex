@@ -4,7 +4,7 @@ import type { CardProps } from './types';
 import './styles.css';
 import template from './card.hbs?raw';
 
-export class Card extends Block {
+export class Card extends Block<CardProps> {
   constructor(props: CardProps) {
     super('section', {
       ...props,

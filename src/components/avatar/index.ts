@@ -4,7 +4,7 @@ import type { AvatarProps } from './types';
 import template from './avatar.hbs?raw';
 import './styles.css';
 
-export class Avatar extends Block {
+export class Avatar extends Block<AvatarProps> {
   constructor(props: AvatarProps) {
     const classes = ['avatar', props.class || ''].filter(Boolean).join(' ');
 
