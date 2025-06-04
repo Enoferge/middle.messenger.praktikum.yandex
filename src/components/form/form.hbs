@@ -1,0 +1,10 @@
+<form 
+  class='form{{#if class}} {{class}}{{/if}}' 
+  id="{{formId}}"
+  {{#if autocomplete}}autocomplete="{{autocomplete}}"{{/if}}
+  novalidate=true
+>
+  {{#each formFields}}
+    {{> Input this }}
+  {{/each}}
+</form>

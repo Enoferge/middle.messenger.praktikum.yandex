@@ -1,0 +1,53 @@
+<section class="profile-card" role="profile-dialog" aria-labelledby="profile-title">
+  <h1 class="page-title" id="profile-title">Profile</h1>
+
+  <div class="profile-card__content">
+  
+    <div class="profile-card__avatar">
+      <div class="profile-card__avatar-image">
+        {{> Avatar src="/assets/images/user1.png" alt="User avatar" size=160 }}
+      </div>
+      <ul role='list' class="profile-card__avatar-actions">
+        {{#ifEquals mode "CHANGE_AVATAR"}}
+          <li>
+            {{> Button variant="plain" text="Back" page="profileRead"}}
+          </li>
+        {{else}}
+          <li>
+            {{> Button variant="plain" text="Change avatar" page="profileChangeAvatar"}}
+          </li>
+          <li>
+            {{> Button variant="plain" text="Change password" page="profileChangePass"}}
+          </li>          
+          <li>
+            {{> Button variant="plain" text="Sign out" isAccent=true}}
+          </li>
+        {{/ifEquals}}
+      </ul>
+    </div>
+
+    <div class="profile-card__form-wrapper">
+      <div class="profile-card__form-scroll">
+        {{#ifIn mode (array "CHANGE_AVATAR" "CHANGE_AVATAR_ERROR" "CHANGE_AVATAR_UPLOADED")}}
+          <form 
+            class='form' 
+            id="{{formId}}"
+          >
+            {{> FileUpload fileData}}
+          </form>
+        {{else}}
+          {{> Form }}
+        {{/ifIn}}
+      </div>
+
+      <div class="profile-card__form-footer">
+        {{> Button name="save" text=submitButtonText type="submit" disabled=isFormInvalid fullWidth=true}}
+      </div>
+    </div>
+
+  </div>
+
+  <div class="profile-card__close-button">
+    {{> IconButton icon="close" variant="plain"}}
+  </div>
+</section>
