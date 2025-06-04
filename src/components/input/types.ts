@@ -1,15 +1,8 @@
 import type { Props } from '@/core/block/types';
+import type { BaseFieldAttrs } from '@/types/base-field-props';
 
-export interface InputAttrs {
-  name: string;
-  value?: string;
+export interface InputAttrs extends BaseFieldAttrs {
   type?: string;
-  minlength?: number;
-  placeholder?: string;
-  disabled?: boolean;
-  required?: boolean;
-  readonly?: boolean;
-  autocomplete?: boolean;
 }
 
 export interface InputProps extends Props, InputAttrs {

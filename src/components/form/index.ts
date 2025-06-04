@@ -3,6 +3,8 @@ import { InputField } from '@/components/input-field';
 import type { InputFieldProps } from '@/components/input-field/types';
 import { validateField } from '@/services/validation/validation';
 import { FormFieldName } from '@/constants/formFields';
+import { TextareaField } from '@/components/textarea-field';
+import type { TextareaFieldProps } from '@/components/textarea-field/types';
 
 import type { FormProps } from './types';
 import './styles.scss';
@@ -10,33 +12,41 @@ import template from './form.hbs?raw';
 
 export class Form extends Block<FormProps> {
   constructor(props: FormProps) {
-    const inputs = props.formFields?.map((fieldProps: InputFieldProps) => new InputField({
-      ...fieldProps,
-      value: props.formState?.[fieldProps.name],
-      error: props.formErrors?.[fieldProps.name],
-      readonly: fieldProps.readonly || props.isFormReadonly,
-      onFieldChange: ({ name, value }) => {
-        this.setProps({
-          formState: {
-            ...(this.props.formState || {}),
-            [name]: value,
-          },
-        });
-      },
-      onFieldBlur: ({ name, value }) => {
-        const error = validateField(
-          name,
-          value,
-              this.props.formState as Record<string, string>,
-        );
-        this.setProps({
-          formErrors: {
-            ...(this.props.formErrors || {}),
-            [name]: error,
-          },
-        });
-      },
-    })) || [];
+    const fields = props.formFields?.map((fieldProps: TextareaFieldProps | InputFieldProps) => {
+      const commonProps = {
+        ...fieldProps,
+        value: props.formState?.[fieldProps.name],
+        error: props.formErrors?.[fieldProps.name],
+        readonly: fieldProps.readonly || props.isFormReadonly,
+        onFieldChange: ({ name, value }: { name: string, value: string }) => {
+          this.setProps({
+            formState: {
+              ...(this.props.formState || {}),
+              [name]: value,
+            },
+          });
+        },
+        onFieldBlur: ({ name, value }: { name: string, value: string }) => {
+          const error = validateField(
+            name,
+            value,
+            this.props.formState as Record<string, string>,
+          );
+          this.setProps({
+            formErrors: {
+              ...(this.props.formErrors || {}),
+              [name]: error,
+            },
+          });
+        },
+      };
+
+      if (fieldProps.fieldType === 'textarea') {
+        return new TextareaField(commonProps);
+      }
+
+      return new InputField(commonProps);
+    }) || [];
 
     super('form', {
       ...props,
@@ -46,7 +56,7 @@ export class Form extends Block<FormProps> {
         novalidate: true,
       },
       children: {
-        FormFields: inputs,
+        FormFields: fields,
       },
       events: {
         submit: (e: Event) => {

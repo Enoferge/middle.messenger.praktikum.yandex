@@ -1,11 +1,12 @@
 import type { InputFieldProps } from '@/components/input-field/types';
-import { FormFieldName } from '@/constants/formFields';
+import { FormFieldName, FORM_FIELD_TYPE } from '@/constants/formFields';
 
 const commonLoginField = {
   label: 'Login',
   name: FormFieldName.Login,
   type: 'text',
   placeholder: 'Enter your login',
+  fieldType: FORM_FIELD_TYPE.Input,
 };
 
 const commonPasswordField = {
@@ -14,6 +15,7 @@ const commonPasswordField = {
   type: 'password',
   minlength: 8,
   placeholder: 'Your password',
+  fieldType: FORM_FIELD_TYPE.Input,
 };
 
 export const signInFields: Array<InputFieldProps> = [commonLoginField, commonPasswordField];
@@ -24,12 +26,14 @@ export const signUpFields: Array<InputFieldProps> = [
     name: FormFieldName.FirstName,
     type: 'text',
     placeholder: 'Enter your first name',
+    fieldType: FORM_FIELD_TYPE.Input,
   },
   {
     label: 'Second Name',
     name: FormFieldName.SecondName,
     type: 'text',
     placeholder: 'Enter your second name',
+    fieldType: FORM_FIELD_TYPE.Input,
   },
   commonLoginField,
   {
@@ -37,12 +41,14 @@ export const signUpFields: Array<InputFieldProps> = [
     name: FormFieldName.DisplayName,
     type: 'text',
     placeholder: 'Enter your display name',
+    fieldType: FORM_FIELD_TYPE.Input,
   },
   {
     label: 'Email',
     name: FormFieldName.Email,
     type: 'email',
     placeholder: 'Enter your email',
+    fieldType: FORM_FIELD_TYPE.Input,
   },
   {
     label: 'Phone',
@@ -50,6 +56,7 @@ export const signUpFields: Array<InputFieldProps> = [
     type: 'tel',
     error: 'Error message',
     placeholder: 'Enter your phone number',
+    fieldType: FORM_FIELD_TYPE.Input,
   },
   commonPasswordField,
   {
@@ -58,5 +65,6 @@ export const signUpFields: Array<InputFieldProps> = [
     type: 'password',
     minlength: 8,
     placeholder: 'Repeat your password',
+    fieldType: FORM_FIELD_TYPE.Input,
   },
 ];

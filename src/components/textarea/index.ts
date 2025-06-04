@@ -10,6 +10,7 @@ export class Textarea extends Block<TextareaProps> {
       onChange, onFocus, onBlur, ...attrs
     } = props;
     super('textarea', {
+      ...props,
       attrs: getPreparedAttrs(attrs),
       events: {
         change: (e) => onChange?.(e),

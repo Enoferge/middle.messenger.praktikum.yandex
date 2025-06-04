@@ -1,4 +1,7 @@
 export { Input } from './input';
+export { InputField } from './input-field';
+export { Textarea } from './textarea';
+export { TextareaField } from './textarea-field';
 export { Button } from './button';
 export { Card } from './card';
 export { Form } from './form';
@@ -10,3 +13,4 @@ export { IconButton } from './icon-button';
 export { Link } from './link';
 export { ChatItem } from './chat-item';
 export { MessageBubble } from './message-bubble';
+export { AvatarActions } from './avatar-actions';

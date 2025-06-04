@@ -14,7 +14,8 @@ export class IconButton extends Block<IconButtonProps> {
     const attrs: Record<string, unknown> = {
       class: classes,
       type: props.type || 'button',
-      name: props.name,
+      ...(props.name ? { form: props.name } : {}),
+      ...(props.form ? { form: props.form } : {}),
     };
 
     if (props.disabled) {

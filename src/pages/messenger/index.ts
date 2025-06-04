@@ -5,10 +5,10 @@ import { Avatar } from '@/components/avatar';
 import { IconButton } from '@/components/icon-button';
 import { ChatItem } from '@/components/chat-item';
 import { MessageBubble } from '@/components/message-bubble';
-import { TextareaField } from '@/components/textarea-field';
 import { InputField } from '@/components/input-field';
-import { FormFieldName } from '@/constants/formFields';
+import { FORM_FIELD_TYPE, FormFieldName } from '@/constants/formFields';
 
+import { Form } from '@/components';
 import template from './messenger.hbs?raw';
 import type { MessengerPageProps } from './types';
 
@@ -38,11 +38,26 @@ export class MessengerPage extends Block<MessengerPageProps> {
         }),
         SendButton: new IconButton({
           iconName: 'send',
+          type: 'submit',
+          form: 'message-form',
         }),
-        Search: new InputField({ name: 'search', type: 'search', placeholder: 'Search in chats...' }),
+        Search: new InputField({
+          name: 'search', type: 'search', placeholder: 'Search in chats...', fieldType: FORM_FIELD_TYPE.Input,
+        }),
         chats: props.chats.map((chat) => new ChatItem(chat)),
         activeChatMessages: props.activeChatMessages.map((msg) => new MessageBubble(msg)),
-        MessageField: new TextareaField({ placeholder: 'Type your message here...', name: FormFieldName.Message }),
+        MessageForm: new Form({
+          formId: 'message-form',
+          formFields: [{
+            name: FormFieldName.Message,
+            value: '',
+            placeholder: 'Type your message here...',
+            fieldType: FORM_FIELD_TYPE.Textarea,
+          }],
+          formState: {
+            [FormFieldName.Message]: '',
+          },
+        }),
       },
     });
   }

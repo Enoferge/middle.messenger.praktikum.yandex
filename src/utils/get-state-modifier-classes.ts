@@ -1,6 +1,6 @@
-import type { InputFieldProps } from '@/components/input-field/types';
+import type { BaseFieldAttrs } from '@/types/base-field-props';
 
-type StateProps = Pick<InputFieldProps, 'readonly' | 'error' | 'disabled'>
+type StateProps = Pick<BaseFieldAttrs, 'error' | 'readonly' | 'disabled'>
 
 export function getStateModifierClasses(
   baseClass: string,

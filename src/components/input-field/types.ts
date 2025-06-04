@@ -1,8 +1,4 @@
 import type { InputProps } from '@/components/input/types';
+import type { BaseFieldProps } from '@/types/base-field-props';
 
-export interface InputFieldProps extends Exclude<InputProps, 'onBlur' | 'onChange'> {
-  label?: string;
-  error?: string;
-  onFieldChange?: ({ name, value }: { name: string; value: string }) => void;
-  onFieldBlur?: ({ name, value }: { name: string; value: string }) => void;
-}
+export interface InputFieldProps extends Exclude<InputProps, 'onChange' | 'onBlur' | 'onFocus'>, BaseFieldProps {}
