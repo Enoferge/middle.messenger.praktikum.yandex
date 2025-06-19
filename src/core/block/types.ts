@@ -21,3 +21,5 @@ export type Meta = {
   tagName: string;
   props: Props;
 };
+
+export type BlockClass = new (...args: any[]) => Block

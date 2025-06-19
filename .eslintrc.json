@@ -39,7 +39,8 @@
     ],
     "func-names": "off",
     "max-len": "warn",
-    "no-param-reassign": "warn"
+    "no-param-reassign": "warn",
+    "no-use-before-define": ["error", { "functions": true, "classes": true, "variables": true, "typedefs": false}]
   },
   "overrides": [
     {

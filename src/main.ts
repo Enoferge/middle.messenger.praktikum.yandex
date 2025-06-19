@@ -1,39 +1,51 @@
+import Router from '@/navigation/router';
+import { ROUTER } from '@/navigation/constants';
+
 import './styles/variables.scss';
 import './styles/base.scss';
 import './styles/fonts.scss';
 import './styles/ui';
-import { renderPage } from './view/render';
-import { isPageName } from './utils/isPageName';
 import { registerHelpers } from './templates/helpers';
-import { pages } from './navigation/router';
-import { getCurrentPageNameFromPath } from './utils/getCurrentPageFromPath';
+import { HomePage } from './pages/home';
+import { SignInPage } from './pages/sign-in';
+import { SignUpPage } from './pages/sign-up';
 
 registerHelpers();
 
-document.addEventListener('click', (e) => {
-  const { target } = e;
+const APP_ROOT_ELEMENT_ID = "#app";
 
-  if (!(target instanceof HTMLLinkElement)) {
-    return;
-  }
+window.router = new Router(APP_ROOT_ELEMENT_ID)
 
-  if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('/')) {
-    e.preventDefault();
-    const page = target.getAttribute('href')!.slice(1);
-    if (page && isPageName(page) && pages[page]) {
-      renderPage(page);
-      window.history.pushState(null, '', `/${page}`);
-    } else {
-      renderPage('404');
-      window.history.pushState(null, '', '404');
-    }
-  }
-});
+window.router
+  .use(ROUTER.home, HomePage)
+  .use(ROUTER.signIn, SignInPage)
+  .use(ROUTER.signUp, SignUpPage)
+  .start()
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderPage(getCurrentPageNameFromPath());
-});
+// document.addEventListener('click', (e) => {
+//   const { target } = e;
 
-window.addEventListener('popstate', () => {
-  renderPage(getCurrentPageNameFromPath());
-});
+//   if (!(target instanceof HTMLLinkElement)) {
+//     return;
+//   }
+
+//   if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('/')) {
+//     e.preventDefault();
+//     const page = target.getAttribute('href')!.slice(1);
+//     if (page && isPageName(page) && pages[page]) {
+//       renderPage(page);
+//       window.history.pushState(null, '', `/${page}`);
+//     } else {
+//       renderPage('404');
+//       window.history.pushState(null, '', '404');
+//     }
+//   }
+// });
+
+// document.addEventListener('DOMContentLoaded', () => {
+//   renderPage(getCurrentPageNameFromPath());
+// });
+
+// window.addEventListener('popstate', () => {
+//   renderPage(getCurrentPageNameFromPath());
+// });

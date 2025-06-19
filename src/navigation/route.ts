@@ -1,0 +1,62 @@
+import type { Block } from '@/core/block/block';
+import type { BlockClass } from '@/core/block/types';
+
+import type { RouteProps, RouteInterface } from './types';
+
+class Route implements RouteInterface {
+  _pathname: string | null;
+
+  _blockClass: BlockClass;
+
+  _block: Block | null;
+
+  _props: RouteProps;
+
+  constructor(pathname: string, blockClass: BlockClass, props: RouteProps) {
+    this._pathname = pathname;
+    this._blockClass = blockClass;
+    this._block = null;
+    this._props = props;
+  }
+
+  navigate(pathname: string) {
+    if (this.match(pathname)) {
+      this._pathname = pathname;
+      this.render();
+    }
+  }
+
+  leave() {
+    if (this._block) {
+      this._block.hide();
+    }
+  }
+
+  match(pathname: string) {
+    return pathname === this._pathname;
+  }
+
+  _renderDom(query: string, block: Block) {
+    const root = document.querySelector(query);
+    const content = block.getContent();
+
+    if (root && content) {
+      root.innerHTML = '';
+      root.append(content);
+    }
+  }
+
+  render() {
+    if (!this._block) {
+      this._block = new this._blockClass({});
+    }
+
+    if (this._block) {
+      this._renderDom(this._props.rootQuery, this._block);
+      this._block.dispatchComponentDidMount();
+      this._block.show();
+    }
+  }
+}
+
+export default Route;

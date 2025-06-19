@@ -1,141 +1,82 @@
-import { ErrorPage } from '@/pages/error';
-import { MessengerPage } from '@/pages/messenger';
-import { AuthPage } from '@/pages/auth';
-import { HomePage } from '@/pages/home';
-import { signUpFields, signInFields } from '@/pages/auth/constants';
-import { messengerChats, activeChatMessages } from '@/pages/messenger/constants';
-import { ProfilePage } from '@/pages/profile';
-import { FormFieldName } from '@/constants/formFields';
+import type { BlockClass } from '@/core/block/types';
 
-import { PAGE_NAMES } from './constants';
-import type { PageData, PageName } from './types';
+import Route from './route';
+import type { RouteInterface } from './types';
 
-const currentPages = Object.values(PAGE_NAMES).map((page) => ({
-  page,
-  linkText: `Page ${page}`,
-}));
+class Router {
+  private static __instance: Router;
 
-export const pages: Record<PageName, PageData> = {
-  home: {
-    pageBlock: new HomePage({ pages: currentPages }),
-    layoutContext: {
-      hideHomeButton: true,
-    },
-  },
-  signIn: {
-    pageBlock: new AuthPage({
-      title: 'Sign in',
-      formId: 'sign-in-form',
-      formProps: {
-        formFields: signInFields,
-        formState: {
-          [FormFieldName.Login]: '',
-          [FormFieldName.Password]: '',
-        },
-      },
-      footerProps: {
-        submitAction: {
-          name: 'sign_in',
-          text: 'Sign in',
-        },
-        secondaryAction: {
-          link: PAGE_NAMES.SIGN_UP,
-          text: 'Sign up',
-        },
-      },
-    }),
-  },
-  signUp: {
-    pageBlock: new AuthPage({
-      title: 'Sign up',
-      formId: 'sign-up-form',
-      formProps: {
-        formFields: signUpFields,
-        formState: {
-          [FormFieldName.FirstName]: '',
-          [FormFieldName.SecondName]: '',
-          [FormFieldName.Login]: '',
-          [FormFieldName.DisplayName]: '',
-          [FormFieldName.Email]: '',
-          [FormFieldName.Phone]: '',
-          [FormFieldName.Password]: '',
-          [FormFieldName.PasswordConfirm]: '',
-        },
-      },
-      footerProps: {
-        submitAction: {
-          name: 'sign_up',
-          text: 'Sign up',
-        },
-        secondaryAction: {
-          link: PAGE_NAMES.SIGN_IN,
-          text: 'Sign in',
-        },
-      },
-    }),
-  },
-  profileRead: {
-    pageBlock: new ProfilePage({
-      mode: 'READ',
-    }),
-  },
-  profileEdit: {
-    pageBlock: new ProfilePage({
-      mode: 'EDIT',
-    }),
-  },
-  profileChangePass: {
-    pageBlock: new ProfilePage({
-      mode: 'CHANGE_PASS',
-    }),
-  },
-  profileChangeAvatar: {
-    pageBlock: new ProfilePage({
-      mode: 'CHANGE_AVATAR',
-    }),
-  },
-  profileChangeAvatarError: {
-    pageBlock: new ProfilePage({
-      mode: 'CHANGE_AVATAR_ERROR',
-    }),
-  },
-  profileChangeAvatarUploaded: {
-    pageBlock: new ProfilePage({
-      mode: 'CHANGE_AVATAR_UPLOADED',
-    }),
-  },
-  500: {
-    pageBlock: new ErrorPage({
-      code: '500',
-      message: 'Fixes are coming',
-    }),
-    layoutContext: {
-      hideHomeButton: true,
-    },
-  },
-  404: {
-    pageBlock: new ErrorPage({
-      code: '404',
-      message: 'Oops, page not found!',
-    }),
-    layoutContext: {
-      hideHomeButton: true,
-    },
-  },
-  400: {
-    pageBlock: new ErrorPage({
-      code: '400',
-      message: 'Oops!',
-    }),
-    layoutContext: {
-      hideHomeButton: true,
-    },
-  },
-  messenger: {
-    pageBlock: new MessengerPage({
-      chats: messengerChats,
-      activeChatContactName: 'Sakura',
-      activeChatMessages,
-    }),
-  },
-};
+  private routes: RouteInterface[] = [];
+
+  history = window.history;
+
+  _rootQuery: string;
+
+  _currentRoute: RouteInterface | null = null;
+
+  constructor(rootQuery: string) {
+    this._rootQuery = rootQuery;
+  }
+
+  static getInstance(rootQuery: string): Router {
+    if (Router.__instance) {
+      Router.__instance = new Router(rootQuery);
+    }
+
+    return Router.__instance;
+  }
+
+  use(pathname: string, blockClass: BlockClass) {
+    const route = new Route(pathname, blockClass, { rootQuery: this._rootQuery });
+    this.routes.push(route);
+    return this;
+  }
+
+  start() {
+    window.onpopstate = ((_event: PopStateEvent) => {
+      this._onRoute(window.location.pathname);
+    });
+
+    this._onRoute(window.location.pathname);
+  }
+
+  _onRoute(pathname: string) {
+    const route = this.getRoute(pathname);
+
+    if (!route) {
+      return;
+    }
+
+    if (this._currentRoute && this._currentRoute !== route) {
+      this._currentRoute.leave();
+    }
+
+    this._currentRoute = route;
+    route.render();
+  }
+
+  go(pathname: string) {
+    this.history.pushState({}, '', pathname);
+    this._onRoute(pathname);
+  }
+
+  back() {
+    this.history.back();
+  }
+
+  forward() {
+    this.history.forward();
+  }
+
+  getRoute(pathname: string) {
+    const route = this.routes.find((r) => r.match(pathname));
+
+    if (!route) {
+      return this.routes.find((r) => r.match('*'));
+    }
+
+    return route;
+  }
+}
+
+export default Router;
