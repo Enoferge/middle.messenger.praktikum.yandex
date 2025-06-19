@@ -3,10 +3,11 @@ import { PAGE_NAMES } from "@/navigation/constants";
 
 import { signInFields } from "../auth/constants";
 import { AuthPage } from "../auth";
+import { BasePageWithLayout } from "@/core/base-page-with-layout/base-page-with-layout";
 
-export class SignInPage extends AuthPage {
+export class SignInPage extends BasePageWithLayout {
   constructor() {
-    super({
+    const page = new AuthPage({
       title: 'Sign in',
       formId: 'sign-in-form',
       formProps: {
@@ -27,5 +28,7 @@ export class SignInPage extends AuthPage {
         },
       },
     })
+
+    super(page)
   }
 }

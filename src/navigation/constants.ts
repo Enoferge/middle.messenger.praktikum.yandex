@@ -15,7 +15,7 @@ export const PAGE_NAMES = {
 } as const;
 
 export enum ROUTER {
-  signUp = '/sign-up',
   home = '/home',
   signIn = '/',
+  signUp = '/sign-up',
 }
