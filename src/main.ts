@@ -14,7 +14,7 @@ registerHelpers();
 
 const APP_ROOT_ELEMENT_ID = "#app";
 
-window.router = new Router(APP_ROOT_ELEMENT_ID)
+window.router = Router.getInstance(APP_ROOT_ELEMENT_ID)
 
 window.router
   .use(ROUTER.home, HomePage)

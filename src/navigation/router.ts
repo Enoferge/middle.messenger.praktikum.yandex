@@ -19,7 +19,7 @@ class Router {
   }
 
   static getInstance(rootQuery: string): Router {
-    if (Router.__instance) {
+    if (!Router.__instance) {
       Router.__instance = new Router(rootQuery);
     }
 
@@ -33,11 +33,16 @@ class Router {
   }
 
   start() {
-    window.onpopstate = ((_event: PopStateEvent) => {
-      this._onRoute(window.location.pathname);
-    });
+    window.onhashchange = () => {
+      this._onRoute(this._getCurrentPath());
+    };
 
-    this._onRoute(window.location.pathname);
+    this._onRoute(this._getCurrentPath());
+  }
+
+  _getCurrentPath() {
+    const path = window.location.hash.replace(/^#/, '') || '/';
+    return path
   }
 
   _onRoute(pathname: string) {
@@ -56,8 +61,7 @@ class Router {
   }
 
   go(pathname: string) {
-    this.history.pushState({}, '', pathname);
-    this._onRoute(pathname);
+    window.location.hash = pathname
   }
 
   back() {
