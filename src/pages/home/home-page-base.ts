@@ -1,6 +1,6 @@
 import { Link } from '@/components';
 import { Block } from '@/core/block/block';
-import { PAGE_NAMES } from '@/navigation/constants';
+import { PAGES } from '@/navigation/constants';
 
 import template from './home.hbs?raw';
 import type { HomePageProps } from './types';
@@ -8,13 +8,13 @@ import './home.scss';
 
 export class HomePageBase extends Block<HomePageProps> {
   constructor() {
-    const currentPages = Object.values(PAGE_NAMES).map((page) => ({
-      page,
-      linkText: `Page ${page}`,
+    const currentPages = Object.values(PAGES).map(({ name, link }) => ({
+      link,
+      linkText: `Page ${name}`,
     }));
 
     const links = currentPages
-      ?.map(({ linkText, page }) => new Link({ link: page, text: linkText })) || [];
+      ?.map(({ linkText, link }) => new Link({ link, text: linkText })) || [];
 
     super('nav', {
       class: 'home-nav',

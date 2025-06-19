@@ -1,7 +1,7 @@
 import { Block } from '@/core/block/block';
 import type { Props } from '@/core/block/types';
 import { Link } from '@/components';
-import { PAGE_NAMES } from '@/navigation/constants';
+import { PAGES } from '@/navigation/constants';
 
 import template from './default.hbs?raw';
 import './styles.scss';
@@ -14,7 +14,7 @@ export class DefaultLayout extends Block {
         ...props.children,
         HomeLink: new Link({
           text: 'Back to Home',
-          link: PAGE_NAMES.HOME,
+          link: PAGES.HOME.link,
         }),
       },
     });

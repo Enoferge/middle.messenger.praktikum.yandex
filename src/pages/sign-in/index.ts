@@ -1,5 +1,5 @@
 import { FormFieldName } from "@/constants/formFields";
-import { PAGE_NAMES } from "@/navigation/constants";
+import { PAGES } from "@/navigation/constants";
 
 import { signInFields } from "../auth/constants";
 import { AuthPage } from "../auth";
@@ -23,7 +23,7 @@ export class SignInPage extends BasePageWithLayout {
           text: 'Sign in',
         },
         secondaryAction: {
-          link: PAGE_NAMES.SIGN_UP,
+          link: PAGES.SIGN_UP.link,
           text: 'Sign up',
         },
       },
