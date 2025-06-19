@@ -1,28 +1,11 @@
-import { Link } from '@/components';
-import { Block } from '@/core/block/block';
-import { PAGE_NAMES } from '@/navigation/constants';
+import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-layout';
 
-import template from './home.hbs?raw';
-import type { HomePageProps } from './types';
-import './home.scss';
+import { HomePageBase } from './home-page-base';
 
-export class HomePage extends Block<HomePageProps> {
+export class HomePage extends BasePageWithLayout {
   constructor() {
-    const currentPages = Object.values(PAGE_NAMES).map((page) => ({
-      page,
-      linkText: `Page ${page}`,
-    }));
+    const page = new HomePageBase()
 
-    const links = currentPages
-      ?.map(({ linkText, page }) => new Link({ link: page, text: linkText })) || [];
-
-    super('nav', {
-      class: 'home-nav',
-      children: { Links: links },
-    });
-  }
-
-  render() {
-    return template;
+    super(page, { hideHomeButton: true })
   }
 }
