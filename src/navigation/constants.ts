@@ -13,3 +13,9 @@ export const PAGE_NAMES = {
   400: '400',
   404: '404',
 } as const;
+
+export enum ROUTER {
+  signUp = '/sign-up',
+  home = '/home',
+  signIn = '/',
+}
