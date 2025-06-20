@@ -2,12 +2,14 @@ export enum ROUTER {
   home = '/home',
   signIn = '/',
   signUp = '/sign-up',
+  messenger = '/messenger',
 }
 
 export const PAGES = {
   HOME: { name: 'home', link: ROUTER.home},
   SIGN_UP: { name: 'signUp', link: ROUTER.signUp},
   SIGN_IN: { name: 'signIn', link:  ROUTER.signIn},
+  MESSENGER: { name: 'messenger', link: ROUTER.messenger}
   // PROFILE_READ: 'profileRead',
   // PROFILE_EDIT: 'profileEdit',
   // PROFILE_CHANGE_PASS: 'profileChangePass',

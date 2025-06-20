@@ -4,6 +4,7 @@ import Route from './route';
 import type { RouteInterface } from './types';
 
 class Router {
+  /* eslint-disable no-use-before-define */
   private static __instance: Router;
 
   private routes: RouteInterface[] = [];
@@ -42,7 +43,7 @@ class Router {
 
   _getCurrentPath() {
     const path = window.location.hash.replace(/^#/, '') || '/';
-    return path
+    return path;
   }
 
   _onRoute(pathname: string) {
@@ -61,7 +62,7 @@ class Router {
   }
 
   go(pathname: string) {
-    window.location.hash = pathname
+    window.location.hash = pathname;
   }
 
   back() {
