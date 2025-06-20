@@ -4,6 +4,7 @@ import type { Props } from '@/core/block/types';
 
 export interface MessengerPageProps extends Props {
   chats: Array<ChatItemProps>;
-  activeChatContactName?: string
+  activeChatContactName?: string;
+
   activeChatMessages: Array<MessageBubbleProps>;
 }

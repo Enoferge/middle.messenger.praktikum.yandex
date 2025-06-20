@@ -9,18 +9,20 @@ import { registerHelpers } from './templates/helpers';
 import { HomePage } from './pages/home';
 import { SignInPage } from './pages/sign-in';
 import { SignUpPage } from './pages/sign-up';
+import { MessengerPage } from './pages/messenger';
 
 registerHelpers();
 
-const APP_ROOT_ELEMENT_ID = "#app";
+const APP_ROOT_ELEMENT_ID = '#app';
 
-window.router = Router.getInstance(APP_ROOT_ELEMENT_ID)
+window.router = Router.getInstance(APP_ROOT_ELEMENT_ID);
 
 window.router
   .use(ROUTER.home, HomePage)
   .use(ROUTER.signIn, SignInPage)
   .use(ROUTER.signUp, SignUpPage)
-  .start()
+  .use(ROUTER.messenger, MessengerPage)
+  .start();
 
 // document.addEventListener('click', (e) => {
 //   const { target } = e;
