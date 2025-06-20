@@ -78,6 +78,7 @@ export const profilePasswordFields = [
   },
 ];
 
+// TODO: refac
 export const profilePagePropsByMode: Record<ProfileMode, PropsByMode> = {
   READ: {
     submitButtonText: 'Edit',

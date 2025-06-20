@@ -10,6 +10,7 @@ import { HomePage } from './pages/home';
 import { SignInPage } from './pages/sign-in';
 import { SignUpPage } from './pages/sign-up';
 import { MessengerPage } from './pages/messenger';
+import { ProfileSettingsPage } from './pages/profile-settings';
 
 registerHelpers();
 
@@ -22,6 +23,7 @@ window.router
   .use(ROUTER.signIn, SignInPage)
   .use(ROUTER.signUp, SignUpPage)
   .use(ROUTER.messenger, MessengerPage)
+  .use(ROUTER.profileSettings, ProfileSettingsPage)
   .start();
 
 // document.addEventListener('click', (e) => {

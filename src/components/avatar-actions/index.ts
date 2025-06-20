@@ -6,28 +6,7 @@ import type { AvatarActionsProps } from './types';
 
 export class AvatarActions extends Block<AvatarActionsProps> {
   constructor(props: AvatarActionsProps) {
-    const buttons = ['CHANGE_AVATAR', 'CHANGE_PASS'].includes(props.mode) ? [
-      new Button({
-        variant: 'plain',
-        text: 'Back',
-        onClick: props.onBackToProfile,
-      })]
-      : [new Button({
-        variant: 'plain',
-        text: 'Change avatar',
-        onClick: props.onChangeAvatar,
-      }),
-      new Button({
-        variant: 'plain',
-        text: 'Change password',
-        onClick: props.onChangePassword,
-      }),
-      new Button({
-        variant: 'plain',
-        text: 'Sign out',
-        isAccent: true,
-        onClick: props.onSignOut,
-      })];
+    const testButtons = AvatarActions.createButtons(props);
 
     super('ul', {
       ...props,
@@ -36,9 +15,29 @@ export class AvatarActions extends Block<AvatarActionsProps> {
         role: 'list',
       },
       children: {
-        Buttons: buttons,
+        Buttons: testButtons,
       },
     });
+  }
+
+  static createButtons(props: AvatarActionsProps) {
+    return ['CHANGE_AVATAR', 'CHANGE_PASS'].includes(props.mode)
+      ? [new Button({ variant: 'plain', text: 'Back', onClick: props.onBackToProfile })]
+      : [
+        new Button({ variant: 'plain', text: 'Change avatar', onClick: props.onChangeAvatar }),
+        new Button({ variant: 'plain', text: 'Change password', onClick: props.onChangePassword }),
+        new Button({
+          variant: 'plain', text: 'Sign out', isAccent: true, onClick: props.onSignOut,
+        }),
+      ];
+  }
+
+  componentDidUpdate(oldProps: AvatarActionsProps, newProps: AvatarActionsProps): boolean {
+    if (oldProps.mode !== newProps.mode) {
+      this.children.Buttons = AvatarActions.createButtons(newProps);
+      return true;
+    }
+    return false;
   }
 
   render() {

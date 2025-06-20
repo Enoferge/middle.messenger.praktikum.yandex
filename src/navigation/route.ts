@@ -28,12 +28,14 @@ class Route implements RouteInterface {
 
   leave() {
     if (this._block) {
-      this._block.hide();
+      // this._block.hide();
+      this._block.dispose();
     }
   }
 
   match(pathname: string) {
-    return pathname === this._pathname;
+    const cleanPath = pathname.split('?')[0];
+    return cleanPath === this._pathname;
   }
 
   _renderDom(query: string, block: Block) {
