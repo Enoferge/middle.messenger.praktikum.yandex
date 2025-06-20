@@ -57,8 +57,10 @@ class Router {
       this._currentRoute.leave();
     }
 
-    this._currentRoute = route;
-    route.render();
+    if (this._currentRoute !== route) {
+      this._currentRoute = route;
+      route.render();
+    }
   }
 
   go(pathname: string) {

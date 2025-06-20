@@ -1,25 +1,24 @@
+import { DefaultLayout } from '@/layouts/default';
 
-import { DefaultLayout } from "@/layouts/default";
-
-import { Block } from "../block/block";
+import { Block } from '../block/block';
 
 export abstract class BasePageWithLayout extends Block {
   constructor(pageBlock: Block, layoutProps?: { hideHomeButton?: boolean }) {
     const layout = new DefaultLayout({
       ...layoutProps,
       children: {
-        PageContent: pageBlock
-      }
-    })
+        PageContent: pageBlock,
+      },
+    });
 
     super('div', {
       children: {
-        layout
-      }
-    })
+        layout,
+      },
+    });
   }
 
   render() {
-    return `{{{layout}}}`
+    return '{{{layout}}}';
   }
 }

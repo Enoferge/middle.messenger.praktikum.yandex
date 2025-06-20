@@ -85,6 +85,14 @@ export class Block<T extends Props = Props> {
 
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+
+    Object.values(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((component) => component.dispatchComponentDidMount());
+      } else {
+        child.dispatchComponentDidMount();
+      }
+    });
   }
 
   _componentDidUpdate = (...args: unknown[]) => {
@@ -113,16 +121,14 @@ export class Block<T extends Props = Props> {
   }
 
   _addEvents() {
-    const { events = {} } = this.props;
-
+    const events = this.computeEvents ? this.computeEvents() : (this.props.events || {});
     Object.keys(events).forEach((eventName) => {
       this._element?.addEventListener(eventName, events[eventName]);
     });
   }
 
   _removeEvents() {
-    const { events = {} } = this.props;
-
+    const events = this.computeEvents ? this.computeEvents() : (this.props.events || {});
     Object.keys(events).forEach((eventName) => {
       this._element?.removeEventListener(eventName, events[eventName]);
     });
@@ -171,6 +177,8 @@ export class Block<T extends Props = Props> {
 
     const block = this._compile();
 
+    this._applyAttributes();
+
     const className = this.computeClass();
     if (className) {
       this._element?.setAttribute('class', className);
@@ -191,6 +199,30 @@ export class Block<T extends Props = Props> {
 
   computeClass(): string {
     return this.props.class || '';
+  }
+
+  computeAttrs(): Record<string, unknown> {
+    return this.props.attrs || {};
+  }
+
+  computeEvents(): Record<string, (e: Event) => void> {
+    return this.props.events || {};
+  }
+
+  private _applyAttributes() {
+    const attrs = this.computeAttrs();
+
+    if (this._element) {
+      Array.from(this._element.attributes || []).forEach((attr) => {
+        this._element?.removeAttribute(attr.name);
+      });
+
+      Object.entries(attrs).forEach(([key, value]) => {
+        if (value !== undefined && value !== null) {
+          this._element?.setAttribute(key, String(value));
+        }
+      });
+    }
   }
 
   getContent() {
@@ -245,5 +277,20 @@ export class Block<T extends Props = Props> {
     if (content) {
       content.style.display = 'none';
     }
+  }
+
+  componentWillUnmount() {}
+
+  dispose(): void {
+    this.componentWillUnmount();
+    this._removeEvents();
+
+    Object.values(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((c) => c.dispose());
+      } else {
+        child.dispose();
+      }
+    });
   }
 }

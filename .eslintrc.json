@@ -39,7 +39,7 @@
     ],
     "func-names": "off",
     "max-len": "warn",
-    "no-param-reassign": "warn",
+    "no-param-reassign": "warn"
   },
   "overrides": [
     {
