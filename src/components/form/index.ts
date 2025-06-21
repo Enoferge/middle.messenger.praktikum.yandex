@@ -1,7 +1,7 @@
 import { Block } from '@/core/block/block';
 import { InputField } from '@/components/input-field';
 import type { InputFieldProps } from '@/components/input-field/types';
-import { validateField } from '@/services/validation/validation';
+import { validateField } from '@/core/validation/validation';
 import { FormFieldName } from '@/constants/formFields';
 import { TextareaField } from '@/components/textarea-field';
 import type { TextareaFieldProps } from '@/components/textarea-field/types';
@@ -75,6 +75,11 @@ export class Form extends Block<FormProps> {
 
           console.log(filledFields);
           console.log(`Form is ${this.isFormInvalid ? 'invalid' : 'valid'}`);
+
+          if (!this.isFormInvalid) {
+            this.props.onSubmit?.(filledFields);
+            // add form-error when submit is not succeeded
+          }
         },
       },
     });

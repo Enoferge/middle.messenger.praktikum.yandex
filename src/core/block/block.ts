@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import Handlebars from 'handlebars';
 
-import { EventBus } from '@/services/event-bus/event-bus';
+import { EventBus } from '@/core/event-bus/event-bus';
 import { cloneDeep } from '@/utils/clone-deep';
 
 import type {

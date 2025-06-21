@@ -1,9 +1,11 @@
-import { FormFieldName } from "@/constants/formFields";
-import { PAGES } from "@/navigation/constants";
+import { FormFieldName } from '@/constants/formFields';
+import { PAGES } from '@/navigation/constants';
 
-import { signInFields } from "../auth/constants";
-import { AuthPage } from "../auth";
-import { BasePageWithLayout } from "@/core/base-page-with-layout/base-page-with-layout";
+import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-layout';
+import { login } from '@/services/auth';
+import type { LoginRequestData } from '@/api/types';
+import { signInFields } from '../auth/constants';
+import { AuthPage } from '../auth';
 
 export class SignInPage extends BasePageWithLayout {
   constructor() {
@@ -16,6 +18,10 @@ export class SignInPage extends BasePageWithLayout {
           [FormFieldName.Login]: '',
           [FormFieldName.Password]: '',
         },
+        onSubmit: async (form: Record<string, string>) => {
+          // change types later
+          login(form as LoginRequestData);
+        },
       },
       footerProps: {
         submitAction: {
@@ -27,8 +33,8 @@ export class SignInPage extends BasePageWithLayout {
           text: 'Sign up',
         },
       },
-    })
+    });
 
-    super(page)
+    super(page);
   }
 }

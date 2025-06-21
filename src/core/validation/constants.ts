@@ -14,7 +14,7 @@ export const INPUT_VALIDATORS: Record<string, { validator: RegExp; errorMsg: str
   [FormFieldName.Login]: displayNameValidator,
   [FormFieldName.DisplayName]: displayNameValidator,
   [FormFieldName.Password]: {
-    validator: /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,40}$/,
+    validator: /^(?=.*[A-Z])(?=.*\d)[^\s]{8,40}$/,
     errorMsg: 'Type 8–40 characters, at least one uppercase letter and one digit',
   },
   [FormFieldName.OldPassword]: {

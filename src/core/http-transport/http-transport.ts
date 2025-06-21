@@ -1,8 +1,11 @@
+import type { RequestResponse } from './types';
+
 const METHODS = {
   GET: 'GET',
   PUT: 'PUT',
   POST: 'POST',
   DELETE: 'DELETE',
+  PATCH: 'PATCH',
 } as const;
 
 type Method = (typeof METHODS)[keyof typeof METHODS];
@@ -31,40 +34,49 @@ function hasContentTypeHeader(headers?: Record<string, string>): boolean {
   return Object.keys(headers ?? {}).some((key) => key.toLowerCase() === 'content-type');
 }
 
+const ERROR_STATUS_CODES = [400, 401, 403, 500];
+
 export class HTTPTransport {
-  get = (
+  private apiUrl;
+
+  constructor(apiPath: string) {
+    this.apiUrl = `https://ya-praktikum.tech/api/v2/${apiPath}`;
+  }
+
+  get = <TResponse>(
     url: string,
     options: RequestOptions = {},
-  ): Promise<XMLHttpRequest> => this.request(url, {
+  ): Promise<RequestResponse<TResponse>> => this.request<TResponse>(`${this.apiUrl}${url}`, {
     ...options,
     method: METHODS.GET,
   }, options.timeout);
 
-  put = (
+  put = <TResponse>(
     url: string,
     options: RequestOptions = {},
-  ): Promise<XMLHttpRequest> => this.request(url, {
+  ): Promise<RequestResponse<TResponse>> => this.request(`${this.apiUrl}${url}`, {
     ...options,
     method: METHODS.PUT,
   }, options.timeout);
 
-  post = (
+  post = <TResponse>(
     url: string,
     options: RequestOptions = {},
-  ): Promise<XMLHttpRequest> => this.request(url, {
+  ): Promise<RequestResponse<TResponse>> => this.request(`${this.apiUrl}${url}`, {
     ...options,
     method: METHODS.POST,
   }, options.timeout);
 
-  delete = (
+  delete = <TResponse>(
     url: string,
     options: RequestOptions = {},
-  ): Promise<XMLHttpRequest> => this.request(url, {
+  ): Promise<RequestResponse<TResponse>> => this.request(`${this.apiUrl}${url}`, {
     ...options,
     method: METHODS.DELETE,
   }, options.timeout);
 
-  request = (url: string, options: RequestOptions, timeout = 5000): Promise<XMLHttpRequest> => {
+  request = <TResponse>(url: string, options: RequestOptions, timeout = 5000):
+    Promise<RequestResponse<TResponse>> => {
     const { method, headers, data } = options;
 
     return new Promise((resolve, reject) => {
@@ -74,10 +86,11 @@ export class HTTPTransport {
       }
 
       const xhr = new XMLHttpRequest();
-
       const handleError = () => reject(xhr);
 
-      const preparedUrl = method === METHODS.GET ? `${url}${queryStringify(data as Record<string, unknown>)}` : url;
+      const preparedUrl = method === METHODS.GET
+        ? `${url}${queryStringify(data as Record<string, unknown>)}`
+        : url;
 
       xhr.open(method, preparedUrl);
       xhr.timeout = timeout;
@@ -86,7 +99,25 @@ export class HTTPTransport {
         xhr.setRequestHeader(header, value);
       });
 
-      xhr.onload = () => resolve(xhr);
+      xhr.onload = () => {
+        try {
+          const json = JSON.parse(xhr.responseText);
+          const statusCode = xhr.status;
+          const response = {
+            statusCode,
+            data: json as TResponse,
+          };
+
+          if (!ERROR_STATUS_CODES.includes(statusCode)) {
+            resolve(response);
+          } else {
+            throw response;
+          }
+        } catch (e) {
+          reject(e);
+        }
+      };
+
       xhr.onabort = handleError;
       xhr.ontimeout = handleError;
       xhr.onerror = handleError;
