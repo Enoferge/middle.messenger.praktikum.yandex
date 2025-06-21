@@ -3,10 +3,9 @@ import { Block } from '@/core/block/block';
 import { PAGES } from '@/navigation/constants';
 
 import template from './home.hbs?raw';
-import type { HomePageProps } from './types';
 import './home.scss';
 
-export class HomePageBase extends Block<HomePageProps> {
+export class HomePageBase extends Block {
   constructor() {
     const currentPages = Object.values(PAGES).map(({ name, link }) => ({
       link,

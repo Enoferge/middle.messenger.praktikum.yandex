@@ -19,7 +19,6 @@
 
 // export type PageName = (typeof PAGE_NAMES)[keyof typeof PAGE_NAMES];
 
-
 // const currentPages = Object.values(PAGE_NAMES).map((page) => ({
 //   page,
 //   linkText: `Page ${page}`,
