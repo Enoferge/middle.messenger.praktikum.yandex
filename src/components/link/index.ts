@@ -6,7 +6,7 @@ import type { LinkProps } from './types';
 
 export class Link extends Block<LinkProps> {
   constructor(props: LinkProps) {
-    const cleanLink = props.link?.startsWith('/') ? props.link : '/' + props.link
+    const cleanLink = props.link?.startsWith('/') ? props.link : `/${props.link}`;
 
     super('a', {
       ...props,
@@ -18,8 +18,8 @@ export class Link extends Block<LinkProps> {
         click: (e: MouseEvent) => {
           e.preventDefault();
           window.router.go(cleanLink);
-        }
-      }
+        },
+      },
     });
   }
 
