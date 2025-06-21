@@ -34,7 +34,7 @@ function hasContentTypeHeader(headers?: Record<string, string>): boolean {
   return Object.keys(headers ?? {}).some((key) => key.toLowerCase() === 'content-type');
 }
 
-const ERROR_STATUS_CODES = [400, 401, 403, 500];
+const ERROR_STATUS_CODES = [400, 401, 403, 409, 500];
 
 export class HTTPTransport {
   private apiUrl;
@@ -101,11 +101,20 @@ export class HTTPTransport {
 
       xhr.onload = () => {
         try {
-          const json = JSON.parse(xhr.responseText);
+          let responseData;
+
+          try {
+            responseData = JSON.parse(xhr.responseText);
+          } catch (e) {
+            responseData = xhr.responseText;
+            console.error('error while parsing response json, returning responseText as it is');
+            console.error(e);
+          }
+
           const statusCode = xhr.status;
           const response = {
             statusCode,
-            data: json as TResponse,
+            data: responseData as TResponse,
           };
 
           if (!ERROR_STATUS_CODES.includes(statusCode)) {
