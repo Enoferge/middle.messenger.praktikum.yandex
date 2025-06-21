@@ -40,7 +40,7 @@ export class HTTPTransport {
   private apiUrl;
 
   constructor(apiPath: string) {
-    this.apiUrl = `https://ya-praktikum.tech/api/v2/${apiPath}`;
+    this.apiUrl = `https://ya-praktikum.tech/api/v2${apiPath}`;
   }
 
   get = <TResponse>(
