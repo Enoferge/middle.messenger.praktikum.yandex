@@ -10,6 +10,7 @@ export interface FormProps extends Props {
   formErrors?: Record<string, string>;
   isFormReadonly?: boolean;
   onSubmit?: (form: Record<string, string>) => Promise<void>
+  onSuccess?: () => void
 
   children?: {
     FormFields?: Block[];

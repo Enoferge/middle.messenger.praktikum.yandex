@@ -36,10 +36,7 @@ export class SignUpPage extends BasePageWithLayout {
         //   [FormFieldName.Password]: '',
         //   [FormFieldName.PasswordConfirm]: '',
         // },
-        onSubmit: async (form: Record<string, string>) => {
-          // change types later
-          createUser(form as CreateUserRequestData);
-        },
+        onSubmit: async (form: Record<string, string>) => createUser(form as CreateUserRequestData),
       },
       footerProps: {
         submitAction: {

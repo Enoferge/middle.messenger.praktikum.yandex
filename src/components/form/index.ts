@@ -84,7 +84,7 @@ export class InnerForm extends Block<FormProps> {
             console.log(this.props.formError);
 
             if (!this.props.formError) {
-              (this as unknown as WithRouter).router.go('/messenger');
+              this.props.onSuccess?.();
             } else {
               console.log('Login request failed');
             }

@@ -25,7 +25,6 @@ export class SignInPage extends BasePageWithLayout {
         //   [FormFieldName.Password]: '',
         // },
         onSubmit: async (form: Record<string, string>) => login(form as LoginRequestData),
-        // change types later
       },
       footerProps: {
         submitAction: {

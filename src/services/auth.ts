@@ -36,8 +36,14 @@ export const createUser = async (data: CreateUserRequestData) => {
     const res = await authApi.createUser(data);
     console.log(res);
     console.log('createUser succeed');
+    window.store.set({
+      formError: null,
+    });
   } catch (e: unknown) {
     console.error('error while trying to create User');
     console.error(e);
+    window.store.set({
+      formError: (e as ResponseError)?.data?.reason || 'Error while trying to sign up',
+    });
   }
 };
