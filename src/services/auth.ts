@@ -47,3 +47,14 @@ export const createUser = async (data: CreateUserRequestData) => {
     });
   }
 };
+
+export const signOut = async () => {
+  try {
+    await authApi.logOut();
+    return true;
+  } catch (e: unknown) {
+    console.error('error while trying to sign out');
+    console.error(e);
+    return false;
+  }
+};

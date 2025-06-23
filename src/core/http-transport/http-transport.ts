@@ -93,6 +93,7 @@ export class HTTPTransport {
         : url;
 
       xhr.open(method, preparedUrl);
+      xhr.withCredentials = true;
       xhr.timeout = timeout;
 
       Object.entries(headers ?? {}).forEach(([header, value]) => {

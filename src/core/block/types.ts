@@ -22,4 +22,4 @@ export type Meta = {
   props: Props;
 };
 
-export type BlockClass<TProps extends Props > = new (props: TProps) => Block<TProps>
+export type BlockClass<TProps extends Props > = new (props?: TProps) => Block<TProps>

@@ -1,12 +1,16 @@
 import { Card, Form, FormFooter } from '@/components';
 import { Block } from '@/core/block/block';
-import { withRouter, type WithRouter } from '@/core/hoc/with-router';
+import { withRouter } from '@/core/hoc/with-router';
+import { ROUTER } from '@/navigation/constants';
+import type Router from '@/navigation/router';
 
 import template from './auth.hbs?raw';
 import type { AuthPageProps } from './types';
 
 export class AuthPageBase extends Block<AuthPageProps> {
-  constructor(props: AuthPageProps) {
+  protected router!: Router;
+
+  constructor(props: AuthPageProps = {} as AuthPageProps) {
     const {
       title,
       formId,
@@ -23,7 +27,7 @@ export class AuthPageBase extends Block<AuthPageProps> {
             ContentBlock: new Form({
               formId,
               ...formProps,
-              onSuccess: () => (this as unknown as WithRouter).router.go('/messenger'),
+              onSuccess: () => this.router.go(ROUTER.messenger),
             }),
             FooterBlock: new FormFooter({
               submitAction: { ...submitAction, formId },

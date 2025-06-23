@@ -3,9 +3,13 @@ import { Avatar } from '@/components/avatar';
 import { AvatarActions } from '@/components/avatar-actions';
 import { Button } from '@/components/button';
 import { IconButton } from '@/components/icon-button';
-
 import { updateHashQuery } from '@/utils/update-hash-query';
 import type { ButtonProps } from '@/components/button/types';
+import { signOut } from '@/services/auth';
+import { withRouter } from '@/core/hoc/with-router';
+import { ROUTER } from '@/navigation/constants';
+import type Router from '@/navigation/router';
+
 import template from './profile.hbs?raw';
 import './styles.scss';
 import type { ProfileMode, ProfilePageProps } from './types';
@@ -13,6 +17,8 @@ import { profilePagePropsByMode } from './constants';
 import { ProfileContentBlock } from './components/profile-content-block';
 
 export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
+  protected router!: Router;
+
   static getModeFromUrl(): ProfileMode | null {
     const { hash } = window.location;
     const query = hash.split('?')[1];
@@ -65,7 +71,12 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
           onBackToProfile: () => updateHashQuery('mode', 'read'),
           onChangeAvatar: () => updateHashQuery('mode', 'change_avatar'),
           onChangePassword: () => updateHashQuery('mode', 'change_pass'),
-          onSignOut: () => console.log('sign out'),
+          onSignOut: async () => {
+            const success = await signOut();
+            if (success) {
+              this.router.go(ROUTER.signIn);
+            }
+          },
         }),
         Content: new ProfileContentBlock({ mode }),
         Footer: new Button(ProfileSettingsPageBase.getDynamicProps(mode).button),
@@ -117,3 +128,5 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
     return template;
   }
 }
+
+export const ProfileSettingsPageWithRouter = withRouter(ProfileSettingsPageBase);
