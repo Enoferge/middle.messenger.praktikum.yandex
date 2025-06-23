@@ -12,10 +12,13 @@ export class Store extends EventBus {
 
   private state: State = {};
 
+  private defaultState: State = {};
+
   constructor(defaultState: State) {
     super();
     console.log('constructor');
 
+    this.defaultState = defaultState;
     this.state = defaultState;
     this.set(defaultState);
 
@@ -40,5 +43,9 @@ export class Store extends EventBus {
     this.state = { ...this.state, ...nextState };
 
     this.emit(StoreEvents.Updated, prevState, nextState);
+  }
+
+  public clearState() {
+    this.set(this.defaultState);
   }
 }

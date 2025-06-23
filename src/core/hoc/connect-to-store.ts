@@ -32,6 +32,7 @@ export function connect<
       componentWillUnmount() {
         super.componentWillUnmount();
         window.store.off(StoreEvents.Updated, this.onChangeStoreCallback);
+        window.store.clearState();
       }
     };
   };
