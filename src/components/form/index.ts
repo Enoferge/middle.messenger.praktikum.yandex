@@ -5,12 +5,14 @@ import { validateField } from '@/core/validation/validation';
 import { FormFieldName } from '@/constants/formFields';
 import { TextareaField } from '@/components/textarea-field';
 import type { TextareaFieldProps } from '@/components/textarea-field/types';
+import { withRouter, type WithRouter } from '@/core/hoc/with-router';
+import { connect } from '@/core/hoc/connect-to-store';
 
-import type { FormProps } from './types';
+import type { FormProps, FormState } from './types';
 import './styles.scss';
 import template from './form.hbs?raw';
 
-export class Form extends Block<FormProps> {
+export class InnerForm extends Block<FormProps> {
   constructor(props: FormProps) {
     const fields = props.formFields?.map((fieldProps: TextareaFieldProps | InputFieldProps) => {
       const commonProps = {
@@ -59,7 +61,7 @@ export class Form extends Block<FormProps> {
         FormFields: fields,
       },
       events: {
-        submit: (e: Event) => {
+        submit: async (e: Event) => {
           e.preventDefault();
 
           const errors = this.validateAllFields();
@@ -77,8 +79,15 @@ export class Form extends Block<FormProps> {
           console.log(`Form is ${this.isFormInvalid ? 'invalid' : 'valid'}`);
 
           if (!this.isFormInvalid) {
-            this.props.onSubmit?.(filledFields);
-            // add form-error when submit is not succeeded
+            await this.props.onSubmit?.(filledFields);
+            console.log('props.formError');
+            console.log(this.props.formError);
+
+            if (!this.props.formError) {
+              (this as unknown as WithRouter).router.go('/messenger');
+            } else {
+              console.log('Login request failed');
+            }
           }
         },
       },
@@ -112,6 +121,10 @@ export class Form extends Block<FormProps> {
       }
     });
 
+    if (oldProps.formError !== newProps.formError) {
+      return true;
+    }
+
     return false;
   }
 
@@ -119,3 +132,10 @@ export class Form extends Block<FormProps> {
     return template;
   }
 }
+
+const mapStateToProps = (state: FormState) => ({
+  isFormLoading: state.isFormLoading,
+  formError: state.formError,
+});
+
+export const Form = connect<FormProps, FormState>(mapStateToProps)(withRouter(InnerForm));

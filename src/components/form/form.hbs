@@ -1,3 +1,8 @@
 {{#each FormFields}}
   {{{this}}}
 {{/each}}
+{{#if formError}}
+  <div class="form__error-caption">
+   {{ formError }}
+  </div>
+{{/if}}

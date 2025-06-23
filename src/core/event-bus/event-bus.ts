@@ -1,11 +1,5 @@
 import type { Listeners, ListenerCallback } from './types';
 
-function checkEventExists(listeners: Listeners, event: string) {
-  if (!listeners[event]) {
-    throw new Error(`No event: ${event}`);
-  }
-}
-
 export class EventBus {
   listeners: Listeners;
 
@@ -22,13 +16,17 @@ export class EventBus {
   }
 
   off(event: string, callback: ListenerCallback) {
-    checkEventExists(this.listeners, event);
+    if (!this.listeners[event]) {
+      throw new Error(`No event: ${event}`);
+    }
 
-    this.listeners[event] = this.listeners[event].filter((listener) => listener !== callback);
+    this.listeners[event] = this.listeners[event]?.filter((listener) => listener !== callback);
   }
 
   emit(event: string, ...args: Array<unknown>) {
-    checkEventExists(this.listeners, event);
+    if (!this.listeners[event]) {
+      return;
+    }
 
     this.listeners[event].forEach((listener) => {
       listener(...args);

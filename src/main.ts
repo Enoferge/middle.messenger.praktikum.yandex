@@ -1,5 +1,7 @@
 import Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
+import { Store, StoreEvents } from '@/core/store/store';
+import type { State } from '@/core/store/types';
 
 import './styles/variables.scss';
 import './styles/base.scss';
@@ -15,6 +17,17 @@ import { ProfileSettingsPage } from './pages/profile-settings';
 registerHelpers();
 
 const APP_ROOT_ELEMENT_ID = '#app';
+
+window.store = new Store({
+  isFormLoading: false,
+  user: null,
+  formError: null,
+});
+
+window.store.on(StoreEvents.Updated, (prevState: State, newState: State) => {
+  console.log('prevState', prevState);
+  console.log('newState', newState);
+});
 
 window.router = Router.getInstance(APP_ROOT_ELEMENT_ID);
 

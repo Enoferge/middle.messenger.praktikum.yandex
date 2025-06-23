@@ -1,4 +1,4 @@
-import type { BlockClass } from '@/core/block/types';
+import type { BlockClass, Props } from '@/core/block/types';
 
 import Route from './route';
 import type { RouteInterface } from './types';
@@ -27,7 +27,7 @@ class Router {
     return Router.__instance;
   }
 
-  use(pathname: string, blockClass: BlockClass) {
+  use(pathname: string, blockClass: BlockClass<Props>) {
     const route = new Route(pathname, blockClass, { rootQuery: this._rootQuery });
     this.routes.push(route);
     return this;

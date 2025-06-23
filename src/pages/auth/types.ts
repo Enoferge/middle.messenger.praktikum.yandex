@@ -7,4 +7,5 @@ export interface AuthPageProps extends Props {
   formId: string;
   formProps: Pick<FormProps, 'formFields' | 'formState' | 'onSubmit'>;
   footerProps: FormFooterProps;
+  formSubmitError?: string
 }

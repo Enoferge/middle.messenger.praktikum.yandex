@@ -1,18 +1,18 @@
 import type { Block } from '@/core/block/block';
-import type { BlockClass } from '@/core/block/types';
+import type { BlockClass, Props } from '@/core/block/types';
 
 import type { RouteProps, RouteInterface } from './types';
 
 class Route implements RouteInterface {
   _pathname: string | null;
 
-  _blockClass: BlockClass;
+  _blockClass: BlockClass<Props>;
 
   _block: Block | null;
 
   _props: RouteProps;
 
-  constructor(pathname: string, blockClass: BlockClass, props: RouteProps) {
+  constructor(pathname: string, blockClass: BlockClass<Props>, props: RouteProps) {
     this._pathname = pathname;
     this._blockClass = blockClass;
     this._block = null;

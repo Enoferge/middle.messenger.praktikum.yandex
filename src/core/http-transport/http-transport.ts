@@ -1,4 +1,4 @@
-import type { RequestResponse } from './types';
+import type { Response } from './types';
 
 const METHODS = {
   GET: 'GET',
@@ -46,7 +46,7 @@ export class HTTPTransport {
   get = <TResponse>(
     url: string,
     options: RequestOptions = {},
-  ): Promise<RequestResponse<TResponse>> => this.request<TResponse>(`${this.apiUrl}${url}`, {
+  ): Promise<Response<TResponse>> => this.request<TResponse>(`${this.apiUrl}${url}`, {
     ...options,
     method: METHODS.GET,
   }, options.timeout);
@@ -54,7 +54,7 @@ export class HTTPTransport {
   put = <TResponse>(
     url: string,
     options: RequestOptions = {},
-  ): Promise<RequestResponse<TResponse>> => this.request(`${this.apiUrl}${url}`, {
+  ): Promise<Response<TResponse>> => this.request(`${this.apiUrl}${url}`, {
     ...options,
     method: METHODS.PUT,
   }, options.timeout);
@@ -62,7 +62,7 @@ export class HTTPTransport {
   post = <TResponse>(
     url: string,
     options: RequestOptions = {},
-  ): Promise<RequestResponse<TResponse>> => this.request(`${this.apiUrl}${url}`, {
+  ): Promise<Response<TResponse>> => this.request(`${this.apiUrl}${url}`, {
     ...options,
     method: METHODS.POST,
   }, options.timeout);
@@ -70,13 +70,13 @@ export class HTTPTransport {
   delete = <TResponse>(
     url: string,
     options: RequestOptions = {},
-  ): Promise<RequestResponse<TResponse>> => this.request(`${this.apiUrl}${url}`, {
+  ): Promise<Response<TResponse>> => this.request(`${this.apiUrl}${url}`, {
     ...options,
     method: METHODS.DELETE,
   }, options.timeout);
 
   request = <TResponse>(url: string, options: RequestOptions, timeout = 5000):
-    Promise<RequestResponse<TResponse>> => {
+    Promise<Response<TResponse>> => {
     const { method, headers, data } = options;
 
     return new Promise((resolve, reject) => {

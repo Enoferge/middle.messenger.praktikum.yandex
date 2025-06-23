@@ -11,6 +11,7 @@ const testFields = {
   [FormFieldName.Login]: 'TestLoginSvr1',
   [FormFieldName.Password]: 'qwertyQWERTY1',
 };
+
 export class SignInPage extends BasePageWithLayout {
   constructor() {
     const page = new AuthPage({
@@ -23,10 +24,8 @@ export class SignInPage extends BasePageWithLayout {
         //   [FormFieldName.Login]: '',
         //   [FormFieldName.Password]: '',
         // },
-        onSubmit: async (form: Record<string, string>) => {
-          // change types later
-          login(form as LoginRequestData);
-        },
+        onSubmit: async (form: Record<string, string>) => login(form as LoginRequestData),
+        // change types later
       },
       footerProps: {
         submitAction: {
