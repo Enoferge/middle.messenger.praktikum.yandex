@@ -7,12 +7,12 @@ import { TextareaField } from '@/components/textarea-field';
 import type { TextareaFieldProps } from '@/components/textarea-field/types';
 import { connect } from '@/core/hoc/connect-to-store';
 
-import type { ConnectedFormProps, FormState } from './types';
+import type { ConnectedFormProps, FormProps, FormState } from './types';
 import './styles.scss';
 import template from './form.hbs?raw';
 
-export class InnerForm extends Block<ConnectedFormProps> {
-  constructor(props?: ConnectedFormProps) {
+export class InnerForm extends Block<FormProps> {
+  constructor(props?: FormProps) {
     if (!props) {
       throw new Error('InnerForm: props are required');
     }
@@ -72,7 +72,8 @@ export class InnerForm extends Block<ConnectedFormProps> {
             formErrors: errors,
           });
 
-          console.log('SUBMIT');
+          console.log('SUBMIT FORM');
+          console.log(this.props.formState);
 
           const filledFields = Object.fromEntries(
             Object.entries(this.props.formState || {}).filter(([name, value]) => value.trim() !== '' && name !== FormFieldName.PasswordConfirm),
@@ -150,4 +151,4 @@ const mapStateToProps = (state: FormState) => ({
   formError: state.formError,
 });
 
-export const Form = connect<ConnectedFormProps, FormState>(mapStateToProps)(InnerForm);
+export const Form = connect<FormProps, FormState>(mapStateToProps)(InnerForm);

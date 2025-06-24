@@ -20,9 +20,10 @@ const APP_ROOT_ELEMENT_ID = '#app';
 
 window.store = new Store({
   isFormLoading: false,
-  user: null,
   formError: null,
   profileMode: 'READ',
+  user: null,
+  isUserInfoLoading: false,
 });
 
 window.store.on(StoreEvents.Updated, (prevState: State, newState: State) => {

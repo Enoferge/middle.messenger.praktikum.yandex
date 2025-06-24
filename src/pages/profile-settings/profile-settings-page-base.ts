@@ -4,10 +4,11 @@ import { AvatarActions } from '@/components/avatar-actions';
 import { Button } from '@/components/button';
 import { IconButton } from '@/components/icon-button';
 import type { ButtonProps } from '@/components/button/types';
-import { signOut } from '@/services/auth';
+import { getUserInfo, signOut } from '@/services/auth';
 import { ROUTER } from '@/navigation/constants';
 import type Router from '@/navigation/router';
 import { connect } from '@/core/hoc/connect-to-store';
+import isEqual from '@/utils/is-equal';
 
 import template from './profile.hbs?raw';
 import './styles.scss';
@@ -32,7 +33,11 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
         name: 'profile-main-button',
         text: submitButtonText,
         fullWidth: true,
-        onClick: mode === 'READ' ? () => ProfileSettingsPageBase.updateProfileMode('EDIT') : undefined,
+        onClick: mode === 'READ' ? (e: Event) => {
+          e.preventDefault();
+          e.stopPropagation();
+          ProfileSettingsPageBase.updateProfileMode('EDIT');
+        } : undefined,
       },
     });
   }
@@ -42,10 +47,15 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   }
 
   constructor(props?: ProfilePageProps) {
-    const mode = props?.mode ?? 'READ';
+    const { mode = 'READ', user = {} } = props || {};
+
+    console.log('user in constructor');
+    console.log(props);
+    console.log(user);
 
     super('section', {
       mode,
+      user,
       class: 'profile-card',
       attrs: {
         role: 'profile-dialog',
@@ -69,7 +79,7 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
             }
           },
         }),
-        Content: new ProfileContentBlock({ mode }),
+        Content: new ProfileContentBlock({ mode, user }),
         Footer: new Button(ProfileSettingsPageBase.getDynamicProps(mode).button),
         CloseButton: new IconButton({
           iconName: 'close',
@@ -81,9 +91,11 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   }
 
   componentDidUpdate(oldProps: ProfilePageProps, newProps: ProfilePageProps): boolean {
-    if (newProps.mode && oldProps.mode !== newProps.mode) {
+    console.log('PROFILE SETTINGS UPDATE');
+    console.log(newProps);
+    if (!isEqual(oldProps, newProps)) {
       (this.children.AvatarActions as AvatarActions).setProps({ mode: newProps.mode });
-      (this.children.Content as ProfileContentBlock).setProps({ mode: newProps.mode });
+      (this.children.Content as ProfileContentBlock).setProps({ mode: newProps.mode, user: newProps.user });
       (this.children.Footer as Button)
         .setProps(ProfileSettingsPageBase.getDynamicProps(newProps.mode).button);
 
@@ -98,6 +110,11 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
     window.store.set({
       profileMode: 'READ',
     });
+
+    if (!window.store.state.user) {
+      console.log('need to get user info');
+      getUserInfo();
+    }
   }
 
   render() {
@@ -107,8 +124,10 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
 
 const mapStateToStore = (state: ProfileState) => ({
   mode: state.profileMode,
+  user: state.user,
+  isUserInfoLoading: state.isUserInfoLoading,
 });
 
-export const ProfileSettingsPageStore = connect<ProfilePageProps, ProfileState>(
+export const ProfileSettingsPageConnected = connect<ProfilePageProps, ProfileState>(
   mapStateToStore,
 )(ProfileSettingsPageBase);

@@ -1,3 +1,4 @@
+import type { UserDTO } from '@/api/types';
 import type { FormProps } from '@/components/form/types';
 import type { InputFieldProps } from '@/components/input-field/types';
 import type { Props } from '@/core/block/types';
@@ -6,6 +7,8 @@ export type ProfileMode = 'READ' | 'EDIT' | 'CHANGE_PASS' | 'CHANGE_AVATAR' | 'C
 
 export interface ProfilePageProps extends Props {
   mode?: ProfileMode;
+  user?: UserDTO
+  isUserInfoLoading?: boolean
 }
 
 export type PropsByMode = {
@@ -20,4 +23,6 @@ export type PropsByMode = {
 
 export type ProfileState = {
    profileMode: ProfileMode;
+   user: UserDTO
+   isUserInfoLoading: boolean
 }

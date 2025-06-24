@@ -4,9 +4,27 @@ import type { ResponseError } from '@/core/http-transport/types';
 
 const authApi = new AuthApi();
 
+export const getUserInfo = async () => {
+  try {
+    window.store.set({
+      isUserInfoLoading: true,
+    });
+    const { data } = await authApi.getUserInfo();
+    window.store.set({
+      user: data,
+    });
+  } catch (e: unknown) {
+    console.error('error while trying to get user info');
+    console.error(e);
+  } finally {
+    window.store.set({
+      isUserInfoLoading: false,
+    });
+  }
+};
+
 export const login = async (data: LoginRequestData) => {
   try {
-    window.store.isFormLoading = true;
     window.store.set({
       isFormLoading: true,
     });
@@ -18,6 +36,8 @@ export const login = async (data: LoginRequestData) => {
     window.store.set({
       formError: null,
     });
+
+    await getUserInfo();
   } catch (e: unknown) {
     console.error('error while trying to login');
     console.error(e);
@@ -39,6 +59,8 @@ export const createUser = async (data: CreateUserRequestData) => {
     window.store.set({
       formError: null,
     });
+
+    await getUserInfo();
   } catch (e: unknown) {
     console.error('error while trying to create User');
     console.error(e);
@@ -51,6 +73,9 @@ export const createUser = async (data: CreateUserRequestData) => {
 export const signOut = async () => {
   try {
     await authApi.logOut();
+    window.store.set({
+      user: null,
+    });
     return true;
   } catch (e: unknown) {
     console.error('error while trying to sign out');

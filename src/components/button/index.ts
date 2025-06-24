@@ -23,6 +23,8 @@ export class Button extends Block<ButtonProps> {
   }
 
   computeClass(): string {
+    console.log('computeClass');
+
     return [
       'button',
       `button_${this.props.variant || 'default'}`,
@@ -35,6 +37,7 @@ export class Button extends Block<ButtonProps> {
   }
 
   computeAttrs() {
+    console.log('computeAttrs');
     const attrs: Record<string, unknown> = {
       type: this.props.type || 'button',
       name: this.props.name,
@@ -53,6 +56,7 @@ export class Button extends Block<ButtonProps> {
   }
 
   computeEvents() {
+    console.log('computeEvents');
     return {
       click: (e: Event) => this.props.onClick?.(e),
       blur: (e: Event) => this.props.onBlur?.(e),
@@ -62,5 +66,13 @@ export class Button extends Block<ButtonProps> {
 
   render() {
     return template;
+  }
+
+  componentDidUpdate(_oldProps: ButtonProps, _newProps: ButtonProps): boolean {
+    console.log('BUTTON UPDATE');
+    console.log(_oldProps);
+    console.log(_newProps);
+
+    return true;
   }
 }
