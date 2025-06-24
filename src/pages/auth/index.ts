@@ -1,13 +1,12 @@
 import { Card, Form, FormFooter } from '@/components';
 import { Block } from '@/core/block/block';
-import { withRouter } from '@/core/hoc/with-router';
 import { ROUTER } from '@/navigation/constants';
 import type Router from '@/navigation/router';
 
 import template from './auth.hbs?raw';
 import type { AuthPageProps } from './types';
 
-export class AuthPageBase extends Block<AuthPageProps> {
+export class AuthPage extends Block<AuthPageProps> {
   protected router!: Router;
 
   constructor(props: AuthPageProps = {} as AuthPageProps) {
@@ -43,5 +42,3 @@ export class AuthPageBase extends Block<AuthPageProps> {
     return template;
   }
 }
-
-export const AuthPage = withRouter(AuthPageBase);

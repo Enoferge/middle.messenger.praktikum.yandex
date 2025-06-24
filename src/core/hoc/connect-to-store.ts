@@ -10,11 +10,11 @@ export function connect<
     return class extends Component {
       private onChangeStoreCallback: () => void;
 
-      constructor(props: TProps) {
+      constructor(props?: TProps) {
         const { store } = window;
         let state = mapStateToProps(store.getState());
 
-        super({ ...props, ...state });
+        super({ ...(props || {}), ...state } as TProps);
 
         this.onChangeStoreCallback = () => {
           const newState = mapStateToProps(store.getState());
@@ -25,14 +25,18 @@ export function connect<
 
           state = newState;
         };
+      }
 
-        store.on(StoreEvents.Updated, this.onChangeStoreCallback);
+      componentDidMount() {
+        console.log('component did mount HOC CONNECT');
+        window.store.on(StoreEvents.Updated, this.onChangeStoreCallback);
+        super.componentDidMount();
       }
 
       componentWillUnmount() {
+        console.log('component will unmount HOC CONNECT');
         super.componentWillUnmount();
         window.store.off(StoreEvents.Updated, this.onChangeStoreCallback);
-        window.store.clearState();
       }
     };
   };

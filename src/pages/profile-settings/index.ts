@@ -1,11 +1,10 @@
 import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-layout';
 
-import { ProfileSettingsPageWithRouter } from './profile-settings-page-base';
+import { ProfileSettingsPageStore } from './profile-settings-page-base';
+import type { ProfilePageProps } from './types';
 
-export class ProfileSettingsPage extends BasePageWithLayout {
+export class ProfileSettingsPage extends BasePageWithLayout<ProfilePageProps> {
   constructor() {
-    const page = new ProfileSettingsPageWithRouter();
-
-    super(page);
+    super(ProfileSettingsPageStore, {});
   }
 }

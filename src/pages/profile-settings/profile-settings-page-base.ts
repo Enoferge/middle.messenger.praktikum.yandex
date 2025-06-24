@@ -3,33 +3,20 @@ import { Avatar } from '@/components/avatar';
 import { AvatarActions } from '@/components/avatar-actions';
 import { Button } from '@/components/button';
 import { IconButton } from '@/components/icon-button';
-import { updateHashQuery } from '@/utils/update-hash-query';
 import type { ButtonProps } from '@/components/button/types';
 import { signOut } from '@/services/auth';
-import { withRouter } from '@/core/hoc/with-router';
 import { ROUTER } from '@/navigation/constants';
 import type Router from '@/navigation/router';
+import { connect } from '@/core/hoc/connect-to-store';
 
 import template from './profile.hbs?raw';
 import './styles.scss';
-import type { ProfileMode, ProfilePageProps } from './types';
+import type { ProfileMode, ProfilePageProps, ProfileState } from './types';
 import { profilePagePropsByMode } from './constants';
 import { ProfileContentBlock } from './components/profile-content-block';
 
 export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   protected router!: Router;
-
-  static getModeFromUrl(): ProfileMode | null {
-    const { hash } = window.location;
-    const query = hash.split('?')[1];
-
-    if (!query) {
-      return null;
-    }
-
-    const mode = new URLSearchParams(query).get('mode');
-    return mode?.toUpperCase() as ProfileMode | null;
-  }
 
   static getDynamicProps(mode: ProfileMode): { button: ButtonProps } {
     const {
@@ -45,13 +32,17 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
         name: 'profile-main-button',
         text: submitButtonText,
         fullWidth: true,
-        onClick: mode === 'READ' ? () => updateHashQuery('mode', 'edit') : undefined,
+        onClick: mode === 'READ' ? () => ProfileSettingsPageBase.updateProfileMode('EDIT') : undefined,
       },
     });
   }
 
-  constructor() {
-    const mode: ProfileMode = ProfileSettingsPageBase.getModeFromUrl() ?? 'READ';
+  static updateProfileMode(mode: ProfileMode) {
+    window.store.set({ profileMode: mode });
+  }
+
+  constructor(props?: ProfilePageProps) {
+    const mode = props?.mode ?? 'READ';
 
     super('section', {
       mode,
@@ -68,9 +59,9 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
         }),
         AvatarActions: new AvatarActions({
           mode,
-          onBackToProfile: () => updateHashQuery('mode', 'read'),
-          onChangeAvatar: () => updateHashQuery('mode', 'change_avatar'),
-          onChangePassword: () => updateHashQuery('mode', 'change_pass'),
+          onBackToProfile: () => ProfileSettingsPageBase.updateProfileMode('READ'),
+          onChangeAvatar: () => ProfileSettingsPageBase.updateProfileMode('CHANGE_AVATAR'),
+          onChangePassword: () => ProfileSettingsPageBase.updateProfileMode('CHANGE_PASS'),
           onSignOut: async () => {
             const success = await signOut();
             if (success) {
@@ -89,22 +80,8 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
     });
   }
 
-  componentDidMount() {
-    const mode = ProfileSettingsPageBase.getModeFromUrl();
-
-    if (!mode) {
-      setTimeout(() => updateHashQuery('mode', 'read'), 0);
-    }
-
-    window.addEventListener('hashchange', this.updateMode);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('hashchange', this.updateMode);
-  }
-
   componentDidUpdate(oldProps: ProfilePageProps, newProps: ProfilePageProps): boolean {
-    if (oldProps.mode !== newProps.mode) {
+    if (newProps.mode && oldProps.mode !== newProps.mode) {
       (this.children.AvatarActions as AvatarActions).setProps({ mode: newProps.mode });
       (this.children.Content as ProfileContentBlock).setProps({ mode: newProps.mode });
       (this.children.Footer as Button)
@@ -116,17 +93,22 @@ export class ProfileSettingsPageBase extends Block<ProfilePageProps> {
     return true;
   }
 
-  updateMode = () => {
-    const newMode = ProfileSettingsPageBase.getModeFromUrl();
-
-    if (newMode && this.props.mode !== newMode) {
-      this.setProps({ mode: newMode });
-    }
-  };
+  componentDidMount(): void {
+    // not do in component
+    window.store.set({
+      profileMode: 'READ',
+    });
+  }
 
   render() {
     return template;
   }
 }
 
-export const ProfileSettingsPageWithRouter = withRouter(ProfileSettingsPageBase);
+const mapStateToStore = (state: ProfileState) => ({
+  mode: state.profileMode,
+});
+
+export const ProfileSettingsPageStore = connect<ProfilePageProps, ProfileState>(
+  mapStateToStore,
+)(ProfileSettingsPageBase);

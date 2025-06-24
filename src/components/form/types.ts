@@ -21,3 +21,5 @@ export type FormState = {
   isFormLoading: boolean,
   formError: string | null,
 }
+
+export type ConnectedFormProps = FormProps & FormState

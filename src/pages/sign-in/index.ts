@@ -6,15 +6,16 @@ import { login } from '@/services/auth';
 import type { LoginRequestData } from '@/api/types';
 import { signInFields } from '../auth/constants';
 import { AuthPage } from '../auth';
+import type { AuthPageProps } from '../auth/types';
 
 const testFields = {
   [FormFieldName.Login]: 'TestLoginSvr1',
   [FormFieldName.Password]: 'qwertyQWERTY1',
 };
 
-export class SignInPage extends BasePageWithLayout {
+export class SignInPage extends BasePageWithLayout<AuthPageProps> {
   constructor() {
-    const page = new AuthPage({
+    super(AuthPage, {
       title: 'Sign in',
       formId: 'sign-in-form',
       formProps: {
@@ -37,7 +38,5 @@ export class SignInPage extends BasePageWithLayout {
         },
       },
     });
-
-    super(page);
   }
 }

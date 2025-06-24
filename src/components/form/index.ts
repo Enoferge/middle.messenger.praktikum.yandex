@@ -5,15 +5,18 @@ import { validateField } from '@/core/validation/validation';
 import { FormFieldName } from '@/constants/formFields';
 import { TextareaField } from '@/components/textarea-field';
 import type { TextareaFieldProps } from '@/components/textarea-field/types';
-import { withRouter, type WithRouter } from '@/core/hoc/with-router';
 import { connect } from '@/core/hoc/connect-to-store';
 
-import type { FormProps, FormState } from './types';
+import type { ConnectedFormProps, FormState } from './types';
 import './styles.scss';
 import template from './form.hbs?raw';
 
-export class InnerForm extends Block<FormProps> {
-  constructor(props: FormProps) {
+export class InnerForm extends Block<ConnectedFormProps> {
+  constructor(props?: ConnectedFormProps) {
+    if (!props) {
+      throw new Error('InnerForm: props are required');
+    }
+
     const fields = props.formFields?.map((fieldProps: TextareaFieldProps | InputFieldProps) => {
       const commonProps = {
         ...fieldProps,
@@ -108,7 +111,7 @@ export class InnerForm extends Block<FormProps> {
     );
   }
 
-  componentDidUpdate(oldProps: FormProps, newProps: FormProps) {
+  componentDidUpdate(oldProps: ConnectedFormProps, newProps: ConnectedFormProps) {
     const fields = (this.children.FormFields || []) as InputField[];
 
     fields.forEach((inputField: InputField) => {
@@ -128,6 +131,15 @@ export class InnerForm extends Block<FormProps> {
     return false;
   }
 
+  componentDidMount(): void {
+    console.log('MOUNTED FORM, clear state');
+    // not do in component
+    window.store.set({
+      isFormLoading: false,
+      formError: null,
+    });
+  }
+
   render() {
     return template;
   }
@@ -138,4 +150,4 @@ const mapStateToProps = (state: FormState) => ({
   formError: state.formError,
 });
 
-export const Form = connect<FormProps, FormState>(mapStateToProps)(withRouter(InnerForm));
+export const Form = connect<ConnectedFormProps, FormState>(mapStateToProps)(InnerForm);

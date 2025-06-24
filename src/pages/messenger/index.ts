@@ -4,8 +4,6 @@ import { MessengerPageBase } from './messenger-page-base';
 
 export class MessengerPage extends BasePageWithLayout {
   constructor() {
-    const page = new MessengerPageBase();
-
-    super(page);
+    super(MessengerPageBase, {});
   }
 }

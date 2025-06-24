@@ -22,11 +22,13 @@ window.store = new Store({
   isFormLoading: false,
   user: null,
   formError: null,
+  profileMode: 'READ',
 });
 
 window.store.on(StoreEvents.Updated, (prevState: State, newState: State) => {
   console.log('prevState', prevState);
   console.log('newState', newState);
+  console.log(window.store.state);
 });
 
 window.router = Router.getInstance(APP_ROOT_ELEMENT_ID);

@@ -6,6 +6,7 @@ import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-
 import type { CreateUserRequestData } from '@/api/types';
 import { signUpFields } from '../auth/constants';
 import { AuthPage } from '../auth';
+import type { AuthPageProps } from '../auth/types';
 
 const testFields = {
   [FormFieldName.FirstName]: 'TestFirst',
@@ -18,9 +19,9 @@ const testFields = {
   [FormFieldName.PasswordConfirm]: 'qwertyQWERTY1',
 };
 
-export class SignUpPage extends BasePageWithLayout {
+export class SignUpPage extends BasePageWithLayout<AuthPageProps> {
   constructor() {
-    const page = new AuthPage({
+    super(AuthPage, {
       title: 'Sign up',
       formId: 'sign-up-form',
       formProps: {
@@ -49,7 +50,36 @@ export class SignUpPage extends BasePageWithLayout {
         },
       },
     });
+    // const page = new AuthPage({
+    //   title: 'Sign up',
+    //   formId: 'sign-up-form',
+    //   formProps: {
+    //     formFields: signUpFields,
+    //     formState: testFields,
+    //     // formState: {
+    //     //   [FormFieldName.FirstName]: '',
+    //     //   [FormFieldName.SecondName]: '',
+    //     //   [FormFieldName.Login]: '',
+    //     //   [FormFieldName.DisplayName]: '',
+    //     //   [FormFieldName.Email]: '',
+    //     //   [FormFieldName.Phone]: '',
+    //     //   [FormFieldName.Password]: '',
+    //     //   [FormFieldName.PasswordConfirm]: '',
+    //     // },
+    //     onSubmit: async (form: Record<string, string>) => createUser(form as CreateUserRequestData),
+    //   },
+    //   footerProps: {
+    //     submitAction: {
+    //       name: 'sign_up',
+    //       text: 'Sign up',
+    //     },
+    //     secondaryAction: {
+    //       link: PAGES.SIGN_IN.link,
+    //       text: 'Sign in',
+    //     },
+    //   },
+    // });
 
-    super(page);
+    // super(page);
   }
 }
