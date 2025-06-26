@@ -27,9 +27,9 @@ window.store = new Store({
 });
 
 window.store.on(StoreEvents.Updated, (prevState: State, newState: State) => {
-  console.log('prevState', prevState);
-  console.log('newState', newState);
-  console.log(window.store.state);
+  // console.log('prevState', prevState);
+  // console.log('newState', newState);
+  // console.log(window.store.state);
 });
 
 window.router = Router.getInstance(APP_ROOT_ELEMENT_ID);

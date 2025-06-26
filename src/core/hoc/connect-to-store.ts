@@ -28,13 +28,11 @@ export function connect<
       }
 
       componentDidMount() {
-        console.log('component did mount HOC CONNECT');
         window.store.on(StoreEvents.Updated, this.onChangeStoreCallback);
         super.componentDidMount();
       }
 
       componentWillUnmount() {
-        console.log('component will unmount HOC CONNECT');
         super.componentWillUnmount();
         window.store.off(StoreEvents.Updated, this.onChangeStoreCallback);
       }

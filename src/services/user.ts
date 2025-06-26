@@ -10,9 +10,7 @@ export const changeUserInfo = async (data: ChangeUserInfoRequestData) => {
     window.store.set({
       isFormLoading: true,
     });
-    const res = await userApi.changeUserInfo(data);
-    console.log('after change user info got:');
-    console.log(res);
+    await userApi.changeUserInfo(data);
 
     window.store.set({
       profileMode: 'READ',

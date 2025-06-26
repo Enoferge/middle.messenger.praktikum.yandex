@@ -7,7 +7,7 @@ import { TextareaField } from '@/components/textarea-field';
 import type { TextareaFieldProps } from '@/components/textarea-field/types';
 import { connect } from '@/core/hoc/connect-to-store';
 
-import type { ConnectedFormProps, FormProps, FormState } from './types';
+import type { FormProps, FormState } from './types';
 import './styles.scss';
 import template from './form.hbs?raw';
 
@@ -84,13 +84,9 @@ export class InnerForm extends Block<FormProps> {
 
           if (!this.isFormInvalid) {
             await this.props.onSubmit?.(filledFields);
-            console.log('props.formError');
-            console.log(this.props.formError);
 
             if (!this.props.formError) {
               this.props.onSuccess?.();
-            } else {
-              console.log('Login request failed');
             }
           }
         },
@@ -112,7 +108,7 @@ export class InnerForm extends Block<FormProps> {
     );
   }
 
-  componentDidUpdate(oldProps: ConnectedFormProps, newProps: ConnectedFormProps) {
+  componentDidUpdate(oldProps: FormProps, newProps: FormProps) {
     const fields = (this.children.FormFields || []) as InputField[];
 
     fields.forEach((inputField: InputField) => {
@@ -133,12 +129,7 @@ export class InnerForm extends Block<FormProps> {
   }
 
   componentDidMount(): void {
-    console.log('MOUNTED FORM, clear state');
-    // not do in component
-    window.store.set({
-      isFormLoading: false,
-      formError: null,
-    });
+    this.props.onFormClear?.()
   }
 
   render() {
@@ -149,6 +140,10 @@ export class InnerForm extends Block<FormProps> {
 const mapStateToProps = (state: FormState) => ({
   isFormLoading: state.isFormLoading,
   formError: state.formError,
+  onFormClear: () => window.store.set({
+    isFormLoading: false,
+    formError: null,
+  })
 });
 
 export const Form = connect<FormProps, FormState>(mapStateToProps)(InnerForm);

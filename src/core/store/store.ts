@@ -16,7 +16,6 @@ export class Store extends EventBus {
 
   constructor(defaultState: State) {
     super();
-    console.log('constructor');
 
     this.defaultState = defaultState;
     this.state = defaultState;

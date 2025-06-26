@@ -11,6 +11,7 @@ export interface FormProps extends Props {
   isFormReadonly?: boolean;
   onSubmit?: (form: Record<string, string>) => Promise<void>
   onSuccess?: () => void
+  onFormClear?: () => void
 
   children?: {
     FormFields?: Block[];
@@ -21,5 +22,3 @@ export type FormState = {
   isFormLoading: boolean,
   formError: string | null,
 }
-
-export type ConnectedFormProps = FormProps & FormState

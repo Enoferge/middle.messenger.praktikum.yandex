@@ -1,59 +1,60 @@
 import { Block } from '@/core/block/block';
 import { Form, FileUpload } from '@/components';
-
 import { changeUserInfo } from '@/services/user';
 import type { ChangeUserInfoRequestData } from '@/api/user';
-import { FormFieldName } from '@/constants/formFields';
 import type { UserDTO } from '@/api/types';
-import { profilePagePropsByMode } from '../../constants';
+
+import { PROFILE_FORMS, PROFILE_MODE_UI } from '../../constants';
 import type { ProfileMode } from '../../types';
 import type { ProfileContentProps } from './types';
 
-const testFields = {
-  [FormFieldName.FirstName]: 'TestFirst',
-  [FormFieldName.SecondName]: 'TestSecond',
-  [FormFieldName.Login]: 'TestLoginSvr1',
-  [FormFieldName.DisplayName]: 'TestDisplaySvr1',
-  [FormFieldName.Email]: 'test-email-svr1@yandex.ru',
-  [FormFieldName.Phone]: '+79998887766',
-};
-
-export class ProfileContentBlock extends Block<ProfileContentProps> {
-  static getContentChild(mode: ProfileMode, user?: UserDTO) {
-    console.log('getContentChild');
-    console.log(user);
-    const data = profilePagePropsByMode[mode];
-
-    const { id, avatar, ...userInfo } = user || {};
-
-    return mode.startsWith('CHANGE_AVATAR')
-      ? new FileUpload({
-        name: 'profile-avatar',
-        error: data.isFileError ? 'Error while uploading, please try again' : '',
-        filename: data.filename,
-      })
-      : new Form({
-        formId: 'profile-form',
-        formFields: data.formFields,
-        // formState: data.formState,
-        formState: userInfo,
-        isFormReadonly: data.isFormReadonly,
-        onSubmit: async (form: Record<string, string>) => {
-          console.log('SUMBIT PROFILE FORM');
-          await changeUserInfo(form as ChangeUserInfoRequestData);
-        },
-      });
+function userToFormState(user: UserDTO | undefined): Record<string, string> {
+  if (!user) {
+    return {};
   }
 
+  const { id, avatar, ...rest } = user;
+  return { ...rest };
+}
+
+function buildContent(mode: ProfileMode, user?: UserDTO) {
+  const config = PROFILE_MODE_UI[mode];
+
+  if (config.showFileUpload) {
+    return new FileUpload({
+      name: 'profile-avatar',
+      error: config.fileError ? 'Error while uploading, please try again' : '',
+      filename: config.filename,
+    });
+  }
+
+  const formSource = mode === 'CHANGE_PASS' ? PROFILE_FORMS.password : PROFILE_FORMS.info;
+  const userFormData = userToFormState(user);
+  const isReadonly = !!config.isReadonly;
+
+  return new Form({
+    formId: 'profile-form',
+    formFields: formSource.fields,
+    formState: mode === 'CHANGE_PASS' ? formSource.initialState : userFormData,
+    isFormReadonly: isReadonly,
+    onSubmit: async (form: Record<string, string>) => {
+      await changeUserInfo(form as ChangeUserInfoRequestData);
+    },
+  });
+}
+
+export class ProfileContentBlock extends Block<ProfileContentProps> {
   constructor(props: ProfileContentProps) {
     super('div', {
       ...props,
-      children: { Content: ProfileContentBlock.getContentChild(props.mode, props.user) },
+      children: {
+        Content: buildContent(props.mode, props.user),
+      },
     });
   }
 
   componentDidUpdate(_oldProps: ProfileContentProps, newProps: ProfileContentProps) {
-    this.children.Content = ProfileContentBlock.getContentChild(newProps.mode, newProps.user);
+    this.children.Content = buildContent(newProps.mode, newProps.user);
     return true;
   }
 
