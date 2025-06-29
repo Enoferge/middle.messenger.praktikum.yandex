@@ -30,10 +30,10 @@ export class Input extends Block<InputProps> {
       onChange, onFocus, onBlur, ...attrs
     } = this.props;
 
-    return getPreparedAttrs(attrs)
+    return getPreparedAttrs(attrs);
   }
 
   componentDidUpdate(oldProps: InputProps, newProps: InputProps): boolean {
-    return !isEqual(oldProps, newProps)
+    return !isEqual(oldProps, newProps);
   }
 }

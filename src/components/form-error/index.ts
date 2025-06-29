@@ -15,13 +15,18 @@ export class FormError extends Block<FormErrorProps> {
 
   componentDidUpdate(oldProps: FormErrorProps, newProps: FormErrorProps): boolean {
     if (oldProps.error !== newProps.error) {
-      newProps.error ? this.show() : this.hide()
+      if (newProps.error) {
+        this.show();
+      } else {
+        this.hide();
+      }
+
       return true;
     }
-    return false
+    return false;
   }
 
   render() {
     return '<div>{{error}}</div>';
   }
-} 
+}

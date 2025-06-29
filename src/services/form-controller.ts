@@ -1,7 +1,6 @@
 export class FormController {
+  /* eslint-disable no-use-before-define */
   private static __instance: FormController;
-
-  private constructor() { }
 
   static getInstance(): FormController {
     if (!FormController.__instance) {
@@ -38,4 +37,4 @@ export class FormController {
   }
 }
 
-export const formController = FormController.getInstance(); 
+export const formController = FormController.getInstance();

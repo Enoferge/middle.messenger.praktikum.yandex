@@ -1,6 +1,5 @@
 import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-layout';
 
-import type { ProfileMode, ProfilePageProps } from './types';
 import { connect } from '@/core/hoc/connect-to-store';
 import { Block } from '@/core/block/block';
 import { Avatar, AvatarActions, Button, IconButton } from '@/components';
@@ -8,13 +7,14 @@ import { getUserInfo, signOut } from '@/services/auth';
 import type Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
 import isEqual from '@/utils/is-equal';
+import type { ProfileMode, ProfilePageProps } from './types';
 
 import template from './profile.hbs?raw';
 import * as SectionConfigs from './section-configs';
-import './styles.scss'
+import './styles.scss';
 import { ProfileForm, type UserInfo } from './components/profile-form';
 
-const DEFAULT_PROFILE_MODE: ProfileMode = 'READ'
+const DEFAULT_PROFILE_MODE: ProfileMode = 'READ';
 
 class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   private router!: Router;
@@ -87,7 +87,7 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
       }
       if (this.children.Footer) {
         (this.children.Footer as Button).setProps(
-          SectionConfigs.getButtonProps(newMode, this.props.onModeChange)
+          SectionConfigs.getButtonProps(newMode, this.props.onModeChange),
         );
       }
     }
@@ -117,8 +117,8 @@ const mapStateToProps = (state: ProfileSettingsState) => ({
   onModeChange: (mode: ProfileMode) => {
     window.store.set({
       profileMode: mode,
-    })
-  }
+    });
+  },
 });
 
 const ProfileSettingsPageConnected = connect<ProfilePageProps, any>(mapStateToProps)(ProfileSettingsPageBase);

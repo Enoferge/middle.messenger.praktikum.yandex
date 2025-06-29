@@ -49,6 +49,13 @@
     "max-len": "warn",
     "no-param-reassign": "warn",
     "object-curly-newline": "off",
+    "max-classes-per-file": [
+      "error",
+      {
+        "ignoreExpressions": true,
+        "max": 2
+      }
+    ]
   },
   "overrides": [
     {

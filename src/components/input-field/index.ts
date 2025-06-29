@@ -49,7 +49,7 @@ export class InputField extends Block<InputFieldProps> {
       if (this.children.Input) {
         (this.children.Input as Input).setProps({ ...newProps });
       }
-      return true
+      return true;
     }
 
     return false;

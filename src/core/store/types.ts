@@ -1,5 +1,5 @@
-import type { UserInfo } from "@/pages/profile-settings/components/profile-form";
-import type { ProfileMode } from "@/pages/profile-settings/types";
+import type { UserInfo } from '@/pages/profile-settings/components/profile-form';
+import type { ProfileMode } from '@/pages/profile-settings/types';
 
 export type State = Record<string, any>
 

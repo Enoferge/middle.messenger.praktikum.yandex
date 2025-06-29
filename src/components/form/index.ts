@@ -8,11 +8,11 @@ import type { TextareaFieldProps } from '@/components/textarea-field/types';
 import isEqual from '@/utils/is-equal';
 import { connect } from '@/core/hoc/connect-to-store';
 
+import { formController } from '@/services/form-controller';
 import type { FormProps } from './types';
 import './styles.scss';
 import template from './form.hbs?raw';
 import { FormError } from '../form-error';
-import { formController } from '@/services/form-controller';
 
 export interface FormWithStoreProps extends FormProps {
   formError?: string | null;
@@ -106,7 +106,7 @@ export class Form extends Block<FormWithStoreProps> {
       field.setProps({
         value: newValue,
         readonly: isFormReadonly,
-        error: fieldsErrors?.[fieldName]
+        error: fieldsErrors?.[fieldName],
       });
     });
   }
@@ -123,9 +123,7 @@ export class Form extends Block<FormWithStoreProps> {
     console.log(this.props.formState);
 
     const filledFields = Object.fromEntries(
-      Object.entries(this.props.formState || {}).filter(([name, value]) => {
-        return value?.trim() !== '' && name !== FormFieldName.PasswordConfirm
-      }),
+      Object.entries(this.props.formState || {}).filter(([name, value]) => value?.trim() !== '' && name !== FormFieldName.PasswordConfirm),
     );
 
     console.log(filledFields);
@@ -179,7 +177,6 @@ export class Form extends Block<FormWithStoreProps> {
     if (!isEqual(oldProps.formState || {}, newProps.formState || {})
       || !isEqual(oldProps.fieldsErrors || {}, newProps.fieldsErrors || {})
       || oldProps.isFormReadonly !== newProps.isFormReadonly) {
-
       this.updateExistingFieldValues(newProps.formState || {}, newProps.fieldsErrors || {}, newProps.isFormReadonly || false);
 
       return false;
@@ -199,7 +196,7 @@ export class Form extends Block<FormWithStoreProps> {
   }
 
   componentWillUnmount(): void {
-    formController.clearError()
+    formController.clearError();
   }
 
   render() {

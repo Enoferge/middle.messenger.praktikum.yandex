@@ -7,9 +7,9 @@ const authApi = new AuthApi();
 
 export const getUserInfo = async () => {
   try {
-    formController.setLoading(true)
+    formController.setLoading(true);
     const { data } = await authApi.getUserInfo();
-    const { id, avatar, ...info } = data as UserDTO
+    const { id, avatar, ...info } = data as UserDTO;
     window.store.set({
       user: info,
     });
@@ -17,13 +17,13 @@ export const getUserInfo = async () => {
     console.error('error while trying to get user info');
     console.error(e);
   } finally {
-    formController.setLoading(false)
+    formController.setLoading(false);
   }
 };
 
 export const login = async (data: LoginRequestData) => {
   try {
-    formController.setLoading(true)
+    formController.setLoading(true);
 
     const res = await authApi.login(data);
 
@@ -34,7 +34,7 @@ export const login = async (data: LoginRequestData) => {
   } catch (e: unknown) {
     throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to sign in');
   } finally {
-    formController.setLoading(false)
+    formController.setLoading(false);
   }
 };
 
