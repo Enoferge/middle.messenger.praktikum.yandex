@@ -11,8 +11,17 @@ export type ChangeUserInfoRequestData = {
   'phone': string
 }
 
+export type ChangeUserPassRequestData = {
+  'oldPassword': string,
+  'newPassword': string
+}
+
 export default class UserApi {
   async changeUserInfo(data: ChangeUserInfoRequestData) {
     return userApi.put('/profile', { data });
+  }
+
+  async changeUserPass(data: ChangeUserPassRequestData) {
+    return userApi.put('/password', { data });
   }
 }

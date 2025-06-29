@@ -5,53 +5,18 @@ import { validateField } from '@/core/validation/validation';
 import { FormFieldName } from '@/constants/formFields';
 import { TextareaField } from '@/components/textarea-field';
 import type { TextareaFieldProps } from '@/components/textarea-field/types';
-import { connect } from '@/core/hoc/connect-to-store';
+import isEqual from '@/utils/is-equal';
 
-import type { FormProps, FormState } from './types';
+import type { FormProps } from './types';
 import './styles.scss';
 import template from './form.hbs?raw';
+import { FormError } from '../form-error';
 
-export class InnerForm extends Block<FormProps> {
+export class Form extends Block<FormProps> {
   constructor(props?: FormProps) {
     if (!props) {
-      throw new Error('InnerForm: props are required');
+      throw new Error('Form: props are required');
     }
-
-    const fields = props.formFields?.map((fieldProps: TextareaFieldProps | InputFieldProps) => {
-      const commonProps = {
-        ...fieldProps,
-        value: props.formState?.[fieldProps.name],
-        error: props.formErrors?.[fieldProps.name],
-        readonly: fieldProps.readonly || props.isFormReadonly,
-        onFieldChange: ({ name, value }: { name: string, value: string }) => {
-          this.setProps({
-            formState: {
-              ...(this.props.formState || {}),
-              [name]: value,
-            },
-          });
-        },
-        onFieldBlur: ({ name, value }: { name: string, value: string }) => {
-          const error = validateField(
-            name,
-            value,
-            this.props.formState as Record<string, string>,
-          );
-          this.setProps({
-            formErrors: {
-              ...(this.props.formErrors || {}),
-              [name]: error,
-            },
-          });
-        },
-      };
-
-      if (fieldProps.fieldType === 'textarea') {
-        return new TextareaField(commonProps);
-      }
-
-      return new InputField(commonProps);
-    }) || [];
 
     super('form', {
       ...props,
@@ -61,41 +26,107 @@ export class InnerForm extends Block<FormProps> {
         novalidate: true,
       },
       children: {
-        FormFields: fields,
+        FormFields: [],
+        FormError: new FormError({
+          error: props.formError,
+        }),
       },
       events: {
         submit: async (e: Event) => {
-          e.preventDefault();
-
-          const errors = this.validateAllFields();
-          this.setProps({
-            formErrors: errors,
-          });
-
-          console.log('SUBMIT FORM');
-          console.log(this.props.formState);
-
-          const filledFields = Object.fromEntries(
-            Object.entries(this.props.formState || {}).filter(([name, value]) => value.trim() !== '' && name !== FormFieldName.PasswordConfirm),
-          );
-
-          console.log(filledFields);
-          console.log(`Form is ${this.isFormInvalid ? 'invalid' : 'valid'}`);
-
-          if (!this.isFormInvalid) {
-            await this.props.onSubmit?.(filledFields);
-
-            if (!this.props.formError) {
-              this.props.onSuccess?.();
-            }
-          }
+          await this.handleFormSubmit(e);
         },
       },
     });
   }
 
+  private createFieldComponents(props: FormProps): (InputField | TextareaField)[] {
+    return props.formFields?.map((fieldProps: TextareaFieldProps | InputFieldProps) => {
+      const commonProps = {
+        ...fieldProps,
+        value: props.formState?.[fieldProps.name],
+        error: props.fieldsErrors?.[fieldProps.name],
+        readonly: fieldProps.readonly || props.isFormReadonly,
+        onFieldChange: this.handleFieldChange.bind(this),
+        onFieldBlur: this.handleFieldBlur.bind(this),
+      };
+
+      if (fieldProps.fieldType === 'textarea') {
+        return new TextareaField(commonProps);
+      }
+
+      return new InputField(commonProps);
+    }) || [];
+  }
+
+  private handleFieldChange({ name, value }: { name: string, value: string }): void {
+    this.setProps({
+      formState: {
+        ...(this.props.formState || {}),
+        [name]: value,
+      },
+    });
+  }
+
+  private handleFieldBlur({ name, value }: { name: string, value: string }): void {
+    const error = validateField(
+      name,
+      value,
+      this.props.formState as Record<string, string>,
+    );
+    this.setProps({
+      fieldsErrors: {
+        ...(this.props.fieldsErrors || {}),
+        [name]: error,
+      },
+    });
+  }
+
+  private updateExistingFieldValues(formState: Record<string, string>, fieldsErrors: Record<string, string>, isFormReadonly: boolean): void {
+    const fields = (this.children.FormFields || []) as (InputField | TextareaField)[];
+    fields.forEach((field) => {
+      const fieldName = field.props.name;
+      const newValue = formState?.[fieldName];
+
+      field.setProps({
+        value: newValue,
+        readonly: isFormReadonly,
+        error: fieldsErrors?.[fieldName]
+      });
+    });
+  }
+
+  private async handleFormSubmit(e: Event): Promise<void> {
+    e.preventDefault();
+
+    const errors = this.validateAllFields();
+    this.setProps({
+      fieldsErrors: errors,
+    });
+
+    console.log('SUBMIT FORM');
+    console.log(this.props.formState);
+
+    const filledFields = Object.fromEntries(
+      Object.entries(this.props.formState || {}).filter(([name, value]) => {
+        console.log(name, value)
+        return value?.trim() !== '' && name !== FormFieldName.PasswordConfirm
+      }),
+    );
+
+    console.log(filledFields);
+    console.log(`Form is ${this.isFormInvalid ? 'invalid' : 'valid'}`);
+
+    if (!this.isFormInvalid) {
+      await this.props.onSubmit?.(filledFields);
+
+      if (!this.props.formError) {
+        this.props.onSuccess?.();
+      }
+    }
+  }
+
   get isFormInvalid() {
-    return Object.values(this.props.formErrors || {}).some((el) => !!el);
+    return Object.values(this.props.fieldsErrors || {}).some((el) => !!el);
   }
 
   validateAllFields() {
@@ -109,41 +140,48 @@ export class InnerForm extends Block<FormProps> {
   }
 
   componentDidUpdate(oldProps: FormProps, newProps: FormProps) {
-    const fields = (this.children.FormFields || []) as InputField[];
-
-    fields.forEach((inputField: InputField) => {
-      const { name } = inputField.props;
-
-      if (oldProps.formErrors?.[String(name)] !== newProps.formErrors?.[String(name)]) {
-        inputField.setProps({
-          error: newProps.formErrors?.[String(name)] || '',
-        });
-      }
-    });
-
     if (oldProps.formError !== newProps.formError) {
+      if (this.children.FormError) {
+        (this.children.FormError as FormError).setProps({ error: newProps.formError });
+      }
+      return false;
+    }
+
+    if (!isEqual(oldProps.formFields || {}, newProps.formFields || {})) {
+      const newFields = this.createFieldComponents(newProps);
+
+      this.updateChildren({
+        ...this.children,
+        FormFields: newFields,
+      });
+
       return true;
     }
 
-    return false;
+
+    if (!isEqual(oldProps.formState || {}, newProps.formState || {})
+      || !isEqual(oldProps.fieldsErrors || {}, newProps.fieldsErrors || {})
+      || oldProps.isFormReadonly !== newProps.isFormReadonly) {
+
+      this.updateExistingFieldValues(newProps.formState || {}, newProps.fieldsErrors || {}, newProps.isFormReadonly || false);
+
+      return false;
+    }
+
+    return true;
   }
 
   componentDidMount(): void {
-    this.props.onFormClear?.()
+    const fields = this.createFieldComponents(this.props);
+    this.updateChildren({
+      ...this.children,
+      FormFields: fields,
+    });
+
+    this.forceUpdate();
   }
 
   render() {
     return template;
   }
 }
-
-const mapStateToProps = (state: FormState) => ({
-  isFormLoading: state.isFormLoading,
-  formError: state.formError,
-  onFormClear: () => window.store.set({
-    isFormLoading: false,
-    formError: null,
-  })
-});
-
-export const Form = connect<FormProps, FormState>(mapStateToProps)(InnerForm);

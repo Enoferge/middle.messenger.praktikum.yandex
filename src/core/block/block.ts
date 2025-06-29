@@ -28,6 +28,8 @@ export class Block<T extends Props = Props> {
 
   props: T;
 
+  private _isBatchUpdating = false;
+
   constructor(tagName = 'div', propsWithChildren: T = {} as T) {
     const eventBus = new EventBus();
     this.eventBus = () => eventBus;
@@ -81,7 +83,7 @@ export class Block<T extends Props = Props> {
     this.componentDidMount();
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
@@ -108,13 +110,27 @@ export class Block<T extends Props = Props> {
     return true;
   }
 
-  setProps = (nextProps: Props) => {
+  public setProps = (nextProps: Props) => {
     if (!nextProps) {
       return;
     }
 
+    this._isBatchUpdating = true;
+    const oldProps = cloneDeep(this.props);
+
     Object.assign(this.props, nextProps);
+
+    this._isBatchUpdating = false;
+    this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
   };
+
+  public forceUpdate(): void {
+    this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+  }
+
+  public updateChildren(children: Children): void {
+    this.children = children;
+  }
 
   get element() {
     return this._element;
@@ -238,12 +254,13 @@ export class Block<T extends Props = Props> {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      // any - dynamic access to any possible keys for Proxy
       set: (target: any, prop, value) => {
         const oldProps = cloneDeep(target);
-        // eslint-disable-next-line no-param-reassign
         target[prop] = value;
-        emitBind(Block.EVENTS.FLOW_CDU, oldProps, target);
+
+        if (!this._isBatchUpdating) {
+          emitBind(Block.EVENTS.FLOW_CDU, oldProps, target);
+        }
 
         return true;
       },
@@ -279,7 +296,7 @@ export class Block<T extends Props = Props> {
     }
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
   dispose(): void {
     this.componentWillUnmount();

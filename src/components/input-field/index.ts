@@ -1,6 +1,7 @@
 import { Block } from '@/core/block/block';
 import { Input } from '@/components/input';
 import { getStateModifierClasses } from '@/utils/get-state-modifier-classes';
+import isEqual from '@/utils/is-equal';
 
 import './styles.scss';
 import template from './input-field.hbs?raw';
@@ -41,6 +42,17 @@ export class InputField extends Block<InputFieldProps> {
 
   computeClass() {
     return getStateModifierClasses('input-field', this.props).join(' ');
+  }
+
+  componentDidUpdate(oldProps: InputFieldProps, newProps: InputFieldProps): boolean {
+    if (!isEqual(oldProps, newProps)) {
+      if (this.children.Input) {
+        (this.children.Input as Input).setProps({ ...newProps });
+      }
+      return true
+    }
+
+    return false;
   }
 
   render() {

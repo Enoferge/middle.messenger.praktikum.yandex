@@ -7,18 +7,14 @@ export interface FormProps extends Props {
   formId: string;
   formFields?: Array<TextareaFieldProps | InputFieldProps>;
   formState?: Record<string, string>;
-  formErrors?: Record<string, string>;
+  fieldsErrors?: Record<string, string>;
+  formError?: string | null
   isFormReadonly?: boolean;
   onSubmit?: (form: Record<string, string>) => Promise<void>
   onSuccess?: () => void
-  onFormClear?: () => void
 
   children?: {
     FormFields?: Block[];
+    FormError?: Block
   };
-}
-
-export type FormState = {
-  isFormLoading: boolean,
-  formError: string | null,
 }
