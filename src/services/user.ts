@@ -1,43 +1,28 @@
 import type { ChangeUserInfoRequestData, ChangeUserPassRequestData } from '@/api/user';
 import UserApi from '@/api/user';
 import type { ResponseError } from '@/core/http-transport/types';
+import { formController } from '@/services/form-controller';
 
 const userApi = new UserApi();
 
-export const changeUserInfo = async (data: ChangeUserInfoRequestData) => {
+export const changeUserInfo = async (data: ChangeUserInfoRequestData): Promise<void> => {
   try {
-    window.store.set({
-      isFormLoading: true,
-    });
+    formController.setLoading(true);
     await userApi.changeUserInfo(data);
   } catch (e) {
-    console.error('error while trying to change user info');
-    console.error(e);
-    window.store.set({
-      formError: (e as ResponseError)?.data?.reason || 'Error while trying to change user info',
-    });
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to change user info');
   } finally {
-    window.store.set({
-      isFormLoading: false,
-    });
+    formController.setLoading(false);
   }
 };
 
-export const changeUserPass = async (data: ChangeUserPassRequestData) => {
+export const changeUserPass = async (data: ChangeUserPassRequestData): Promise<void> => {
   try {
-    window.store.set({
-      isFormLoading: true,
-    });
+    formController.setLoading(true);
     await userApi.changeUserPass(data);
   } catch (e) {
-    console.error('error while trying to change user pass');
-    console.error(e);
-    window.store.set({
-      formError: (e as ResponseError)?.data?.reason || 'Error while trying to change user pass',
-    });
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to change user pass');
   } finally {
-    window.store.set({
-      isFormLoading: false,
-    });
+    formController.setLoading(false);
   }
 };

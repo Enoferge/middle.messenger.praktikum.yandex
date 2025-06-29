@@ -18,6 +18,7 @@ export class FormError extends Block<FormErrorProps> {
       newProps.error ? this.show() : this.hide()
       return true;
     }
+    return false
   }
 
   render() {

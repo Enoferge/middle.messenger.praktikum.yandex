@@ -6,13 +6,25 @@ import { FormFieldName } from '@/constants/formFields';
 import { TextareaField } from '@/components/textarea-field';
 import type { TextareaFieldProps } from '@/components/textarea-field/types';
 import isEqual from '@/utils/is-equal';
+import { connect } from '@/core/hoc/connect-to-store';
 
 import type { FormProps } from './types';
 import './styles.scss';
 import template from './form.hbs?raw';
 import { FormError } from '../form-error';
+import { formController } from '@/services/form-controller';
 
-export class Form extends Block<FormProps> {
+export interface FormWithStoreProps extends FormProps {
+  formError?: string | null;
+  isFormLoading?: boolean;
+}
+
+const mapStateToProps = (state: any) => ({
+  formError: state.formError,
+  isFormLoading: state.isFormLoading,
+});
+
+export class Form extends Block<FormWithStoreProps> {
   constructor(props?: FormProps) {
     if (!props) {
       throw new Error('Form: props are required');
@@ -28,7 +40,7 @@ export class Form extends Block<FormProps> {
       children: {
         FormFields: [],
         FormError: new FormError({
-          error: props.formError,
+          error: formController.getError(),
         }),
       },
       events: {
@@ -59,6 +71,10 @@ export class Form extends Block<FormProps> {
   }
 
   private handleFieldChange({ name, value }: { name: string, value: string }): void {
+    if (formController.hasError()) {
+      formController.clearError();
+    }
+
     this.setProps({
       formState: {
         ...(this.props.formState || {}),
@@ -108,7 +124,6 @@ export class Form extends Block<FormProps> {
 
     const filledFields = Object.fromEntries(
       Object.entries(this.props.formState || {}).filter(([name, value]) => {
-        console.log(name, value)
         return value?.trim() !== '' && name !== FormFieldName.PasswordConfirm
       }),
     );
@@ -117,10 +132,13 @@ export class Form extends Block<FormProps> {
     console.log(`Form is ${this.isFormInvalid ? 'invalid' : 'valid'}`);
 
     if (!this.isFormInvalid) {
-      await this.props.onSubmit?.(filledFields);
-
-      if (!this.props.formError) {
+      try {
+        await this.props.onSubmit?.(filledFields);
+        formController.clearError();
         this.props.onSuccess?.();
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+        formController.setError(errorMessage);
       }
     }
   }
@@ -139,7 +157,7 @@ export class Form extends Block<FormProps> {
     );
   }
 
-  componentDidUpdate(oldProps: FormProps, newProps: FormProps) {
+  componentDidUpdate(oldProps: FormWithStoreProps, newProps: FormWithStoreProps) {
     if (oldProps.formError !== newProps.formError) {
       if (this.children.FormError) {
         (this.children.FormError as FormError).setProps({ error: newProps.formError });
@@ -158,7 +176,6 @@ export class Form extends Block<FormProps> {
       return true;
     }
 
-
     if (!isEqual(oldProps.formState || {}, newProps.formState || {})
       || !isEqual(oldProps.fieldsErrors || {}, newProps.fieldsErrors || {})
       || oldProps.isFormReadonly !== newProps.isFormReadonly) {
@@ -168,7 +185,7 @@ export class Form extends Block<FormProps> {
       return false;
     }
 
-    return true;
+    return false;
   }
 
   componentDidMount(): void {
@@ -181,7 +198,13 @@ export class Form extends Block<FormProps> {
     this.forceUpdate();
   }
 
+  componentWillUnmount(): void {
+    formController.clearError()
+  }
+
   render() {
     return template;
   }
 }
+
+export const ConnectedForm = connect<FormWithStoreProps, any>(mapStateToProps)(Form);

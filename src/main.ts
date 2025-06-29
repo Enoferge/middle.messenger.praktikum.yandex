@@ -23,7 +23,6 @@ window.store = new Store({
   formError: null,
   profileMode: 'READ',
   user: null,
-  isUserInfoLoading: false,
 });
 
 window.store.on(StoreEvents.Updated, (prevState: State, newState: State) => {

@@ -46,7 +46,6 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
         ProfileForm: new ProfileForm({
           mode,
           user,
-          formError: props?.formError,
           onModeChange: props?.onModeChange || (() => { }),
         }),
         // ProfileFileUpload: new ProfileFileUpload({
@@ -78,7 +77,6 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   componentDidUpdate(oldProps: ProfilePageProps, newProps: ProfilePageProps): boolean {
     const hasModeChanged = oldProps.mode !== newProps.mode;
     const hasUserChanged = !isEqual(oldProps.user || {}, newProps.user || {});
-    const isFormErrorChanged = oldProps.formError !== newProps.formError;
 
     const newMode = newProps.mode || DEFAULT_PROFILE_MODE;
     const newUser = newProps.user || null;
@@ -94,9 +92,9 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
       }
     }
 
-    if (hasModeChanged || hasUserChanged || isFormErrorChanged) {
+    if (hasModeChanged || hasUserChanged) {
       if (this.children.ProfileForm) {
-        (this.children.ProfileForm as ProfileForm).setProps({ mode: newMode, user: newUser, formError: newProps.formError });
+        (this.children.ProfileForm as ProfileForm).setProps({ mode: newMode, user: newUser });
       }
     }
 
@@ -109,17 +107,13 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
 }
 
 type ProfileSettingsState = {
-  profileMode: ProfileForm | null,
-  user: UserInfo | null,
-  isUserInfoLoading: boolean
-  formError?: string | null
+  profileMode: ProfileMode | null,
+  user: UserInfo | null
 }
 
 const mapStateToProps = (state: ProfileSettingsState) => ({
-  mode: state.profileMode,
-  user: state.user,
-  isUserInfoLoading: state.isUserInfoLoading,
-  formError: state.formError,
+  mode: state.profileMode || undefined,
+  user: state.user || undefined,
   onModeChange: (mode: ProfileMode) => {
     window.store.set({
       profileMode: mode,

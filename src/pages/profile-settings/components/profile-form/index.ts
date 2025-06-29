@@ -6,6 +6,8 @@ import type { ChangeUserInfoRequestData, ChangeUserPassRequestData } from '@/api
 import isEqual from '@/utils/is-equal';
 import { getUserInfo } from '@/services/auth';
 import { changeUserInfo, changeUserPass } from '@/services/user';
+import type { FormWithStoreProps } from '@/components/form';
+import { formController } from '@/services/form-controller';
 
 import { FORM_CONFIGS, FORM_PASSWORD_INITIAL_STATE, FORM_USER_INITIAL_STATE } from './configs';
 import type { ProfileMode } from '../../types';
@@ -15,7 +17,6 @@ import { isFormReadonly } from '../../section-configs';
 interface ProfileFormProps extends Props {
   mode: ProfileMode;
   user: UserInfo | null;
-  formError?: string | null
   onModeChange: (mode: ProfileMode) => void;
 }
 
@@ -36,7 +37,6 @@ export class ProfileForm extends Block<ProfileFormProps> {
           formId: 'profile-form',
           formFields,
           formState,
-          formError: props.formError,
           onSubmit: async (form: Record<string, string>) => {
             if (this.props.mode === 'CHANGE_PASS') {
               await changeUserPass(form as ChangeUserPassRequestData)
@@ -56,17 +56,20 @@ export class ProfileForm extends Block<ProfileFormProps> {
 
   componentDidUpdate(oldProps: ProfileFormProps, newProps: ProfileFormProps): boolean {
     if (!isEqual(oldProps.user || {}, newProps.user || {})
-      || oldProps.mode !== newProps.mode
-      || oldProps.formError !== newProps.formError) {
+      || oldProps.mode !== newProps.mode) {
+
+      if (oldProps.mode !== newProps.mode) {
+        formController.clearError('profile-form');
+      }
+
       const formSource = newProps.mode === 'CHANGE_PASS' ? 'password' : 'info';
       const formState = (newProps.mode === 'CHANGE_PASS' ? FORM_PASSWORD_INITIAL_STATE : newProps.user || FORM_USER_INITIAL_STATE);
       const isReadonly = isFormReadonly(newProps.mode);
 
       if (this.children.Form) {
-        (this.children.Form as Form).setProps({
+        (this.children.Form as Block<FormWithStoreProps>).setProps({
           formFields: FORM_CONFIGS[formSource].fields,
           formState,
-          formError: newProps.formError,
           isFormReadonly: isReadonly,
         });
       }

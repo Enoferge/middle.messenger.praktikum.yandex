@@ -1,14 +1,13 @@
 import AuthApi from '@/api/auth';
 import type { CreateUserRequestData, LoginRequestData, UserDTO } from '@/api/types';
 import type { ResponseError } from '@/core/http-transport/types';
+import { formController } from '@/services/form-controller';
 
 const authApi = new AuthApi();
 
 export const getUserInfo = async () => {
   try {
-    window.store.set({
-      isUserInfoLoading: true,
-    });
+    formController.setLoading(true)
     const { data } = await authApi.getUserInfo();
     const { id, avatar, ...info } = data as UserDTO
     window.store.set({
@@ -18,17 +17,13 @@ export const getUserInfo = async () => {
     console.error('error while trying to get user info');
     console.error(e);
   } finally {
-    window.store.set({
-      isUserInfoLoading: false,
-    });
+    formController.setLoading(false)
   }
 };
 
 export const login = async (data: LoginRequestData) => {
   try {
-    window.store.set({
-      isFormLoading: true,
-    });
+    formController.setLoading(true)
 
     const res = await authApi.login(data);
 
@@ -37,19 +32,13 @@ export const login = async (data: LoginRequestData) => {
 
     await getUserInfo(); // move
   } catch (e: unknown) {
-    console.error('error while trying to login');
-    console.error(e);
-    window.store.set({
-      formError: (e as ResponseError)?.data?.reason || 'Error while trying to sign in',
-    });
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to sign in');
   } finally {
-    window.store.set({
-      isFormLoading: false,
-    });
+    formController.setLoading(false)
   }
 };
 
-export const createUser = async (data: CreateUserRequestData) => {
+export const createUser = async (data: CreateUserRequestData): Promise<void> => {
   try {
     const res = await authApi.createUser(data);
     console.log(res);
@@ -57,11 +46,7 @@ export const createUser = async (data: CreateUserRequestData) => {
 
     await getUserInfo(); // move
   } catch (e: unknown) {
-    console.error('error while trying to create User');
-    console.error(e);
-    window.store.set({
-      formError: (e as ResponseError)?.data?.reason || 'Error while trying to sign up',
-    });
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to sign up');
   }
 };
 
