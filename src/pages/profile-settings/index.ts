@@ -14,6 +14,10 @@ import { getConfig, DEFAULT_PROFILE_MODE, BUTTON_UI_CONFIGS } from './section-co
 import './styles.scss';
 import { ProfileForm, type UserInfo } from './components/profile-form';
 
+function getAvatarFullUrl(url?: string | null) {
+  return url ? `https://ya-praktikum.tech/api/v2/resources/${url}` : '/assets/images/user1.png';
+}
+
 class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   private router!: Router;
 
@@ -30,7 +34,7 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
       },
       children: {
         Avatar: new Avatar({
-          src: '/assets/images/user1.png',
+          src: getAvatarFullUrl(props?.avatarUrl),
           alt: 'User avatar',
           size: 160,
         }),
@@ -98,6 +102,8 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
         (this.children.ProfileFileUpload as Block).setProps({
           filename: null,
         });
+
+        getUserInfo();
       }
     } catch (e) {
       window.store.set({
@@ -191,6 +197,10 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
       }
     }
 
+    if (oldProps.avatarUrl !== newProps.avatarUrl) {
+      (this.children.Avatar as Block).setProps({ src: getAvatarFullUrl(newProps.avatarUrl) });
+    }
+
     return false;
   }
 
@@ -203,12 +213,14 @@ type ProfileSettingsState = {
   profileMode: ProfileMode | null,
   user: UserInfo | null
   avatarToUpload?: File | null,
+  avatarUrl?: string | null,
 }
 
 const mapStateToProps = (state: ProfileSettingsState) => ({
   mode: state.profileMode || undefined,
   user: state.user || undefined,
   avatarToUpload: state.avatarToUpload || null,
+  avatarUrl: state.avatarUrl || null,
 });
 
 const ProfileSettingsPageConnected = connect<ProfilePageProps, any>(mapStateToProps)(ProfileSettingsPageBase);

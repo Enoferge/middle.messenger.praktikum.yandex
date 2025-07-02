@@ -10,8 +10,10 @@ export const getUserInfo = async () => {
     formController.setLoading(true);
     const { data } = await authApi.getUserInfo();
     const { id, avatar, ...info } = data as UserDTO;
+
     window.store.set({
       user: info,
+      avatarUrl: avatar,
     });
   } catch (e: unknown) {
     console.error('error while trying to get user info');
