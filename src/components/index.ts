@@ -13,4 +13,3 @@ export { IconButton } from './icon-button';
 export { Link } from './link';
 export { ChatItem } from './chat-item';
 export { MessageBubble } from './message-bubble';
-export { AvatarActions } from './avatar-actions';

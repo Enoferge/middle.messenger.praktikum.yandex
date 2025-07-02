@@ -1,7 +1,7 @@
 import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-layout';
 import { connect } from '@/core/hoc/connect-to-store';
 import { Block } from '@/core/block/block';
-import { AvatarActions, Button, FileUpload, IconButton } from '@/components';
+import { Button, FileUpload, IconButton } from '@/components';
 import { getUserInfo, signOut } from '@/services/auth';
 import type Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
@@ -14,6 +14,7 @@ import { getConfig, DEFAULT_PROFILE_MODE, BUTTON_UI_CONFIGS } from './section-co
 import './styles.scss';
 import { ProfileForm, type UserInfo } from './components/profile-form';
 import ProfileAvatar from './components/profile-avatar';
+import ProfileActions from './components/profile-actions';
 
 class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   private router!: Router;
@@ -33,8 +34,7 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
         Avatar: new ProfileAvatar({
           size: 160,
         }),
-        AvatarActions: new AvatarActions({
-          mode,
+        ProfileActions: new ProfileActions({
           onBackToProfile: () => props?.onModeChange?.(DEFAULT_PROFILE_MODE),
           onChangeAvatar: () => props?.onModeChange?.('CHANGE_AVATAR'),
           onChangePassword: () => props?.onModeChange?.('CHANGE_PASS'),
@@ -159,10 +159,6 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
     const newUser = newProps.user || null;
 
     if (hasModeChanged) {
-      if (this.children.AvatarActions) {
-        (this.children.AvatarActions as AvatarActions).setProps({ mode: newMode });
-      }
-
       if (this.children.Footer) {
         (this.children.Footer as Button).setProps({
           ...BUTTON_UI_CONFIGS[newMode],

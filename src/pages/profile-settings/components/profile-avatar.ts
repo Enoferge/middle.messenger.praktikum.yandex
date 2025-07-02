@@ -9,7 +9,7 @@ function getAvatarFullUrl(url?: string | null) {
   return url ? getResourceLink(url) : '/assets/images/user1.png';
 }
 
-const mapStateToProps = (state: { avatarUrl: string | null }) => ({
+const mapStateToProps = (state: ProfileAvatarState) => ({
   src: getAvatarFullUrl(state.avatarUrl),
 });
 
