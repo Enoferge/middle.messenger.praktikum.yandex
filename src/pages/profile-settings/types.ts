@@ -7,6 +7,5 @@ export interface ProfilePageProps extends Props {
   mode?: ProfileMode;
   user?: UserInfo;
   avatarToUpload?: File | null,
-  avatarUrl?: string | null,
   onModeChange?: (mode: ProfileMode) => void;
 }

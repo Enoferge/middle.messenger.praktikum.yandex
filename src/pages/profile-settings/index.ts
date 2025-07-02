@@ -1,23 +1,19 @@
 import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-layout';
 import { connect } from '@/core/hoc/connect-to-store';
 import { Block } from '@/core/block/block';
-import { Avatar, AvatarActions, Button, FileUpload, IconButton } from '@/components';
+import { AvatarActions, Button, FileUpload, IconButton } from '@/components';
 import { getUserInfo, signOut } from '@/services/auth';
 import type Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
 import isEqual from '@/utils/is-equal';
 import { changeUserAvatar } from '@/services/user';
-import { getResourceLink } from '@/services/resources';
 
 import type { ProfileMode, ProfilePageProps } from './types';
 import template from './profile.hbs?raw';
 import { getConfig, DEFAULT_PROFILE_MODE, BUTTON_UI_CONFIGS } from './section-configs';
 import './styles.scss';
 import { ProfileForm, type UserInfo } from './components/profile-form';
-
-function getAvatarFullUrl(url?: string | null) {
-  return url ? getResourceLink(url) : '/assets/images/user1.png';
-}
+import ProfileAvatar from './components/profile-avatar';
 
 class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   private router!: Router;
@@ -34,9 +30,7 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
         'aria-labelledby': 'profile-title',
       },
       children: {
-        Avatar: new Avatar({
-          src: getAvatarFullUrl(props?.avatarUrl),
-          alt: 'User avatar',
+        Avatar: new ProfileAvatar({
           size: 160,
         }),
         AvatarActions: new AvatarActions({
@@ -198,10 +192,6 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
       }
     }
 
-    if (oldProps.avatarUrl !== newProps.avatarUrl) {
-      (this.children.Avatar as Block).setProps({ src: getAvatarFullUrl(newProps.avatarUrl) });
-    }
-
     return false;
   }
 
@@ -214,14 +204,12 @@ type ProfileSettingsState = {
   profileMode: ProfileMode | null,
   user: UserInfo | null
   avatarToUpload?: File | null,
-  avatarUrl?: string | null,
 }
 
 const mapStateToProps = (state: ProfileSettingsState) => ({
   mode: state.profileMode || undefined,
   user: state.user || undefined,
   avatarToUpload: state.avatarToUpload || null,
-  avatarUrl: state.avatarUrl || null,
 });
 
 const ProfileSettingsPageConnected = connect<ProfilePageProps, any>(mapStateToProps)(ProfileSettingsPageBase);

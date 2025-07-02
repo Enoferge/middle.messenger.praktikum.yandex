@@ -8,4 +8,6 @@ export interface StoreState {
   profileMode: ProfileMode;
   formError: string | null;
   isFormLoading: boolean;
+
+  avatarUrl?: string | null
 }
