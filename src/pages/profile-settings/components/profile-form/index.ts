@@ -9,7 +9,7 @@ import { changeUserInfo, changeUserPass } from '@/services/user';
 import type { FormWithStoreProps } from '@/components/form';
 import { formController } from '@/services/form-controller';
 
-import { FORM_CONFIGS, FORM_PASSWORD_INITIAL_STATE, FORM_USER_INITIAL_STATE } from './configs';
+import { FORM_CONFIGS, FORM_PASSWORD_INITIAL_STATE, FORM_USER_INITIAL_STATE, PROFILE_FORM_ID } from './configs';
 import type { ProfileMode } from '../../types';
 import { isFormReadonly } from '../../section-configs';
 
@@ -33,7 +33,7 @@ export class ProfileForm extends Block<ProfileFormProps> {
       class: 'profile-form',
       children: {
         Form: new Form({
-          formId: 'profile-form',
+          formId: PROFILE_FORM_ID,
           formFields,
           formState,
           onSubmit: async (form: Record<string, string>) => {

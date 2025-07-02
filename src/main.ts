@@ -1,7 +1,8 @@
 import Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
-import { Store, StoreEvents } from '@/core/store/store';
-import type { State } from '@/core/store/types';
+import { Store } from '@/core/store/store';
+// import { Store, StoreEvents } from '@/core/store/store';
+// import type { State } from '@/core/store/types';
 
 import './styles/variables.scss';
 import './styles/base.scss';
@@ -25,11 +26,11 @@ window.store = new Store({
   user: null,
 });
 
-window.store.on(StoreEvents.Updated, (prevState: State, newState: State) => {
-  // console.log('prevState', prevState);
-  // console.log('newState', newState);
-  // console.log(window.store.state);
-});
+// window.store.on(StoreEvents.Updated, (prevState: State, newState: State) => {
+// console.log('prevState', prevState);
+// console.log('newState', newState);
+// console.log(window.store.state);
+// });
 
 window.router = Router.getInstance(APP_ROOT_ELEMENT_ID);
 

@@ -1,20 +1,18 @@
 import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-layout';
-
 import { connect } from '@/core/hoc/connect-to-store';
 import { Block } from '@/core/block/block';
-import { Avatar, AvatarActions, Button, IconButton } from '@/components';
+import { Avatar, AvatarActions, Button, FileUpload, IconButton } from '@/components';
 import { getUserInfo, signOut } from '@/services/auth';
 import type Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
 import isEqual from '@/utils/is-equal';
-import type { ProfileMode, ProfilePageProps } from './types';
+import { changeUserAvatar } from '@/services/user';
 
+import type { ProfileMode, ProfilePageProps } from './types';
 import template from './profile.hbs?raw';
-import * as SectionConfigs from './section-configs';
+import { getConfig, DEFAULT_PROFILE_MODE, BUTTON_UI_CONFIGS } from './section-configs';
 import './styles.scss';
 import { ProfileForm, type UserInfo } from './components/profile-form';
-
-const DEFAULT_PROFILE_MODE: ProfileMode = 'READ';
 
 class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   private router!: Router;
@@ -48,10 +46,16 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
           user,
           onModeChange: props?.onModeChange || (() => { }),
         }),
-        // ProfileFileUpload: new ProfileFileUpload({
-        //   mode,
-        // }),
-        Footer: new Button(SectionConfigs.getButtonProps(mode, props?.onModeChange)),
+        ProfileFileUpload: new FileUpload({
+          name: 'user-avatar',
+          onFileChange: (file: File) => {
+            window.store.set({ avatarToUpload: file });
+          },
+        }),
+        Footer: new Button({
+          ...BUTTON_UI_CONFIGS[mode],
+          fullWidth: true,
+        }),
         CloseButton: new IconButton({
           iconName: 'close',
           variant: 'plain',
@@ -68,7 +72,79 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
     }
   }
 
+  private handleEditClick = (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    this.props.onModeChange?.('EDIT');
+  };
+
+  private handleAvatarUploadClick = async (event: Event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    try {
+      const file = this.props.avatarToUpload;
+      if (file) {
+        const formData = new FormData();
+        formData.append('avatar', file);
+
+        await changeUserAvatar(formData);
+
+        window.store.set({
+          profileMode: 'READ',
+          avatarToUpload: null,
+        });
+
+        // TODO: refac
+        (this.children.ProfileFileUpload as Block).setProps({
+          filename: null,
+        });
+      }
+    } catch (e) {
+      window.store.set({
+        fileUploadError: e || 'fileUpload error',
+      });
+    }
+  };
+
+  private isButtonDisabled(mode: ProfileMode) {
+    return mode === 'CHANGE_AVATAR' && this.props.avatarToUpload === null;
+  }
+
+  private getButtonClickHandler(mode: ProfileMode) {
+    switch (mode) {
+      case 'CHANGE_AVATAR':
+        return this.handleAvatarUploadClick;
+      case 'READ':
+        return this.handleEditClick;
+      default:
+        return undefined;
+    }
+  }
+
+  private toggleFormVisibility(mode?: ProfileMode) {
+    const uiConfig = getConfig(mode);
+
+    if (uiConfig.showFileUpload) {
+      (this.children.ProfileForm as Block)?.hide();
+      (this.children.ProfileFileUpload as Block)?.show();
+    } else {
+      (this.children.ProfileFileUpload as Block)?.hide();
+      (this.children.ProfileForm as Block)?.show();
+    }
+  }
+
   componentDidMount(): void {
+    const mode = this.props.mode || DEFAULT_PROFILE_MODE;
+
+    if (this.children.Footer) {
+      (this.children.Footer as Button).setProps({
+        onClick: this.getButtonClickHandler(mode),
+        disabled: this.isButtonDisabled(mode),
+      });
+    }
+
+    this.toggleFormVisibility(mode);
+
     if (!this.props.user) {
       getUserInfo();
     }
@@ -85,16 +161,33 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
       if (this.children.AvatarActions) {
         (this.children.AvatarActions as AvatarActions).setProps({ mode: newMode });
       }
+
       if (this.children.Footer) {
-        (this.children.Footer as Button).setProps(
-          SectionConfigs.getButtonProps(newMode, this.props.onModeChange),
-        );
+        (this.children.Footer as Button).setProps({
+          ...BUTTON_UI_CONFIGS[newMode],
+          onClick: this.getButtonClickHandler(newMode),
+          disabled: this.isButtonDisabled(newMode),
+        });
       }
+
+      this.toggleFormVisibility(newProps.mode);
     }
 
     if (hasModeChanged || hasUserChanged) {
       if (this.children.ProfileForm) {
         (this.children.ProfileForm as ProfileForm).setProps({ mode: newMode, user: newUser });
+      }
+    }
+
+    if (oldProps.avatarToUpload !== newProps.avatarToUpload) {
+      if (this.children.ProfileFileUpload) {
+        (this.children.ProfileFileUpload as Block).setProps({ fileToUpload: newProps.avatarToUpload });
+      }
+
+      if (this.children.Footer) {
+        (this.children.Footer as Button).setProps({
+          disabled: this.isButtonDisabled(newMode),
+        });
       }
     }
 
@@ -109,22 +202,25 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
 type ProfileSettingsState = {
   profileMode: ProfileMode | null,
   user: UserInfo | null
+  avatarToUpload?: File | null,
 }
 
 const mapStateToProps = (state: ProfileSettingsState) => ({
   mode: state.profileMode || undefined,
   user: state.user || undefined,
-  onModeChange: (mode: ProfileMode) => {
-    window.store.set({
-      profileMode: mode,
-    });
-  },
+  avatarToUpload: state.avatarToUpload || null,
 });
 
 const ProfileSettingsPageConnected = connect<ProfilePageProps, any>(mapStateToProps)(ProfileSettingsPageBase);
 
 export class ProfileSettingsPage extends BasePageWithLayout {
   constructor() {
-    super(ProfileSettingsPageConnected, {});
+    super(ProfileSettingsPageConnected, {
+      onModeChange: (mode: ProfileMode) => {
+        window.store.set({
+          profileMode: mode,
+        });
+      },
+    });
   }
 }

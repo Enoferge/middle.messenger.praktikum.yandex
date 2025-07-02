@@ -24,4 +24,8 @@ export default class UserApi {
   async changeUserPass(data: ChangeUserPassRequestData) {
     return userApi.put('/password', { data });
   }
+
+  async changeUserAvatar(data: FormData) {
+    return userApi.put('/profile/avatar', { data });
+  }
 }

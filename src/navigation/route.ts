@@ -49,15 +49,15 @@ class Route implements RouteInterface {
   }
 
   render() {
-    if (!this._block) {
-      this._block = new this._blockClass({});
-    }
-
+    // Always dispose the old block before creating a new one
     if (this._block) {
-      this._renderDom(this._props.rootQuery, this._block);
-      this._block.dispatchComponentDidMount();
-      this._block.show();
+      this._block.dispose();
+      this._block = null;
     }
+    this._block = new this._blockClass({});
+    this._renderDom(this._props.rootQuery, this._block);
+    this._block.dispatchComponentDidMount();
+    this._block.show();
   }
 }
 

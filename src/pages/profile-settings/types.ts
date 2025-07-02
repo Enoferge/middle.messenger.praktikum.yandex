@@ -6,5 +6,6 @@ export type ProfileMode = 'READ' | 'EDIT' | 'CHANGE_PASS' | 'CHANGE_AVATAR';
 export interface ProfilePageProps extends Props {
   mode?: ProfileMode;
   user?: UserInfo;
+  avatarToUpload?: File | null,
   onModeChange?: (mode: ProfileMode) => void;
 }

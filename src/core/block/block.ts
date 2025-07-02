@@ -20,6 +20,8 @@ export class Block<T extends Props = Props> {
 
   _element: Element | null = null;
 
+  _isElementHidden = false;
+
   _id = nanoid(6);
 
   _meta: Meta | null = null;
@@ -29,6 +31,8 @@ export class Block<T extends Props = Props> {
   props: T;
 
   private _isBatchUpdating = false;
+
+  private _eventWrappers: Record<string, (e: Event) => void> = {};
 
   constructor(tagName = 'div', propsWithChildren: T = {} as T) {
     const eventBus = new EventBus();
@@ -139,14 +143,19 @@ export class Block<T extends Props = Props> {
   _addEvents() {
     const events = this.computeEvents ? this.computeEvents() : (this.props.events || {});
     Object.keys(events).forEach((eventName) => {
-      this._element?.addEventListener(eventName, events[eventName]);
+      if (!this._eventWrappers[eventName]) {
+        this._eventWrappers[eventName] = (e: Event) => {
+          const currentEvents = this.computeEvents ? this.computeEvents() : (this.props.events || {});
+          currentEvents[eventName]?.(e);
+        };
+      }
+      this._element?.addEventListener(eventName, this._eventWrappers[eventName]);
     });
   }
 
   _removeEvents() {
-    const events = this.computeEvents ? this.computeEvents() : (this.props.events || {});
-    Object.keys(events).forEach((eventName) => {
-      this._element?.removeEventListener(eventName, events[eventName]);
+    Object.keys(this._eventWrappers).forEach((eventName) => {
+      this._element?.removeEventListener(eventName, this._eventWrappers[eventName]);
     });
   }
 
@@ -238,6 +247,10 @@ export class Block<T extends Props = Props> {
           this._element?.setAttribute(key, String(value));
         }
       });
+
+      if (this._isElementHidden) {
+        this._element.style.display = 'none';
+      }
     }
   }
 
@@ -284,6 +297,7 @@ export class Block<T extends Props = Props> {
     const content = this.getContent();
 
     if (content) {
+      this._isElementHidden = false;
       content.style.display = 'block';
     }
   }
@@ -292,6 +306,7 @@ export class Block<T extends Props = Props> {
     const content = this.getContent();
 
     if (content) {
+      this._isElementHidden = true;
       content.style.display = 'none';
     }
   }

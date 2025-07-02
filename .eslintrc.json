@@ -46,7 +46,7 @@
       }
     ],
     "func-names": "off",
-    "max-len": "warn",
+    "max-len": "off",
     "no-param-reassign": "warn",
     "object-curly-newline": "off",
     "max-classes-per-file": [

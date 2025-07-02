@@ -1,71 +1,54 @@
-import type { ButtonProps } from '@/components/button/types';
+import { PROFILE_FORM_ID } from './components/profile-form/configs';
 import type { ProfileMode } from './types';
 
 export type ModeConfig = {
-  submitText: string;
   showForm?: boolean;
   showFileUpload?: boolean;
   isFormReadonly?: boolean;
-  isButtonDisabled?: boolean;
-  fileError?: boolean;
-  filename?: string;
-  formId?: string;
-  buttonType: 'button' | 'submit';
 };
 
-export const MODE_CONFIGS: Record<ProfileMode, ModeConfig> = {
+export const MODE_UI_CONFIGS: Record<ProfileMode, ModeConfig> = {
+  READ: { showForm: true, isFormReadonly: true },
+  EDIT: { showForm: true },
+  CHANGE_PASS: { showForm: true },
+  CHANGE_AVATAR: { showFileUpload: true },
+};
+
+export type ButtonConfig = {
+  type: 'button' | 'submit';
+  text: string;
+  formId?: string;
+  fullWidth?: boolean,
+};
+
+export const BUTTON_UI_CONFIGS: Record<ProfileMode, ButtonConfig> = {
   READ: {
-    submitText: 'Edit',
-    showForm: true,
-    isFormReadonly: true,
-    buttonType: 'button',
+    fullWidth: true,
+    text: 'Edit',
+    type: 'button',
   },
   EDIT: {
-    submitText: 'Save',
-    showForm: true,
-    buttonType: 'submit',
-    formId: 'profile-form',
+    fullWidth: true,
+    formId: PROFILE_FORM_ID,
+    text: 'Save',
+    type: 'submit',
   },
   CHANGE_PASS: {
-    submitText: 'Save',
-    showForm: true,
-    buttonType: 'submit',
-    formId: 'profile-form',
+    fullWidth: true,
+    formId: PROFILE_FORM_ID,
+    text: 'Save',
+    type: 'submit',
   },
   CHANGE_AVATAR: {
-    submitText: 'Upload avatar',
-    showFileUpload: true,
-    isButtonDisabled: true,
-    buttonType: 'submit',
-    formId: 'profile-form',
+    fullWidth: true,
+    text: 'Upload avatar',
+    type: 'button',
   },
 };
 
-export const getConfig = (mode: ProfileMode): ModeConfig => MODE_CONFIGS[mode];
+export const DEFAULT_PROFILE_MODE: ProfileMode = 'READ';
 
-export const getButtonProps = (
-  mode: ProfileMode,
-  onModeChange?: (newMode: ProfileMode) => void,
-): ButtonProps => {
-  const config = getConfig(mode);
+export const getConfig = (mode?: ProfileMode): ModeConfig => MODE_UI_CONFIGS[mode || DEFAULT_PROFILE_MODE];
 
-  return {
-    formId: config.formId,
-    type: config.buttonType,
-    disabled: config.isButtonDisabled ?? false,
-    name: 'profile-main-button',
-    text: config.submitText,
-    fullWidth: true,
-    onClick: mode === 'READ' ? (e: Event) => {
-      e.preventDefault();
-      e.stopPropagation();
-      onModeChange?.('EDIT');
-    } : undefined,
-  };
-};
-
-export const shouldShowForm = (mode: ProfileMode): boolean => !!getConfig(mode).showForm;
-
-export const shouldShowFileUpload = (mode: ProfileMode): boolean => !!getConfig(mode).showFileUpload;
-
+// TODO: not use it, pass isFormReadonly to ProfileForm
 export const isFormReadonly = (mode: ProfileMode): boolean => !!getConfig(mode).isFormReadonly;

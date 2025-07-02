@@ -26,3 +26,11 @@ export const changeUserPass = async (data: ChangeUserPassRequestData): Promise<v
     formController.setLoading(false);
   }
 };
+
+export const changeUserAvatar = async (formData: FormData): Promise<void> => {
+  try {
+    await userApi.changeUserAvatar(formData);
+  } catch (e) {
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to change user avatar');
+  }
+};

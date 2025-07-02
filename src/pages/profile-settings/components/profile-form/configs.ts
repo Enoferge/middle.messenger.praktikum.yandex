@@ -39,3 +39,5 @@ export const FORM_CONFIGS = {
     fields: PROFILE_PASSWORD_FIELDS,
   },
 } as const;
+
+export const PROFILE_FORM_ID = 'profile-form';

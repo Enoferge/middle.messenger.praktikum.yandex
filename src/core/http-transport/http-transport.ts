@@ -132,6 +132,11 @@ export class HTTPTransport {
       xhr.ontimeout = handleError;
       xhr.onerror = handleError;
 
+      if (data instanceof FormData) {
+        xhr.send(data);
+        return;
+      }
+
       if (method === METHODS.GET || !data) {
         xhr.send();
       } else {
