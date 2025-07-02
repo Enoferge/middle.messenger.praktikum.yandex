@@ -7,6 +7,7 @@ import type Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
 import isEqual from '@/utils/is-equal';
 import { changeUserAvatar } from '@/services/user';
+import { getResourceLink } from '@/services/resources';
 
 import type { ProfileMode, ProfilePageProps } from './types';
 import template from './profile.hbs?raw';
@@ -15,7 +16,7 @@ import './styles.scss';
 import { ProfileForm, type UserInfo } from './components/profile-form';
 
 function getAvatarFullUrl(url?: string | null) {
-  return url ? `https://ya-praktikum.tech/api/v2/resources/${url}` : '/assets/images/user1.png';
+  return url ? getResourceLink(url) : '/assets/images/user1.png';
 }
 
 class ProfileSettingsPageBase extends Block<ProfilePageProps> {

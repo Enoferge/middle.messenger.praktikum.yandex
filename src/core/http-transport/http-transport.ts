@@ -1,3 +1,5 @@
+import { BASE_API_URL } from '@/constants/base';
+
 import type { Response } from './types';
 
 const METHODS = {
@@ -23,10 +25,9 @@ function queryStringify(data: Record<string, unknown> = {}): string {
   }
 
   return (
-    `?${
-      Object.entries(data)
-        .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
-        .join('&')}`
+    `?${Object.entries(data)
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
+      .join('&')}`
   );
 }
 
@@ -40,7 +41,7 @@ export class HTTPTransport {
   private apiUrl;
 
   constructor(apiPath: string) {
-    this.apiUrl = `https://ya-praktikum.tech/api/v2${apiPath}`;
+    this.apiUrl = `${BASE_API_URL}${apiPath}`;
   }
 
   get = <TResponse>(
