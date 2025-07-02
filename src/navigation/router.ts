@@ -2,6 +2,7 @@ import type { BlockClass, Props } from '@/core/block/types';
 
 import Route from './route';
 import type { RouteInterface } from './types';
+import { ROUTER } from './constants';
 
 class Router {
   /* eslint-disable no-use-before-define */
@@ -47,6 +48,25 @@ class Router {
   }
 
   _onRoute(pathname: string) {
+    const { user } = window.store.getState();
+    const isAuthPage = [ROUTER.signIn, ROUTER.signUp].includes(pathname as ROUTER);
+    const isProtectedPage = !isAuthPage;
+
+    // Route guard
+    if (!user && isProtectedPage) {
+      if (pathname !== ROUTER.signIn) {
+        this.go(ROUTER.signIn);
+      }
+      return;
+    }
+
+    if (user && isAuthPage) {
+      if (pathname !== ROUTER.messenger) {
+        this.go(ROUTER.messenger);
+      }
+      return;
+    }
+
     const route = this.getRoute(pathname);
 
     if (!route) {

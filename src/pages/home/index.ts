@@ -4,6 +4,6 @@ import { HomePageBase } from './home-page-base';
 
 export class HomePage extends BasePageWithLayout {
   constructor() {
-    super(HomePageBase, { hideHomeButton: true });
+    super(HomePageBase, {}, { hideHomeButton: true });
   }
 }

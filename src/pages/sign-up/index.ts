@@ -49,6 +49,6 @@ export class SignUpPage extends BasePageWithLayout<AuthPageProps> {
           text: 'Sign in',
         },
       },
-    });
+    }, { hideHomeButton: true });
   }
 }
