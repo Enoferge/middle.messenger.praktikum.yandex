@@ -1,8 +1,9 @@
 import { Block } from '@/core/block/block';
 import { Button } from '@/components/button';
-import type { ProfileMode } from '../types';
 import type { Props } from '@/core/block/types';
 import { connect } from '@/core/hoc/connect-to-store';
+
+import type { ProfileSettingsState } from '../types';
 
 export interface ProfileActionsProps extends Props {
   onBackToProfile: () => void;
@@ -11,10 +12,7 @@ export interface ProfileActionsProps extends Props {
   onChangePassword: () => void;
 }
 
-interface ProfileActionsState {
-  profileMode: ProfileMode
-}
-
+type ProfileActionsState = Pick<ProfileSettingsState, 'profileMode'>
 type ProfileActionsContext = ProfileActionsProps & ProfileActionsState
 
 const mapStateToProps = (state: ProfileActionsState) => ({
@@ -56,8 +54,8 @@ class ProfileActions extends Block<ProfileActionsProps> {
   }
 
   render() {
-    return `{{#each Buttons}}{{{this}}}{{/each}}`;
+    return '{{#each Buttons}}{{{this}}}{{/each}}';
   }
-} 
+}
 
 export default connect<ProfileActionsProps, ProfileActionsState>(mapStateToProps)(ProfileActions);

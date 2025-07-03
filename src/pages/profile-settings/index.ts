@@ -1,7 +1,7 @@
 import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-layout';
 import { connect } from '@/core/hoc/connect-to-store';
 import { Block } from '@/core/block/block';
-import { Button, FileUpload, IconButton } from '@/components';
+import { FileUpload, IconButton } from '@/components';
 import { getUserInfo, signOut } from '@/services/auth';
 import type Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
@@ -10,11 +10,12 @@ import { changeUserAvatar } from '@/services/user';
 
 import type { ProfileMode, ProfilePageProps } from './types';
 import template from './profile.hbs?raw';
-import { getConfig, DEFAULT_PROFILE_MODE, BUTTON_UI_CONFIGS } from './section-configs';
+import { getConfig, DEFAULT_PROFILE_MODE } from './section-configs';
 import './styles.scss';
 import { ProfileForm, type UserInfo } from './components/profile-form';
 import ProfileAvatar from './components/profile-avatar';
 import ProfileActions from './components/profile-actions';
+import ProfileFooter from './components/profile-footer';
 
 class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   private router!: Router;
@@ -51,10 +52,7 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
             window.store.set({ avatarToUpload: file });
           },
         }),
-        Footer: new Button({
-          ...BUTTON_UI_CONFIGS[mode],
-          fullWidth: true,
-        }),
+        ProfileFooter: new ProfileFooter(),
         CloseButton: new IconButton({
           iconName: 'close',
           variant: 'plain',
@@ -107,10 +105,6 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
     }
   };
 
-  private isButtonDisabled(mode: ProfileMode) {
-    return mode === 'CHANGE_AVATAR' && this.props.avatarToUpload === null;
-  }
-
   private getButtonClickHandler(mode: ProfileMode) {
     switch (mode) {
       case 'CHANGE_AVATAR':
@@ -137,10 +131,9 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   componentDidMount(): void {
     const mode = this.props.mode || DEFAULT_PROFILE_MODE;
 
-    if (this.children.Footer) {
-      (this.children.Footer as Button).setProps({
+    if (this.children.ProfileFooter) {
+      (this.children.ProfileFooter as Block).setProps({
         onClick: this.getButtonClickHandler(mode),
-        disabled: this.isButtonDisabled(mode),
       });
     }
 
@@ -159,11 +152,9 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
     const newUser = newProps.user || null;
 
     if (hasModeChanged) {
-      if (this.children.Footer) {
-        (this.children.Footer as Button).setProps({
-          ...BUTTON_UI_CONFIGS[newMode],
+      if (this.children.ProfileFooter) {
+        (this.children.ProfileFooter as Block).setProps({
           onClick: this.getButtonClickHandler(newMode),
-          disabled: this.isButtonDisabled(newMode),
         });
       }
 
@@ -179,12 +170,6 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
     if (oldProps.avatarToUpload !== newProps.avatarToUpload) {
       if (this.children.ProfileFileUpload) {
         (this.children.ProfileFileUpload as Block).setProps({ fileToUpload: newProps.avatarToUpload });
-      }
-
-      if (this.children.Footer) {
-        (this.children.Footer as Button).setProps({
-          disabled: this.isButtonDisabled(newMode),
-        });
       }
     }
 

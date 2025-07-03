@@ -9,3 +9,8 @@ export interface ProfilePageProps extends Props {
   avatarToUpload?: File | null,
   onModeChange?: (mode: ProfileMode) => void;
 }
+
+export interface ProfileSettingsState {
+  profileMode: ProfileMode
+  avatarToUpload?: File | null
+}
