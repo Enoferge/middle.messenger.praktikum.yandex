@@ -8,9 +8,16 @@ export interface ProfilePageProps extends Props {
   user?: UserInfo;
   avatarToUpload?: File | null,
   onModeChange?: (mode: ProfileMode) => void;
+  onAvatarFileChange?: (file: File) => void;
+  onAvatarUploadSuccess?: () => void;
+  onAvatarUploadError?: (error?: string) => void;
 }
 
 export interface ProfileSettingsState {
   profileMode: ProfileMode
+  user?: UserInfo | null
   avatarToUpload?: File | null
+  avatarUploadError?: string | null
 }
+
+export type ProfileFileUploadState = Pick<ProfileSettingsState, 'avatarToUpload' | 'avatarUploadError'>

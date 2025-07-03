@@ -1,21 +1,29 @@
 import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-layout';
 import { connect } from '@/core/hoc/connect-to-store';
 import { Block } from '@/core/block/block';
-import { FileUpload, IconButton } from '@/components';
 import { getUserInfo, signOut } from '@/services/auth';
 import type Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
 import isEqual from '@/utils/is-equal';
+import { FileUpload, IconButton } from '@/components';
 import { changeUserAvatar } from '@/services/user';
+import type { FileUploadProps } from '@/components/file-upload/types';
 
-import type { ProfileMode, ProfilePageProps } from './types';
+import type { ProfileMode, ProfilePageProps, ProfileSettingsState, ProfileFileUploadState } from './types';
 import template from './profile.hbs?raw';
 import { getConfig, DEFAULT_PROFILE_MODE } from './section-configs';
 import './styles.scss';
-import { ProfileForm, type UserInfo } from './components/profile-form';
+import { ProfileForm } from './components/profile-form';
 import ProfileAvatar from './components/profile-avatar';
 import ProfileActions from './components/profile-actions';
 import ProfileFooter from './components/profile-footer';
+
+const mapStateToPropsFileUpload = (state: ProfileFileUploadState) => ({
+  fileName: state.avatarToUpload?.name || null,
+  fileUploadError: state.avatarUploadError,
+});
+
+const ProfileFileUpload = connect<FileUploadProps, ProfileFileUploadState>(mapStateToPropsFileUpload)(FileUpload);
 
 class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   private router!: Router;
@@ -46,10 +54,10 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
           user,
           onModeChange: props?.onModeChange || (() => { }),
         }),
-        ProfileFileUpload: new FileUpload({
+        ProfileFileUpload: new ProfileFileUpload({
           name: 'user-avatar',
           onFileChange: (file: File) => {
-            window.store.set({ avatarToUpload: file });
+            props?.onAvatarFileChange?.(file);
           },
         }),
         ProfileFooter: new ProfileFooter(),
@@ -85,23 +93,11 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
         formData.append('avatar', file);
 
         await changeUserAvatar(formData);
-
-        window.store.set({
-          profileMode: 'READ',
-          avatarToUpload: null,
-        });
-
-        // TODO: refac
-        (this.children.ProfileFileUpload as Block).setProps({
-          filename: null,
-        });
-
-        getUserInfo();
+        this.props.onAvatarUploadSuccess?.();
       }
     } catch (e) {
-      window.store.set({
-        fileUploadError: e || 'fileUpload error',
-      });
+      const error = e as Error;
+      this.props.onAvatarUploadError?.(error?.message || 'fileUpload error');
     }
   };
 
@@ -167,24 +163,12 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
       }
     }
 
-    if (oldProps.avatarToUpload !== newProps.avatarToUpload) {
-      if (this.children.ProfileFileUpload) {
-        (this.children.ProfileFileUpload as Block).setProps({ fileToUpload: newProps.avatarToUpload });
-      }
-    }
-
     return false;
   }
 
   render() {
     return template;
   }
-}
-
-type ProfileSettingsState = {
-  profileMode: ProfileMode | null,
-  user: UserInfo | null
-  avatarToUpload?: File | null,
 }
 
 const mapStateToProps = (state: ProfileSettingsState) => ({
@@ -201,6 +185,24 @@ export class ProfileSettingsPage extends BasePageWithLayout {
       onModeChange: (mode: ProfileMode) => {
         window.store.set({
           profileMode: mode,
+        });
+      },
+      onAvatarUploadSuccess: () => {
+        window.store.set({
+          profileMode: DEFAULT_PROFILE_MODE,
+          avatarToUpload: null,
+        });
+
+        getUserInfo();
+      },
+      onAvatarUploadError: (error: string) => {
+        window.store.set({
+          fileUploadError: error || 'fileUpload error',
+        });
+      },
+      onAvatarFileChange: (file: File) => {
+        window.store.set({
+          avatarToUpload: file,
         });
       },
     });

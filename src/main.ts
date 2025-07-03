@@ -24,6 +24,7 @@ window.store = new Store({
   formError: null,
   profileMode: 'READ',
   user: null,
+  avatarToUpload: null,
 });
 
 window.router = Router.getInstance(APP_ROOT_ELEMENT_ID);

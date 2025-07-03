@@ -5,7 +5,7 @@ export { TextareaField } from './textarea-field';
 export { Button } from './button';
 export { Card } from './card';
 export { ConnectedForm as Form, type FormWithStoreProps } from './form';
-export { ConnectedFileUpload as FileUpload } from './file-upload';
+export { FileUpload } from './file-upload';
 export { FormFooter } from './form-footer';
 export { Avatar } from './avatar';
 export { Icon } from './icon';

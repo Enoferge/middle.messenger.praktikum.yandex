@@ -12,11 +12,11 @@ export class Avatar extends Block<AvatarProps> {
   }
 
   computeClass(): string {
-    return ['avatar', this.props.class || ''].filter(Boolean).join(' '); 
+    return ['avatar', this.props.class || ''].filter(Boolean).join(' ');
   }
 
   computeAttrs(): Record<string, unknown> {
-    return { style: this.props.size ? `--avatar-size: ${this.props.size}px` : undefined,};
+    return { style: this.props.size ? `--avatar-size: ${this.props.size}px` : undefined };
   }
 
   render() {

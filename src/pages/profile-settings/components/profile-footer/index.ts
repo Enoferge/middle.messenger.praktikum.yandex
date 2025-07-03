@@ -44,7 +44,6 @@ class ProfileFooter extends Block<ProfileFooterProps> {
       || oldProps.avatarToUpload !== newProps.avatarToUpload
       || oldProps.onClick !== newProps.onClick
     ) {
-      console.log('ProfileFootercomponentDidUpdate', newProps);
       (this.children.Button as Button).setProps({
         ...BUTTON_UI_CONFIGS[newProps.profileMode],
         fullWidth: true,
