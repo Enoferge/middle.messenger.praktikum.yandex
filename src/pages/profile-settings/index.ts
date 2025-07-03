@@ -4,20 +4,21 @@ import { Block } from '@/core/block/block';
 import { getUserInfo, signOut } from '@/services/auth';
 import type Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
-import isEqual from '@/utils/is-equal';
 import { changeUserAvatar, changeUserInfo, changeUserPass } from '@/services/user';
 import type { ChangeUserInfoRequestData, ChangeUserPassRequestData } from '@/api/user';
 import { FileUpload, IconButton } from '@/components';
 import type { FileUploadProps } from '@/components/file-upload/types';
 
-import type { ProfileMode, ProfilePageProps, ProfileSettingsState, ProfileFileUploadState } from './types';
+import type { ProfileMode, ProfileSettingsState, ProfileFileUploadState, ProfileSettingsProps } from './types';
 import template from './profile.hbs?raw';
 import { getConfig, DEFAULT_PROFILE_MODE } from './constants';
 import './styles.scss';
-import { ProfileForm } from './components/profile-form';
+import ProfileForm from './components/profile-form';
 import ProfileAvatar from './components/profile-avatar';
 import ProfileActions from './components/profile-actions';
 import ProfileFooter from './components/profile-footer';
+
+type ProfileSettingsContext = ProfileSettingsProps & ProfileSettingsState
 
 const mapStateToPropsFileUpload = (state: ProfileFileUploadState) => ({
   fileName: state.avatarToUpload?.name || null,
@@ -26,15 +27,13 @@ const mapStateToPropsFileUpload = (state: ProfileFileUploadState) => ({
 
 const ProfileFileUpload = connect<FileUploadProps, ProfileFileUploadState>(mapStateToPropsFileUpload)(FileUpload);
 
-class ProfileSettingsPageBase extends Block<ProfilePageProps> {
+class ProfileSettingsPageBase extends Block<ProfileSettingsContext> {
   private router!: Router;
 
-  constructor(props?: ProfilePageProps) {
-    const mode = props?.mode ?? DEFAULT_PROFILE_MODE;
-    const user = props?.user || null;
-
+  constructor(props?: ProfileSettingsContext) {
     super('section', {
       ...props,
+      profileMode: props?.profileMode || DEFAULT_PROFILE_MODE,
       class: 'profile-card',
       attrs: {
         role: 'profile-dialog',
@@ -45,16 +44,14 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
           size: 160,
         }),
         ProfileActions: new ProfileActions({
-          onBackToProfile: () => props?.onModeChange?.(DEFAULT_PROFILE_MODE),
-          onChangeAvatar: () => props?.onModeChange?.('CHANGE_AVATAR'),
-          onChangePassword: () => props?.onModeChange?.('CHANGE_PASS'),
+          onBackToProfile: () => props?.onProfileModeChange?.(DEFAULT_PROFILE_MODE),
+          onChangeAvatar: () => props?.onProfileModeChange?.('CHANGE_AVATAR'),
+          onChangePassword: () => props?.onProfileModeChange?.('CHANGE_PASS'),
           onSignOut: () => this.handleSignOut(),
         }),
         ProfileForm: new ProfileForm({
-          mode,
-          user,
           onSubmit: async (form: Record<string, string>) => {
-            if (this.props.mode === 'CHANGE_PASS') {
+            if (this.props.profileMode === 'CHANGE_PASS') {
               await changeUserPass(form as ChangeUserPassRequestData);
             } else {
               await changeUserInfo(form as ChangeUserInfoRequestData);
@@ -88,7 +85,7 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   private handleEditClick = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
-    this.props.onModeChange?.('EDIT');
+    this.props.onProfileModeChange?.('EDIT');
   };
 
   private handleAvatarUploadClick = async (event: Event) => {
@@ -133,7 +130,7 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
   }
 
   componentDidMount(): void {
-    const mode = this.props.mode || DEFAULT_PROFILE_MODE;
+    const mode = (this.props as ProfileSettingsContext).profileMode || DEFAULT_PROFILE_MODE;
 
     if (this.children.ProfileFooter) {
       (this.children.ProfileFooter as Block).setProps({
@@ -148,12 +145,10 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
     }
   }
 
-  componentDidUpdate(oldProps: ProfilePageProps, newProps: ProfilePageProps): boolean {
-    const hasModeChanged = oldProps.mode !== newProps.mode;
-    const hasUserChanged = !isEqual(oldProps.user || {}, newProps.user || {});
-
-    const newMode = newProps.mode || DEFAULT_PROFILE_MODE;
-    const newUser = newProps.user || null;
+  componentDidUpdate(oldProps: ProfileSettingsContext, newProps: ProfileSettingsContext): boolean {
+    console.log('Profile Settings update', { oldProps, newProps })
+    const hasModeChanged = oldProps.profileMode !== newProps.profileMode;
+    const newMode = newProps.profileMode || DEFAULT_PROFILE_MODE;
 
     if (hasModeChanged) {
       if (this.children.ProfileFooter) {
@@ -162,13 +157,7 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
         });
       }
 
-      this.toggleFormVisibility(newProps.mode);
-    }
-
-    if (hasModeChanged || hasUserChanged) {
-      if (this.children.ProfileForm) {
-        (this.children.ProfileForm as ProfileForm).setProps({ mode: newMode, user: newUser });
-      }
+      this.toggleFormVisibility(newProps.profileMode);
     }
 
     return false;
@@ -180,17 +169,17 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
 }
 
 const mapStateToProps = (state: ProfileSettingsState) => ({
-  mode: state.profileMode || undefined,
+  profileMode: state.profileMode || undefined,
   user: state.user || undefined,
   avatarToUpload: state.avatarToUpload || null,
 });
 
-const ProfileSettingsPageConnected = connect<ProfilePageProps, any>(mapStateToProps)(ProfileSettingsPageBase);
+const ProfileSettingsPageConnected = connect<ProfileSettingsProps, ProfileSettingsState>(mapStateToProps)(ProfileSettingsPageBase);
 
 export class ProfileSettingsPage extends BasePageWithLayout {
   constructor() {
     super(ProfileSettingsPageConnected, {
-      onModeChange: (mode: ProfileMode) => {
+      onProfileModeChange: (mode: ProfileMode) => {
         window.store.set({
           profileMode: mode,
         });

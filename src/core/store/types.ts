@@ -1,13 +1,8 @@
-import type { UserInfo } from '@/pages/profile-settings/components/profile-form';
-import type { ProfileMode } from '@/pages/profile-settings/types';
+import type { ProfileSettingsState } from '@/pages/profile-settings/types';
 
 export type State = Record<string, any>
 
-export interface StoreState {
-  user: UserInfo;
-  profileMode: ProfileMode;
+export interface StoreState extends ProfileSettingsState {
   formError: string | null;
   isFormLoading: boolean;
-
-  avatarUrl?: string | null
 }

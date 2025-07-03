@@ -1,5 +1,5 @@
 import type { Props } from '@/core/block/types';
-import type { UserInfo } from './components/profile-form';
+import type { UserDTO } from '@/api/types';
 
 export type ProfileMode = 'READ' | 'EDIT' | 'CHANGE_PASS' | 'CHANGE_AVATAR';
 
@@ -8,11 +8,10 @@ export type ModeConfig = {
   showFileUpload?: boolean;
 };
 
-export interface ProfilePageProps extends Props {
-  mode?: ProfileMode;
-  user?: UserInfo;
-  avatarToUpload?: File | null,
-  onModeChange?: (mode: ProfileMode) => void;
+export type UserInfo = Omit<UserDTO, 'id' | 'avatar'>;
+
+export interface ProfileSettingsProps extends Props {
+  onProfileModeChange?: (mode: ProfileMode) => void;
   onAvatarFileChange?: (file: File) => void;
   onAvatarUploadSuccess?: () => void;
   onAvatarUploadError?: (error?: string) => void;
@@ -22,6 +21,7 @@ export interface ProfilePageProps extends Props {
 export interface ProfileSettingsState {
   profileMode: ProfileMode
   user?: UserInfo | null
+  userAvatarUrl?: string
   avatarToUpload?: File | null
   avatarUploadError?: string | null
 }

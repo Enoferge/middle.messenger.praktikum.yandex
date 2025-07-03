@@ -13,7 +13,7 @@ export const getUserInfo = async () => {
 
     window.store.set({
       user: info,
-      avatarUrl: avatar,
+      userAvatarUrl: avatar,
     });
   } catch (e: unknown) {
     console.error('error while trying to get user info');
