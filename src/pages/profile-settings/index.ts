@@ -5,13 +5,14 @@ import { getUserInfo, signOut } from '@/services/auth';
 import type Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
 import isEqual from '@/utils/is-equal';
+import { changeUserAvatar, changeUserInfo, changeUserPass } from '@/services/user';
+import type { ChangeUserInfoRequestData, ChangeUserPassRequestData } from '@/api/user';
 import { FileUpload, IconButton } from '@/components';
-import { changeUserAvatar } from '@/services/user';
 import type { FileUploadProps } from '@/components/file-upload/types';
 
 import type { ProfileMode, ProfilePageProps, ProfileSettingsState, ProfileFileUploadState } from './types';
 import template from './profile.hbs?raw';
-import { getConfig, DEFAULT_PROFILE_MODE } from './section-configs';
+import { getConfig, DEFAULT_PROFILE_MODE } from './constants';
 import './styles.scss';
 import { ProfileForm } from './components/profile-form';
 import ProfileAvatar from './components/profile-avatar';
@@ -52,7 +53,14 @@ class ProfileSettingsPageBase extends Block<ProfilePageProps> {
         ProfileForm: new ProfileForm({
           mode,
           user,
-          onModeChange: props?.onModeChange || (() => { }),
+          onSubmit: async (form: Record<string, string>) => {
+            if (this.props.mode === 'CHANGE_PASS') {
+              await changeUserPass(form as ChangeUserPassRequestData);
+            } else {
+              await changeUserInfo(form as ChangeUserInfoRequestData);
+            }
+          },
+          onSuccess: () => this.props.onUserInfoUpdate?.(),
         }),
         ProfileFileUpload: new ProfileFileUpload({
           name: 'user-avatar',
@@ -204,6 +212,13 @@ export class ProfileSettingsPage extends BasePageWithLayout {
         window.store.set({
           avatarToUpload: file,
         });
+      },
+      onUserInfoUpdate: () => {
+        window.store.set({
+          profileMode: DEFAULT_PROFILE_MODE,
+        });
+
+        getUserInfo();
       },
     });
   }

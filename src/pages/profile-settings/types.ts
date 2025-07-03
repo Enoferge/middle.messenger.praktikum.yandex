@@ -3,6 +3,11 @@ import type { UserInfo } from './components/profile-form';
 
 export type ProfileMode = 'READ' | 'EDIT' | 'CHANGE_PASS' | 'CHANGE_AVATAR';
 
+export type ModeConfig = {
+  showForm?: boolean;
+  showFileUpload?: boolean;
+};
+
 export interface ProfilePageProps extends Props {
   mode?: ProfileMode;
   user?: UserInfo;
@@ -11,6 +16,7 @@ export interface ProfilePageProps extends Props {
   onAvatarFileChange?: (file: File) => void;
   onAvatarUploadSuccess?: () => void;
   onAvatarUploadError?: (error?: string) => void;
+  onUserInfoUpdate?: () => void;
 }
 
 export interface ProfileSettingsState {

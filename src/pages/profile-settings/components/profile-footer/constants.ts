@@ -1,5 +1,5 @@
 import type { ProfileMode } from '../../types';
-import { PROFILE_FORM_ID } from '../profile-form/configs';
+import { PROFILE_FORM_ID } from '../profile-form/constants';
 
 export type ButtonConfig = {
   type: 'button' | 'submit';

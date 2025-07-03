@@ -2,23 +2,22 @@ import { Block } from '@/core/block/block';
 import { Form } from '@/components';
 import type { UserDTO } from '@/api/types';
 import type { Props } from '@/core/block/types';
-import type { ChangeUserInfoRequestData, ChangeUserPassRequestData } from '@/api/user';
-import isEqual from '@/utils/is-equal';
-import { getUserInfo } from '@/services/auth';
-import { changeUserInfo, changeUserPass } from '@/services/user';
-import type { FormWithStoreProps } from '@/components/form';
-import { formController } from '@/services/form-controller';
 
-import { FORM_CONFIGS, FORM_PASSWORD_INITIAL_STATE, FORM_USER_INITIAL_STATE, PROFILE_FORM_ID } from './configs';
+import { FORM_CONFIGS, FORM_PASSWORD_INITIAL_STATE, FORM_USER_INITIAL_STATE, PROFILE_FORM_ID } from './constants';
 import type { ProfileMode } from '../../types';
-import { isFormReadonly } from '../../section-configs';
+import { mapFormToApiFields } from './helpers';
 
-export type UserInfo = Omit<UserDTO, 'id' | 'avatar'>
+export type UserInfo = Omit<UserDTO, 'id' | 'avatar'>;
 
 interface ProfileFormProps extends Props {
   mode: ProfileMode;
   user: UserInfo | null;
-  onModeChange: (mode: ProfileMode) => void;
+  onSubmit: (form: Record<string, string>) => Promise<void>;
+  onSuccess?: () => void;
+}
+
+function isFormReadonly(mode: ProfileMode): boolean {
+  return mode === 'READ'
 }
 
 export class ProfileForm extends Block<ProfileFormProps> {
@@ -26,7 +25,6 @@ export class ProfileForm extends Block<ProfileFormProps> {
     const formSource = props.mode === 'CHANGE_PASS' ? 'password' : 'info';
     const formState = (props.mode === 'CHANGE_PASS' ? FORM_PASSWORD_INITIAL_STATE : props.user || FORM_USER_INITIAL_STATE);
     const formFields = FORM_CONFIGS[formSource].fields;
-    const isReadonly = isFormReadonly(props.mode);
 
     super('div', {
       ...props,
@@ -37,42 +35,27 @@ export class ProfileForm extends Block<ProfileFormProps> {
           formFields,
           formState,
           onSubmit: async (form: Record<string, string>) => {
-            if (this.props.mode === 'CHANGE_PASS') {
-              await changeUserPass(form as ChangeUserPassRequestData);
-            } else {
-              await changeUserInfo(form as ChangeUserInfoRequestData);
-            }
+            await props.onSubmit(mapFormToApiFields(form))
           },
-          onSuccess: () => {
-            props.onModeChange('READ');
-            getUserInfo();
-          },
-          isFormReadonly: isReadonly,
+          onSuccess: props.onSuccess,
+          isFormReadonly: isFormReadonly(props.mode),
         }),
       },
     });
   }
 
   componentDidUpdate(oldProps: ProfileFormProps, newProps: ProfileFormProps): boolean {
-    if (!isEqual(oldProps.user || {}, newProps.user || {})
-      || oldProps.mode !== newProps.mode) {
-      if (oldProps.mode !== newProps.mode) {
-        formController.clearError();
-      }
-
+    if (oldProps.user !== newProps.user || oldProps.mode !== newProps.mode) {
       const formSource = newProps.mode === 'CHANGE_PASS' ? 'password' : 'info';
       const formState = (newProps.mode === 'CHANGE_PASS' ? FORM_PASSWORD_INITIAL_STATE : newProps.user || FORM_USER_INITIAL_STATE);
-      const isReadonly = isFormReadonly(newProps.mode);
 
       if (this.children.Form) {
-        (this.children.Form as Block<FormWithStoreProps>).setProps({
+        (this.children.Form as Block).setProps({
           formFields: FORM_CONFIGS[formSource].fields,
           formState,
-          isFormReadonly: isReadonly,
+          isFormReadonly: isFormReadonly(newProps.mode),
         });
       }
-
-      return false;
     }
     return false;
   }
