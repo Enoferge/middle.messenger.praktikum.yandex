@@ -1,8 +1,8 @@
 import { Block } from '@/core/block/block';
 import type { Props } from '@/core/block/types';
-import { ChatItem } from '@/components/chat-item';
 
 import template from './chat-list.hbs?raw';
+import { ChatItem } from '../chat-item';
 import type { ChatListItem } from '../../types';
 
 export interface ChatListProps extends Props {

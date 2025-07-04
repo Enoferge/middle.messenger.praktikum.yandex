@@ -13,12 +13,14 @@ import { Modal } from '@/components/modal';
 import { Card } from '@/components/card';
 import { FormFooter } from '@/components/form-footer';
 import type { GetChatsResponseData } from '@/api/chats';
+import { Tooltip } from '@/components';
 
 import template from './messenger.hbs?raw';
 import type { MessengerPageProps, MessengerPageState } from './types';
 import { activeChatMessages } from './constants';
 import ChatList from './components/chat-list/chat-list';
 import './styles.scss';
+import { ChatActions } from './components/chat-actions';
 
 const mapStateToProps = (state: MessengerPageState) => ({
   userChats: state.userChats || [],
@@ -41,10 +43,6 @@ class MessengerPageBase extends Block<MessengerPageProps> {
           src: '/assets/images/user1.png',
           alt: 'Active user avatar',
           size: 60,
-        }),
-        SettingsButton: new IconButton({
-          iconName: 'settings',
-          variant: 'plain',
         }),
         FileButton: new IconButton({
           iconName: 'file',
@@ -97,6 +95,8 @@ class MessengerPageBase extends Block<MessengerPageProps> {
       onOverlayClick: () => this.hideModal(),
     });
     (this.children.Modal as Modal).hide();
+
+    this.children.SettingsButton = this.createSettingsButton();
   }
 
   componentDidMount() {
@@ -164,6 +164,25 @@ class MessengerPageBase extends Block<MessengerPageProps> {
 
   hideModal() {
     (this.children.Modal as Modal).hide();
+  }
+
+  createSettingsButton() {
+    return new Tooltip({
+      children: {
+        Trigger: new IconButton({
+          iconName: 'settings',
+          variant: 'plain',
+        }),
+        Content: new ChatActions({
+          onAddUser: () => {
+            console.log('add user');
+          },
+          onRemoveUser: () => {
+            console.log('remove user');
+          },
+        }),
+      },
+    });
   }
 
   render() {
