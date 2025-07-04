@@ -1,10 +1,6 @@
 import type { Props } from '@/core/block/types';
+import type { ChatListItem } from '@/pages/messenger/types';
 
-export interface ChatItemProps extends Props {
-  id: string;
-  chatName?: string;
-  chatAvatar?: string;
-  lastMsgPreview?: string;
-  unreadMsgCount?: number;
-  lastMsgTime?: string;
+export interface ChatItemProps extends ChatListItem, Props {
+  onClickChatItem?: (id: string) => void;
 }

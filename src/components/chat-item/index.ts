@@ -12,6 +12,11 @@ export class ChatItem extends Block<ChatItemProps> {
       ...props,
       lastMsgTime: props.lastMsgTime ? formatTime(props.lastMsgTime) : '',
       class: 'chat-item__wrapper',
+      events: {
+        click: () => {
+          props.onClickChatItem?.(props.id);
+        },
+      },
       children: {
         Avatar: new Avatar({
           src: '/assets/images/user1.png',

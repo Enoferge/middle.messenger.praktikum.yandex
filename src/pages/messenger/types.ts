@@ -1,14 +1,24 @@
 import type { Props } from '@/core/block/types';
 import type { MessageBubbleProps } from '@/components/message-bubble/types';
-import type { ChatItemProps } from '@/components/chat-item/types';
+import type { GetChatsResponseData } from '@/api/chats';
+
+export interface ChatListItem {
+  id: string;
+  chatName?: string;
+  chatAvatar?: string;
+  lastMsgPreview?: string;
+  unreadMsgCount?: number;
+  lastMsgTime?: string;
+}
 
 export interface MessengerPageProps extends Props {
-  activeChatName?: string;
+  userChats?: GetChatsResponseData[];
+  chatListItems?: ChatListItem[];
+  activeChat?: GetChatsResponseData;
   activeChatMessages?: Array<MessageBubbleProps>;
 }
 
 export interface MessengerPageState {
-  userChats?: Array<ChatItemProps>;
+  userChats?: GetChatsResponseData[];
+  activeChat?: GetChatsResponseData;
 }
-
-export type MessengerPageContext = MessengerPageProps & MessengerPageState;

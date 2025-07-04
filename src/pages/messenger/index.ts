@@ -8,23 +8,26 @@ import { InputField } from '@/components/input-field';
 import { FORM_FIELD_TYPE, FormFieldName } from '@/constants/formFields';
 import { Form } from '@/components';
 import isEqual from '@/utils/is-equal';
-import { createNewChat, getUserChats } from '@/services/chats';
+import { createNewChat, getUserChats, mapApiChatsToChatListItems } from '@/services/chats';
 import { Modal } from '@/components/modal';
 import { Card } from '@/components/card';
 import { FormFooter } from '@/components/form-footer';
+import type { GetChatsResponseData } from '@/api/chats';
 
 import template from './messenger.hbs?raw';
-import type { MessengerPageContext, MessengerPageProps, MessengerPageState } from './types';
+import type { MessengerPageProps, MessengerPageState } from './types';
 import { activeChatMessages } from './constants';
 import ChatList from './components/chat-list/chat-list';
 import './styles.scss';
 
 const mapStateToProps = (state: MessengerPageState) => ({
   userChats: state.userChats || [],
+  chatListItems: mapApiChatsToChatListItems(state.userChats || []),
+  activeChat: state.activeChat,
 });
 
-class MessengerPageBase extends Block<MessengerPageContext> {
-  constructor(props?: MessengerPageContext) {
+class MessengerPageBase extends Block<MessengerPageProps> {
+  constructor(props?: MessengerPageProps) {
     super('div', {
       ...props,
       class: 'messenger messenger__wrapper',
@@ -56,7 +59,14 @@ class MessengerPageBase extends Block<MessengerPageContext> {
           name: 'search', type: 'search', placeholder: 'Search in chats...', fieldType: FORM_FIELD_TYPE.Input,
         }),
         ChatList: new ChatList({
-          chats: props?.userChats || [],
+          chats: props?.chatListItems || [],
+          onChatItemClick: (id: string) => {
+            const chat = this.props?.userChats?.find((c: GetChatsResponseData) => String(c.id) === id);
+            window.store.set({
+              activeChat: chat,
+            });
+            console.log(window.store.getState());
+          },
         }),
         activeChatMessages: activeChatMessages.map((msg) => new MessageBubble(msg)),
         MessageForm: new Form({
@@ -93,13 +103,18 @@ class MessengerPageBase extends Block<MessengerPageContext> {
     getUserChats({ offset: '0', limit: '20' });
   }
 
-  componentDidUpdate(oldProps: MessengerPageContext, newProps: MessengerPageContext): boolean {
-    if (!isEqual(oldProps.userChats || {}, newProps.userChats || {})) {
+  componentDidUpdate(oldProps: MessengerPageProps, newProps: MessengerPageProps): boolean {
+    if (!isEqual(oldProps.chatListItems || {}, newProps.chatListItems || {})) {
       if (this.children.ChatList) {
-        (this.children.ChatList as ChatList).setProps({ chats: newProps.userChats || [] });
+        (this.children.ChatList as ChatList).setProps({ chats: newProps.chatListItems || [] });
       }
 
       return false;
+    }
+
+    if (!isEqual(oldProps.activeChat || {}, newProps.activeChat || {})) {
+      // extract right content not to rerender whole page
+      return true;
     }
 
     return false;
@@ -112,11 +127,11 @@ class MessengerPageBase extends Block<MessengerPageContext> {
       formFields: [
         {
           name: FormFieldName.ChatTitle,
-          label: 'Chat name',
+          label: 'Chat title',
           type: 'text',
           fieldType: 'input',
           value: '',
-          placeholder: 'Enter new chat name',
+          placeholder: 'Enter new chat title',
         },
       ],
       formState: { [FormFieldName.ChatTitle]: '' },

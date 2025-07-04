@@ -1,11 +1,11 @@
 import type { CreateNewChatRequestData, GetChatsRequestData, GetChatsResponseData } from '@/api/chats';
 import ChatsApi from '@/api/chats';
 import type { ResponseError } from '@/core/http-transport/types';
-import type { ChatItemProps } from '@/components/chat-item/types';
+import type { ChatListItem } from '@/pages/messenger/types';
 
 const chatsApi = new ChatsApi();
 
-export function mapApiChatsToChatListProps(apiChats: GetChatsResponseData[]): ChatItemProps[] {
+export function mapApiChatsToChatListItems(apiChats: GetChatsResponseData[]): ChatListItem[] {
   return apiChats.map((chat: GetChatsResponseData) => ({
     id: String(chat.id),
     chatName: chat.title ?? '',
@@ -118,8 +118,9 @@ export const getUserChats = async (requestData: GetChatsRequestData): Promise<vo
 
   try {
     const { data } = await chatsApi.getUserChats(requestData);
-    const chatListProps = mapApiChatsToChatListProps([...(data as GetChatsResponseData[] || []), ...mockedData]);
-    window.store.set({ userChats: chatListProps });
+    window.store.set({
+      userChats: [...(data as GetChatsResponseData[] || []), ...mockedData],
+    });
   } catch (e) {
     throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to get user chats');
   }
