@@ -6,7 +6,7 @@
   </div>
   <div class='chat-item__info-row chat-item__info-row-bottom'>
     <div class="chat-item__msg-preview">
-      <div class="chat-item__msg-preview-user-name">{{lastMsgUserName}}:</div>
+      <div class="chat-item__msg-preview-user-name">{{#if lastMsgUserName}}{{lastMsgUserName}}:{{else}}{{/if}}</div>
       <div>{{lastMsgPreview}}</div>
     </div>
     {{#if unreadMsgCount}}

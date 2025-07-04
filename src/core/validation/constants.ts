@@ -36,4 +36,8 @@ export const INPUT_VALIDATORS: Record<string, { validator: RegExp; errorMsg: str
     validator: /^.+$/,
     errorMsg: 'Message cannot be empty',
   },
+  [FormFieldName.ChatTitle]: {
+    validator: /^.+$/,
+    errorMsg: 'Chat title cannot be empty',
+  },
 };

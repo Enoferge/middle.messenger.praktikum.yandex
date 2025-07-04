@@ -159,6 +159,25 @@ export class Block<T extends Props = Props> {
     });
   }
 
+  _replaceStubWithContent(fragment: HTMLTemplateElement, component: Block) {
+    const stub = fragment.content.querySelector(`[data-id="${component._id}"]`);
+    const content = component.getContent();
+
+    if (content) {
+      if (stub) {
+        try {
+          stub.replaceWith(content);
+        } catch (e) {
+          if (stub.parentNode) {
+            stub.parentNode.replaceChild(content, stub);
+          } else {
+            fragment.content.appendChild(content);
+          }
+        }
+      }
+    }
+  }
+
   _compile() {
     const propsAndStubs: Record<string, unknown> = { ...this.props };
 
@@ -177,20 +196,10 @@ export class Block<T extends Props = Props> {
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
         child.forEach((component) => {
-          const stub = fragment.content.querySelector(`[data-id="${component._id}"]`);
-          const content = component.getContent();
-
-          if (content) {
-            stub?.replaceWith(content);
-          }
+          this._replaceStubWithContent(fragment, component);
         });
       } else {
-        const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
-        const content = child.getContent();
-
-        if (content) {
-          stub?.replaceWith(content);
-        }
+        this._replaceStubWithContent(fragment, child);
       }
     });
 

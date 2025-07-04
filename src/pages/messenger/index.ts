@@ -8,7 +8,10 @@ import { InputField } from '@/components/input-field';
 import { FORM_FIELD_TYPE, FormFieldName } from '@/constants/formFields';
 import { Form } from '@/components';
 import isEqual from '@/utils/is-equal';
-import { getUserChats } from '@/services/chats';
+import { createNewChat, getUserChats } from '@/services/chats';
+import { Modal } from '@/components/modal';
+import { Card } from '@/components/card';
+import { FormFooter } from '@/components/form-footer';
 
 import template from './messenger.hbs?raw';
 import type { MessengerPageContext, MessengerPageProps, MessengerPageState } from './types';
@@ -16,7 +19,7 @@ import { activeChatMessages } from './constants';
 import ChatList from './components/chat-list/chat-list';
 import './styles.scss';
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: MessengerPageState) => ({
   userChats: state.userChats || [],
 });
 
@@ -68,15 +71,22 @@ class MessengerPageBase extends Block<MessengerPageContext> {
             [FormFieldName.Message]: '',
           },
         }),
+        Modal: new Modal({
+          content: null,
+        }),
         CreateNewChatButton: new IconButton({
           class: 'messenger__create-new-chat-button',
           iconName: 'plus',
           onClick: () => {
-            console.log('Create new chat');
+            this.showCreateChatModal();
           },
         }),
       },
     });
+    (this.children.Modal as Modal).setProps({
+      onOverlayClick: () => this.hideModal(),
+    });
+    (this.children.Modal as Modal).hide();
   }
 
   componentDidMount() {
@@ -95,13 +105,58 @@ class MessengerPageBase extends Block<MessengerPageContext> {
     return false;
   }
 
+  showCreateChatModal() {
+    console.log('showCreateChatModal');
+    const form = new Form({
+      formId: 'create-chat-form',
+      formFields: [
+        {
+          name: FormFieldName.ChatTitle,
+          label: 'Chat name',
+          type: 'text',
+          fieldType: 'input',
+          value: '',
+          placeholder: 'Enter new chat name',
+        },
+      ],
+      formState: { [FormFieldName.ChatTitle]: '' },
+      onSubmit: async (formData) => {
+        await createNewChat({ title: formData[FormFieldName.ChatTitle] });
+      },
+      onSuccess: () => {
+        this.hideModal();
+        getUserChats({ offset: '0', limit: '20' });
+      },
+    });
+
+    const card = new Card({
+      title: 'Create new chat',
+      children: {
+        ContentBlock: form,
+        FooterBlock: new FormFooter({
+          submitAction: {
+            name: 'create-chat-button',
+            formId: 'create-chat-form',
+            text: 'Create',
+          },
+        }),
+      },
+    });
+
+    (this.children.Modal as Modal).setProps({ content: card });
+    (this.children.Modal as Modal).show();
+  }
+
+  hideModal() {
+    (this.children.Modal as Modal).hide();
+  }
+
   render() {
     return template;
   }
 }
 
 const MessengerPageBaseConnected = connect<MessengerPageProps, MessengerPageState>(mapStateToProps)(MessengerPageBase);
-
 
 export class MessengerPage extends BasePageWithLayout {
   constructor() {

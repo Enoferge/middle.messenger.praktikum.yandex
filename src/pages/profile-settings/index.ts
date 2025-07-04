@@ -146,7 +146,6 @@ class ProfileSettingsPageBase extends Block<ProfileSettingsContext> {
   }
 
   componentDidUpdate(oldProps: ProfileSettingsContext, newProps: ProfileSettingsContext): boolean {
-    console.log('Profile Settings update', { oldProps, newProps })
     const hasModeChanged = oldProps.profileMode !== newProps.profileMode;
     const newMode = newProps.profileMode || DEFAULT_PROFILE_MODE;
 

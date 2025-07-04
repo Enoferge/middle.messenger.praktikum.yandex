@@ -1,12 +1,12 @@
 import type { CreateNewChatRequestData, GetChatsRequestData, GetChatsResponseData } from '@/api/chats';
 import ChatsApi from '@/api/chats';
-import type { ChatItemProps } from '@/components/chat-item/types';
 import type { ResponseError } from '@/core/http-transport/types';
+import type { ChatItemProps } from '@/components/chat-item/types';
 
 const chatsApi = new ChatsApi();
 
 export function mapApiChatsToChatListProps(apiChats: GetChatsResponseData[]): ChatItemProps[] {
-  return apiChats.map(chat => ({
+  return apiChats.map((chat: GetChatsResponseData) => ({
     id: String(chat.id),
     chatName: chat.title ?? '',
     chatAvatar: chat.avatar ?? '',
@@ -15,7 +15,7 @@ export function mapApiChatsToChatListProps(apiChats: GetChatsResponseData[]): Ch
     unreadMsgCount: chat.unread_count,
     lastMsgTime: chat.last_message?.time ?? '',
   }));
-} 
+}
 
 export const getUserChats = async (requestData: GetChatsRequestData): Promise<void> => {
   const mockedData: GetChatsResponseData[] = [
@@ -114,7 +114,7 @@ export const getUserChats = async (requestData: GetChatsRequestData): Promise<vo
         content: 'tickets booked!',
       },
     },
-  ]
+  ];
 
   try {
     const { data } = await chatsApi.getUserChats(requestData);
@@ -122,14 +122,12 @@ export const getUserChats = async (requestData: GetChatsRequestData): Promise<vo
     window.store.set({ userChats: chatListProps });
   } catch (e) {
     throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to get user chats');
-  } finally {
   }
 };
 
 export const createNewChat = async (requestData: CreateNewChatRequestData): Promise<void> => {
   try {
-    const { data } = await chatsApi.createNewChat(requestData);
-    console.log(data);  
+    await chatsApi.createNewChat(requestData);
   } catch (e) {
     throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to create new chat');
   }

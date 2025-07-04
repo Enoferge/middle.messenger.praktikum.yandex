@@ -1,6 +1,6 @@
-import type { ChatItemProps } from '@/components/chat-item/types';
-import type { MessageBubbleProps } from '@/components/message-bubble/types';
 import type { Props } from '@/core/block/types';
+import type { MessageBubbleProps } from '@/components/message-bubble/types';
+import type { ChatItemProps } from '@/components/chat-item/types';
 
 export interface MessengerPageProps extends Props {
   activeChatName?: string;
