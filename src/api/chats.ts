@@ -29,8 +29,20 @@ export type GetChatsResponseData = {
   }
 }
 
+export type CreateNewChatRequestData = {
+  title: string,
+}
+
+export type CreateNewChatResponseData = {
+  id: number,
+}
+
 export default class ChatsApi {
   async getUserChats(data: GetChatsRequestData) {
     return userApi.get<GetChatsResponseData[] | ApiError>('', { data });
+  }
+
+  async createNewChat(data: CreateNewChatRequestData) {
+    return userApi.post<CreateNewChatResponseData | ApiError>('', { data });
   }
 }

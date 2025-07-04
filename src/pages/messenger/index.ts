@@ -68,6 +68,13 @@ class MessengerPageBase extends Block<MessengerPageContext> {
             [FormFieldName.Message]: '',
           },
         }),
+        CreateNewChatButton: new IconButton({
+          class: 'messenger__create-new-chat-button',
+          iconName: 'plus',
+          onClick: () => {
+            console.log('Create new chat');
+          },
+        }),
       },
     });
   }

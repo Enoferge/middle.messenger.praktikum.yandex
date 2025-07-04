@@ -1,4 +1,4 @@
-import type { GetChatsRequestData, GetChatsResponseData } from '@/api/chats';
+import type { CreateNewChatRequestData, GetChatsRequestData, GetChatsResponseData } from '@/api/chats';
 import ChatsApi from '@/api/chats';
 import type { ChatItemProps } from '@/components/chat-item/types';
 import type { ResponseError } from '@/core/http-transport/types';
@@ -123,5 +123,14 @@ export const getUserChats = async (requestData: GetChatsRequestData): Promise<vo
   } catch (e) {
     throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to get user chats');
   } finally {
+  }
+};
+
+export const createNewChat = async (requestData: CreateNewChatRequestData): Promise<void> => {
+  try {
+    const { data } = await chatsApi.createNewChat(requestData);
+    console.log(data);  
+  } catch (e) {
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to create new chat');
   }
 };
