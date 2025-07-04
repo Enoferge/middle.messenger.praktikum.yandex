@@ -1,48 +1,48 @@
 import type { ChatItemProps } from '@/components/chat-item/types';
 import type { MessageBubbleProps } from '@/components/message-bubble/types';
 
-export const messengerChats: Array<ChatItemProps> = [
-  {
-    id: '1',
-    contactName: 'Kaito',
-    contactAvatar: '/assets/images/user1.png',
-    lastMsgPreview: 'It was nice to see you!',
-    unreadMsgCount: 6,
-    lastMsgTime: '2025-05-29T18:49:29.949Z',
-  },
-  {
-    id: '2',
-    contactName: 'Kaito',
-    contactAvatar: '/assets/images/user1.png',
-    lastMsgPreview: 'It was nice to see you!',
-    unreadMsgCount: 0,
-    lastMsgTime: '2025-05-29T18:49:29.949Z',
-  },
-  {
-    id: '3',
-    contactName: 'Kaito',
-    contactAvatar: '/assets/images/user1.png',
-    lastMsgPreview: 'It was nice to see you!',
-    unreadMsgCount: 5,
-    lastMsgTime: '2025-05-29T18:49:29.949Z',
-  },
-  {
-    id: '4',
-    contactName: 'Kaito',
-    contactAvatar: '/assets/images/user1.png',
-    lastMsgPreview: 'It was nice to see you!',
-    unreadMsgCount: 2,
-    lastMsgTime: '2025-05-29T18:49:29.949Z',
-  },
-  {
-    id: '5',
-    contactName: 'Kaito',
-    contactAvatar: '/assets/images/user1.png',
-    lastMsgPreview: 'It was nice to see you!',
-    unreadMsgCount: 1,
-    lastMsgTime: '2025-05-29T18:49:29.949Z',
-  },
-];
+// export const messengerChats: Array<ChatItemProps> = [
+//   {
+//     id: '1',
+//     chatName: 'Kaito',
+//     chatAvatar: '/assets/images/user1.png',
+//     lastMsgPreview: 'It was nice to see you!',
+//     unreadMsgCount: 6,
+//     lastMsgTime: '2025-05-29T18:49:29.949Z',
+//   },
+//   {
+//     id: '2',
+//     chatName: 'Kaito',
+//     chatAvatar: '/assets/images/user1.png',
+//     lastMsgPreview: 'It was nice to see you!',
+//     unreadMsgCount: 0,
+//     lastMsgTime: '2025-05-29T18:49:29.949Z',
+//   },
+//   {
+//     id: '3',
+//     chatName: 'Kaito',
+//     chatAvatar: '/assets/images/user1.png',
+//     lastMsgPreview: 'It was nice to see you!',
+//     unreadMsgCount: 5,
+//     lastMsgTime: '2025-05-29T18:49:29.949Z',
+//   },
+//   {
+//     id: '4',
+//     chatName: 'Kaito',
+//     chatAvatar: '/assets/images/user1.png',
+//     lastMsgPreview: 'It was nice to see you!',
+//     unreadMsgCount: 2,
+//     lastMsgTime: '2025-05-29T18:49:29.949Z',
+//   },
+//   {
+//     id: '5',
+//     chatName: 'Kaito',
+//     chatAvatar: '/assets/images/user1.png',
+//     lastMsgPreview: 'It was nice to see you!',
+//     unreadMsgCount: 1,
+//     lastMsgTime: '2025-05-29T18:49:29.949Z',
+//   },
+// ];
 
 export const activeChatMessages: Array<MessageBubbleProps> = [
   {

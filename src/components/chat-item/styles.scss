@@ -1,6 +1,7 @@
 .chat-item {
   &__wrapper {
     --color-counter: #db7273;
+    --color-chat-name: #e0a85d;
 
     display: flex;
     gap: var(--space-xs);
@@ -36,12 +37,22 @@
   }
 
   &__name {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
+    color: var(--color-chat-name);
   }
 
   &__msg-time {
     font-size: 13px;
+  }
+
+  &__msg-preview {
+    display: flex;
+    gap: var(--space-xs);
+  }
+
+  &__msg-preview-user-name {
+    font-weight: bold;
   }
 
   &__unread-count {

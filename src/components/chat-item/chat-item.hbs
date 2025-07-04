@@ -1,11 +1,14 @@
 {{{Avatar}}}
 <div class='chat-item__info'>
   <div class='chat-item__info-row chat-item__info-row-top'>
-    <span class='chat-item__name'>{{contactName}}</span>
+    <span class='chat-item__name'>{{chatName}}</span>
     <span class='chat-item__msg-time'>{{lastMsgTime}}</span>
   </div>
   <div class='chat-item__info-row chat-item__info-row-bottom'>
-    <div>{{lastMsgPreview}}</div>
+    <div class="chat-item__msg-preview">
+      <div class="chat-item__msg-preview-user-name">{{lastMsgUserName}}:</div>
+      <div>{{lastMsgPreview}}</div>
+    </div>
     {{#if unreadMsgCount}}
       <div class='chat-item__unread-count' aria-label='{{unreadMsgCount}} unread messages'>
         {{unreadMsgCount}}
