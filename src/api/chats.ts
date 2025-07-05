@@ -37,6 +37,34 @@ export type CreateNewChatResponseData = {
   id: number,
 }
 
+export type AddUsersToChatRequestData = {
+  users: number[],
+  chatId: number,
+}
+
+export type RemoveUsersFromChatRequestData = {
+  users: number[],
+  chatId: number,
+}
+
+export type GetChatUsersRequestData = {
+  id: number,
+  offset?: number,
+  limit?: number,
+  name?: string,
+  email?: string,
+}
+
+export type GetChatUsersResponseDataDto = {
+  id: number,
+  first_name: string,
+  second_name: string,
+  display_name: string,
+  login: string,
+  avatar: string,
+  role: string,
+}
+
 export default class ChatsApi {
   async getUserChats(data: GetChatsRequestData) {
     return userApi.get<GetChatsResponseData[] | ApiError>('', { data });
@@ -44,5 +72,17 @@ export default class ChatsApi {
 
   async createNewChat(data: CreateNewChatRequestData) {
     return userApi.post<CreateNewChatResponseData | ApiError>('', { data });
+  }
+
+  async addUsersToChat(data: AddUsersToChatRequestData) {
+    return userApi.put<void | ApiError>('/users', { data });
+  }
+
+  async removeUsersFromChat(data: RemoveUsersFromChatRequestData) {
+    return userApi.delete<void | ApiError>('/users', { data });
+  }
+
+  async getChatUsers(data: GetChatUsersRequestData) {
+    return userApi.get<GetChatUsersResponseDataDto[] | ApiError>(`/${data.id}/users`, { data });
   }
 }

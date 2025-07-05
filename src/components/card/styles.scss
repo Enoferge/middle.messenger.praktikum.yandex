@@ -18,7 +18,7 @@
   &__content {
     overflow-y: auto;
     flex: 1 1 auto;
-    padding: 0 var(--space-m);
+    padding: var(--space-m) var(--space-m) 0;
   }
 
   &__footer {

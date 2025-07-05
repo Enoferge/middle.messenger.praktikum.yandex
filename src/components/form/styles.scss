@@ -9,4 +9,8 @@
   &__error-caption {
     @include form-field-error-caption;
   }
+
+  &__custom-content {
+    margin-top: var(--space-xs);
+  }
 }

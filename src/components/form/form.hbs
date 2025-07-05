@@ -1,4 +1,9 @@
 {{#each FormFields}}
 {{{this}}}
 {{/each}}
+{{#if CustomContent}}
+<div class="form__custom-content">
+  {{{CustomContent}}}
+</div>
+{{/if}}
 {{{FormError}}}

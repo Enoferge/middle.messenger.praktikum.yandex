@@ -42,6 +42,7 @@ export class Form extends Block<FormWithStoreProps> {
         FormError: new FormError({
           error: formController.getError(),
         }),
+        ...props.children,
       },
       events: {
         submit: async (e: Event) => {

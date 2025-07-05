@@ -1,4 +1,12 @@
-import type { CreateNewChatRequestData, GetChatsRequestData, GetChatsResponseData } from '@/api/chats';
+import type {
+  AddUsersToChatRequestData,
+  CreateNewChatRequestData,
+  GetChatsRequestData,
+  GetChatsResponseData,
+  GetChatUsersRequestData,
+  GetChatUsersResponseDataDto,
+  RemoveUsersFromChatRequestData,
+} from '@/api/chats';
 import ChatsApi from '@/api/chats';
 import type { ResponseError } from '@/core/http-transport/types';
 import type { ChatListItem } from '@/pages/messenger/types';
@@ -19,25 +27,25 @@ export function mapApiChatsToChatListItems(apiChats: GetChatsResponseData[]): Ch
 
 export const getUserChats = async (requestData: GetChatsRequestData): Promise<void> => {
   const mockedData: GetChatsResponseData[] = [
-    {
-      id: 123,
-      title: 'Kaito x Enoferge',
-      avatar: '/123/avatar1.jpg',
-      unread_count: 15,
-      created_by: 12345,
-      last_message: {
-        user: {
-          first_name: 'Kaito',
-          second_name: 'Umaha',
-          avatar: '/path/to/avatar.jpg',
-          email: 'kaito@email.com',
-          login: 'kaitoLogin',
-          phone: '8(911)-222-33-22',
-        },
-        time: '2020-01-02T14:22:22.000Z',
-        content: 'this is message content',
-      },
-    },
+    // {
+    //   id: 123,
+    //   title: 'Kaito x Enoferge',
+    //   avatar: '/123/avatar1.jpg',
+    //   unread_count: 15,
+    //   created_by: 12345,
+    //   last_message: {
+    //     user: {
+    //       first_name: 'Kaito',
+    //       second_name: 'Umaha',
+    //       avatar: '/path/to/avatar.jpg',
+    //       email: 'kaito@email.com',
+    //       login: 'kaitoLogin',
+    //       phone: '8(911)-222-33-22',
+    //     },
+    //     time: '2020-01-02T14:22:22.000Z',
+    //     content: 'this is message content',
+    //   },
+    // },
     {
       id: 124,
       title: 'work-group',
@@ -131,5 +139,35 @@ export const createNewChat = async (requestData: CreateNewChatRequestData): Prom
     await chatsApi.createNewChat(requestData);
   } catch (e) {
     throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to create new chat');
+  }
+};
+
+export const addUsersToChat = async (requestData: AddUsersToChatRequestData): Promise<void> => {
+  try {
+    await chatsApi.addUsersToChat(requestData);
+  } catch (e) {
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to add users to chat');
+  }
+};
+
+export const removeUsersFromChat = async (requestData: RemoveUsersFromChatRequestData): Promise<void> => {
+  try {
+    await chatsApi.removeUsersFromChat(requestData);
+  } catch (e) {
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to remove users from chat');
+  }
+};
+
+export const getChatUsers = async (requestData: GetChatUsersRequestData): Promise<GetChatUsersResponseDataDto[]> => {
+  try {
+    const { data } = await chatsApi.getChatUsers(requestData);
+
+    if (Array.isArray(data)) {
+      window.store.set({ chatUsers: data });
+    }
+
+    return data as GetChatUsersResponseDataDto[];
+  } catch (e) {
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to get chat users');
   }
 };

@@ -40,4 +40,8 @@ export const INPUT_VALIDATORS: Record<string, { validator: RegExp; errorMsg: str
     validator: /^.+$/,
     errorMsg: 'Chat title cannot be empty',
   },
+  [FormFieldName.UserId]: {
+    validator: /^\d+$/,
+    errorMsg: 'User id should be a number',
+  },
 };

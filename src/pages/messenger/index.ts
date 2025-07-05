@@ -6,15 +6,16 @@ import { IconButton } from '@/components/icon-button';
 import { MessageBubble } from '@/components/message-bubble';
 import { InputField } from '@/components/input-field';
 import { FORM_FIELD_TYPE, FormFieldName } from '@/constants/formFields';
-import { Form } from '@/components';
+import { Form, Tooltip } from '@/components';
 import isEqual from '@/utils/is-equal';
 import { createNewChat, getUserChats, mapApiChatsToChatListItems } from '@/services/chats';
 import { Modal } from '@/components/modal';
 import { Card } from '@/components/card';
 import { FormFooter } from '@/components/form-footer';
 import type { GetChatsResponseData } from '@/api/chats';
-import { Tooltip } from '@/components';
 
+import { AddUserCard } from './components/add-user-card';
+import { RemoveUserCard } from './components/remove-user-card';
 import template from './messenger.hbs?raw';
 import type { MessengerPageProps, MessengerPageState } from './types';
 import { activeChatMessages } from './constants';
@@ -121,7 +122,6 @@ class MessengerPageBase extends Block<MessengerPageProps> {
   }
 
   showCreateChatModal() {
-    console.log('showCreateChatModal');
     const form = new Form({
       formId: 'create-chat-form',
       formFields: [
@@ -158,12 +158,48 @@ class MessengerPageBase extends Block<MessengerPageProps> {
       },
     });
 
-    (this.children.Modal as Modal).setProps({ content: card });
-    (this.children.Modal as Modal).show();
+    this.showModal(card);
   }
 
   hideModal() {
     (this.children.Modal as Modal).hide();
+  }
+
+  showModal(content: Block) {
+    (this.children.Modal as Modal).setProps({ content });
+    (this.children.Modal as Modal).show();
+  }
+
+  showAddUserModal() {
+    const chatId = this.props.activeChat?.id;
+    if (!chatId) {
+      return;
+    }
+
+    const card = new AddUserCard({
+      chatId,
+      onSuccess: () => {
+        this.hideModal();
+      },
+    });
+
+    this.showModal(card);
+  }
+
+  showRemoveUserModal() {
+    const chatId = this.props.activeChat?.id;
+    if (!chatId) {
+      return;
+    }
+
+    const card = new RemoveUserCard({
+      chatId,
+      onSuccess: () => {
+        this.hideModal();
+      },
+    });
+
+    this.showModal(card);
   }
 
   createSettingsButton() {
@@ -175,10 +211,10 @@ class MessengerPageBase extends Block<MessengerPageProps> {
         }),
         Content: new ChatActions({
           onAddUser: () => {
-            console.log('add user');
+            this.showAddUserModal();
           },
           onRemoveUser: () => {
-            console.log('remove user');
+            this.showRemoveUserModal();
           },
         }),
       },

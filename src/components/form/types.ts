@@ -15,5 +15,6 @@ export interface FormProps extends Props {
   children?: {
     FormFields?: Block[];
     FormError?: Block
+    CustomContent?: Block;
   };
 }

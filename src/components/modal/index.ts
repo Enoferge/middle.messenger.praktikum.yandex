@@ -13,6 +13,7 @@ export class Modal extends Block<ModalProps> {
   constructor(props: ModalProps) {
     const children = props.content ? { Content: props.content } : undefined;
     super('div', {
+      class: 'modal__overlay',
       ...props,
       ...(children ? { children } : {}),
     });
@@ -21,19 +22,23 @@ export class Modal extends Block<ModalProps> {
   computeEvents() {
     return {
       click: (e: Event) => {
-        if ((e.target as HTMLElement).classList.contains('modal-overlay')) {
+        if ((e.target as HTMLElement).classList.contains('modal__overlay')) {
           this.props.onOverlayClick?.();
         }
       },
     };
   }
 
-  componentDidMount() {
-    console.log('Modal componentDidMount');
+  show() {
+    const content = this.getContent();
+
+    if (content) {
+      this._isElementHidden = false;
+      content.style.display = 'flex';
+    }
   }
 
   componentDidUpdate(oldProps: ModalProps, newProps: ModalProps) {
-    console.log('Modal componentDidUpdate', oldProps, newProps);
     if (oldProps.content !== newProps.content) {
       this.updateChildren({
         Content: newProps.content || [],
