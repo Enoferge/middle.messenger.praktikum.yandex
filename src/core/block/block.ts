@@ -323,6 +323,7 @@ export class Block<T extends Props = Props> {
   componentWillUnmount() { }
 
   dispose(): void {
+    this.hide();
     this.componentWillUnmount();
     this._removeEvents();
 

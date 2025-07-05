@@ -162,7 +162,7 @@ class MessengerPageBase extends Block<MessengerPageProps> {
   }
 
   hideModal() {
-    (this.children.Modal as Modal).hide();
+    (this.children.Modal as Modal).dispose();
   }
 
   showModal(content: Block) {
