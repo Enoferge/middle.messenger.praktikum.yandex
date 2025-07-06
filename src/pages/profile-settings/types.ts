@@ -16,6 +16,10 @@ export interface ProfileSettingsProps extends Props {
   onAvatarUploadSuccess?: () => void;
   onAvatarUploadError?: (error?: string) => void;
   onUserInfoUpdate?: () => void;
+  profileMode?: ProfileMode;
+  user?: UserInfo | null;
+  userAvatarUrl?: string;
+  avatarToUpload?: File | null;
 }
 
 export interface ProfileSettingsState {

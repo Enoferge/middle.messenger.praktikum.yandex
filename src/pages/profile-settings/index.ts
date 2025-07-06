@@ -6,19 +6,17 @@ import type Router from '@/navigation/router';
 import { ROUTER } from '@/navigation/constants';
 import { changeUserAvatar, changeUserInfo, changeUserPass } from '@/services/user';
 import type { ChangeUserInfoRequestData, ChangeUserPassRequestData } from '@/api/user';
-import { FileUpload, IconButton } from '@/components';
+import { FileUpload, IconButton, Avatar } from '@/components';
 import type { FileUploadProps } from '@/components/file-upload/types';
+import { getAvatarFullUrl } from '@/utils/avatar';
 
 import type { ProfileMode, ProfileSettingsState, ProfileFileUploadState, ProfileSettingsProps } from './types';
 import template from './profile.hbs?raw';
 import { getConfig, DEFAULT_PROFILE_MODE } from './constants';
 import './styles.scss';
 import ProfileForm from './components/profile-form';
-import ProfileAvatar from './components/profile-avatar';
 import ProfileActions from './components/profile-actions';
 import ProfileFooter from './components/profile-footer';
-
-type ProfileSettingsContext = ProfileSettingsProps & ProfileSettingsState
 
 const mapStateToPropsFileUpload = (state: ProfileFileUploadState) => ({
   fileName: state.avatarToUpload?.name || null,
@@ -27,10 +25,10 @@ const mapStateToPropsFileUpload = (state: ProfileFileUploadState) => ({
 
 const ProfileFileUpload = connect<FileUploadProps, ProfileFileUploadState>(mapStateToPropsFileUpload)(FileUpload);
 
-class ProfileSettingsPageBase extends Block<ProfileSettingsContext> {
+class ProfileSettingsPageBase extends Block<ProfileSettingsProps> {
   private router!: Router;
 
-  constructor(props?: ProfileSettingsContext) {
+  constructor(props?: ProfileSettingsProps) {
     super('section', {
       ...props,
       profileMode: props?.profileMode || DEFAULT_PROFILE_MODE,
@@ -40,7 +38,9 @@ class ProfileSettingsPageBase extends Block<ProfileSettingsContext> {
         'aria-labelledby': 'profile-title',
       },
       children: {
-        Avatar: new ProfileAvatar({
+        Avatar: new Avatar({
+          src: getAvatarFullUrl(props?.userAvatarUrl),
+          alt: 'User avatar',
           size: 160,
         }),
         ProfileActions: new ProfileActions({
@@ -132,7 +132,7 @@ class ProfileSettingsPageBase extends Block<ProfileSettingsContext> {
   }
 
   componentDidMount(): void {
-    const mode = (this.props as ProfileSettingsContext).profileMode || DEFAULT_PROFILE_MODE;
+    const mode = this.props.profileMode || DEFAULT_PROFILE_MODE;
 
     if (this.children.ProfileFooter) {
       (this.children.ProfileFooter as Block).setProps({
@@ -147,7 +147,7 @@ class ProfileSettingsPageBase extends Block<ProfileSettingsContext> {
     }
   }
 
-  componentDidUpdate(oldProps: ProfileSettingsContext, newProps: ProfileSettingsContext): boolean {
+  componentDidUpdate(oldProps: ProfileSettingsProps, newProps: ProfileSettingsProps): boolean {
     const hasModeChanged = oldProps.profileMode !== newProps.profileMode;
     const newMode = newProps.profileMode || DEFAULT_PROFILE_MODE;
 
@@ -161,6 +161,14 @@ class ProfileSettingsPageBase extends Block<ProfileSettingsContext> {
       this.toggleFormVisibility(newProps.profileMode);
     }
 
+    if (oldProps.userAvatarUrl !== newProps.userAvatarUrl) {
+      if (this.children.Avatar) {
+        (this.children.Avatar as Avatar).setProps({
+          src: getAvatarFullUrl(newProps.userAvatarUrl),
+        });
+      }
+    }
+
     return false;
   }
 
@@ -172,6 +180,7 @@ class ProfileSettingsPageBase extends Block<ProfileSettingsContext> {
 const mapStateToProps = (state: ProfileSettingsState) => ({
   profileMode: state.profileMode || undefined,
   user: state.user || undefined,
+  userAvatarUrl: state.userAvatarUrl,
   avatarToUpload: state.avatarToUpload || null,
 });
 

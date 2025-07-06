@@ -6,6 +6,7 @@ import { getAvatarFullUrl } from '@/utils/avatar';
 import template from './chat-item.hbs?raw';
 import './styles.scss';
 import type { ChatItemProps } from './types';
+
 export class ChatItem extends Block<ChatItemProps> {
   constructor(props: ChatItemProps) {
     super('div', {
@@ -34,7 +35,7 @@ export class ChatItem extends Block<ChatItemProps> {
       });
     }
 
-    return true
+    return true;
   }
 
   render() {
