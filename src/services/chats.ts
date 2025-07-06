@@ -49,7 +49,7 @@ export const getUserChats = async (requestData: GetChatsRequestData): Promise<vo
     {
       id: 124,
       title: 'work-group',
-      avatar: '/124/avatar2.jpg',
+      avatar: null,
       unread_count: 3,
       created_by: 54321,
       last_message: {
@@ -134,6 +134,18 @@ export const getUserChats = async (requestData: GetChatsRequestData): Promise<vo
   }
 };
 
+export const getUserChatByTitle = async (title: GetChatsRequestData['title'] | null): Promise<GetChatsResponseData | null> => {
+  try {
+    if (title) {
+      const { data } = await chatsApi.getUserChats({ offset: '0', limit: '1', title });
+      return (data as GetChatsResponseData[])?.[0];
+    }
+    return null;
+  } catch (e) {
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to get user chat by title');
+  }
+};
+
 export const createNewChat = async (requestData: CreateNewChatRequestData): Promise<void> => {
   try {
     await chatsApi.createNewChat(requestData);
@@ -169,5 +181,13 @@ export const getChatUsers = async (requestData: GetChatUsersRequestData): Promis
     return data as GetChatUsersResponseDataDto[];
   } catch (e) {
     throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to get chat users');
+  }
+};
+
+export const changeChatAvatar = async (formData: FormData): Promise<void> => {
+  try {
+    await chatsApi.changeChatAvatar(formData);
+  } catch (e) {
+    throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to change chat avatar');
   }
 };

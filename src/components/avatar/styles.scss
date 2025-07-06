@@ -31,4 +31,18 @@
     align-items: center;
     justify-content: center;
   }
+
+  &--clickable {
+    cursor: pointer;
+    transition: transform var(--animation-duration) ease, box-shadow var(--animation-duration) ease;
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 var(--shadow-size) var(--shadow-blur) var(--shadow-color);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
 }

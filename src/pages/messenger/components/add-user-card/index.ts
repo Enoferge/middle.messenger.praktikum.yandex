@@ -3,12 +3,12 @@ import { FormFieldName } from '@/constants/formFields';
 
 import { BaseUserCard, type BaseUserCardProps } from '../base-user-card';
 
-export interface AddUserCardProps extends Omit<BaseUserCardProps, 'title' | 'submitButtonText' | 'formId' | 'onSubmit'> {
+export interface AddUserCardProps extends BaseUserCardProps {
   chatId: number;
   onSuccess?: () => void;
 }
 
-export class AddUserCard extends BaseUserCard {
+export class AddUserCard extends BaseUserCard<AddUserCardProps> {
   constructor(props: AddUserCardProps) {
     super({
       ...props,

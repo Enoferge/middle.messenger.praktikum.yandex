@@ -3,30 +3,29 @@ import { Block } from '@/core/block/block';
 import { connect } from '@/core/hoc/connect-to-store';
 import { Avatar } from '@/components/avatar';
 import { IconButton } from '@/components/icon-button';
-import { MessageBubble } from '@/components/message-bubble';
 import { InputField } from '@/components/input-field';
 import { FORM_FIELD_TYPE, FormFieldName } from '@/constants/formFields';
-import { Form, Tooltip } from '@/components';
+import { Form } from '@/components';
 import isEqual from '@/utils/is-equal';
 import { createNewChat, getUserChats, mapApiChatsToChatListItems } from '@/services/chats';
 import { Modal } from '@/components/modal';
 import { Card } from '@/components/card';
 import { FormFooter } from '@/components/form-footer';
+import { getAvatarFullUrl } from '@/utils/avatar';
+import { ROUTER } from '@/navigation/constants';
 import type { GetChatsResponseData } from '@/api/chats';
 
-import { AddUserCard } from './components/add-user-card';
-import { RemoveUserCard } from './components/remove-user-card';
 import template from './messenger.hbs?raw';
 import type { MessengerPageProps, MessengerPageState } from './types';
-import { activeChatMessages } from './constants';
 import ChatList from './components/chat-list/chat-list';
 import './styles.scss';
-import { ChatActions } from './components/chat-actions';
+import ActiveChatContainer from './components/active-chat-container';
 
 const mapStateToProps = (state: MessengerPageState) => ({
   userChats: state.userChats || [],
   chatListItems: mapApiChatsToChatListItems(state.userChats || []),
   activeChat: state.activeChat,
+  userAvatarUrl: state.userAvatarUrl,
 });
 
 class MessengerPageBase extends Block<MessengerPageProps> {
@@ -36,23 +35,18 @@ class MessengerPageBase extends Block<MessengerPageProps> {
       class: 'messenger messenger__wrapper',
       children: {
         Avatar: new Avatar({
-          src: '/assets/images/user1.png',
+          src: getAvatarFullUrl(props?.userAvatarUrl),
           alt: 'User avatar',
           size: 60,
-        }),
-        ActiveChatAvatar: new Avatar({
-          src: '/assets/images/user1.png',
-          alt: 'Active user avatar',
-          size: 60,
-        }),
-        FileButton: new IconButton({
-          iconName: 'file',
-          variant: 'plain',
-        }),
-        SendButton: new IconButton({
-          iconName: 'send',
-          type: 'submit',
-          form: 'message-form',
+          class: 'avatar--clickable',
+          attrs: {
+            title: 'Click to open profile settings',
+          },
+          events: {
+            click: () => {
+              window.router.go(ROUTER.profileSettings);
+            },
+          },
         }),
         Search: new InputField({
           name: 'search', type: 'search', placeholder: 'Search in chats...', fieldType: FORM_FIELD_TYPE.Input,
@@ -64,20 +58,6 @@ class MessengerPageBase extends Block<MessengerPageProps> {
             window.store.set({
               activeChat: chat,
             });
-            console.log(window.store.getState());
-          },
-        }),
-        activeChatMessages: activeChatMessages.map((msg) => new MessageBubble(msg)),
-        MessageForm: new Form({
-          formId: 'message-form',
-          formFields: [{
-            name: FormFieldName.Message,
-            value: '',
-            placeholder: 'Type your message here...',
-            fieldType: FORM_FIELD_TYPE.Textarea,
-          }],
-          formState: {
-            [FormFieldName.Message]: '',
           },
         }),
         Modal: new Modal({
@@ -90,6 +70,7 @@ class MessengerPageBase extends Block<MessengerPageProps> {
             this.showCreateChatModal();
           },
         }),
+        ActiveChatContainer: new ActiveChatContainer({}),
       },
     });
     (this.children.Modal as Modal).setProps({
@@ -97,7 +78,25 @@ class MessengerPageBase extends Block<MessengerPageProps> {
     });
     (this.children.Modal as Modal).hide();
 
-    this.children.SettingsButton = this.createSettingsButton();
+    (this.children.ActiveChatContainer as Block).setProps({
+      showModal: this.showModal.bind(this),
+      hideModal: this.hideModal.bind(this),
+      onActiveChatUpdate: () => {
+        const userActiveChatIndex = this.props.userChats?.findIndex((item) => item.id === this.props.activeChat?.id) ?? -1;
+
+        if (userActiveChatIndex !== -1) {
+          const updatedUserActiveChat = Object.assign({}, this.props.userChats?.[userActiveChatIndex], this.props.activeChat);
+
+          window.store.set({
+            userChats: [
+              ...(this.props.userChats?.slice(0, userActiveChatIndex) || []),
+              updatedUserActiveChat,  
+              ...(this.props.userChats?.slice(userActiveChatIndex + 1) || []),
+            ],
+          });
+        }
+      },
+    });
   }
 
   componentDidMount() {
@@ -114,8 +113,15 @@ class MessengerPageBase extends Block<MessengerPageProps> {
     }
 
     if (!isEqual(oldProps.activeChat || {}, newProps.activeChat || {})) {
-      // extract right content not to rerender whole page
-      return true;
+      return false;
+    }
+
+    if (oldProps.userAvatarUrl !== newProps.userAvatarUrl) {
+      if (this.children.Avatar) {
+        (this.children.Avatar as Avatar).setProps({
+          src: getAvatarFullUrl(newProps.userAvatarUrl),
+        });
+      }
     }
 
     return false;
@@ -168,57 +174,6 @@ class MessengerPageBase extends Block<MessengerPageProps> {
   showModal(content: Block) {
     (this.children.Modal as Modal).setProps({ content });
     (this.children.Modal as Modal).show();
-  }
-
-  showAddUserModal() {
-    const chatId = this.props.activeChat?.id;
-    if (!chatId) {
-      return;
-    }
-
-    const card = new AddUserCard({
-      chatId,
-      onSuccess: () => {
-        this.hideModal();
-      },
-    });
-
-    this.showModal(card);
-  }
-
-  showRemoveUserModal() {
-    const chatId = this.props.activeChat?.id;
-    if (!chatId) {
-      return;
-    }
-
-    const card = new RemoveUserCard({
-      chatId,
-      onSuccess: () => {
-        this.hideModal();
-      },
-    });
-
-    this.showModal(card);
-  }
-
-  createSettingsButton() {
-    return new Tooltip({
-      children: {
-        Trigger: new IconButton({
-          iconName: 'settings',
-          variant: 'plain',
-        }),
-        Content: new ChatActions({
-          onAddUser: () => {
-            this.showAddUserModal();
-          },
-          onRemoveUser: () => {
-            this.showRemoveUserModal();
-          },
-        }),
-      },
-    });
   }
 
   render() {

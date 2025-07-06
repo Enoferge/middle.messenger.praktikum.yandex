@@ -8,6 +8,7 @@ import './styles.scss';
 export interface ChatActionsProps extends Props {
   onAddUser?: () => void;
   onRemoveUser?: () => void;
+  onUploadFile?: () => void;
 }
 
 export class ChatActions extends Block<ChatActionsProps> {
@@ -17,6 +18,7 @@ export class ChatActions extends Block<ChatActionsProps> {
       children: {
         AddIcon: new Icon({ name: 'plus', class: 'chat-actions__icon' }),
         RemoveIcon: new Icon({ name: 'close', class: 'chat-actions__icon' }),
+        UploadIcon: new Icon({ name: 'upload', class: 'chat-actions__icon' }),
       },
       events: {
         click: (e: Event) => {
@@ -25,6 +27,8 @@ export class ChatActions extends Block<ChatActionsProps> {
             props.onAddUser?.();
           } else if (target.closest('[data-action="remove"]')) {
             props.onRemoveUser?.();
+          } else if (target.closest('[data-action="upload"]')) {
+            props.onUploadFile?.();
           }
         },
       },

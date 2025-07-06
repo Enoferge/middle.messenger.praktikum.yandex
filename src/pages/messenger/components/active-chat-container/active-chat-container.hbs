@@ -1,0 +1,23 @@
+{{#if activeChat}}
+  <div class='messenger__header'>
+    <div class='messenger__header-left-part'>
+      {{{ActiveChatAvatar}}}
+      <span class="messenger__header-title">{{activeChat.title}}</span>
+    </div>
+    {{{SettingsButton}}}
+  </div>
+  <div class='messenger__content messenger__active-chat'>
+    {{#each activeChatMessages}}
+      {{{this}}}
+    {{/each}}
+  </div>
+  <div class='messenger__footer'>
+    {{{FileButton}}}
+    <div class='messenger__user-msg-textarea'>{{{MessageForm}}}</div>
+    {{{SendButton}}}
+  </div>
+{{else}}
+  <div class='messenger__empty-chat-message'>
+    Choose a chat to send a message
+  </div>
+{{/if}}

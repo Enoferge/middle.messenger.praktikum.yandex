@@ -5,7 +5,7 @@ import type { MessageBubbleProps } from '@/components/message-bubble/types';
 //   {
 //     id: '1',
 //     chatName: 'Kaito',
-//     chatAvatar: '/assets/images/user1.png',
+//     chatAvatar: '/assets/images/image-not-found.png',
 //     lastMsgPreview: 'It was nice to see you!',
 //     unreadMsgCount: 6,
 //     lastMsgTime: '2025-05-29T18:49:29.949Z',
@@ -13,7 +13,7 @@ import type { MessageBubbleProps } from '@/components/message-bubble/types';
 //   {
 //     id: '2',
 //     chatName: 'Kaito',
-//     chatAvatar: '/assets/images/user1.png',
+//     chatAvatar: '/assets/images/image-not-found.png',
 //     lastMsgPreview: 'It was nice to see you!',
 //     unreadMsgCount: 0,
 //     lastMsgTime: '2025-05-29T18:49:29.949Z',
@@ -21,7 +21,7 @@ import type { MessageBubbleProps } from '@/components/message-bubble/types';
 //   {
 //     id: '3',
 //     chatName: 'Kaito',
-//     chatAvatar: '/assets/images/user1.png',
+//     chatAvatar: '/assets/images/image-not-found.png',
 //     lastMsgPreview: 'It was nice to see you!',
 //     unreadMsgCount: 5,
 //     lastMsgTime: '2025-05-29T18:49:29.949Z',
@@ -29,7 +29,7 @@ import type { MessageBubbleProps } from '@/components/message-bubble/types';
 //   {
 //     id: '4',
 //     chatName: 'Kaito',
-//     chatAvatar: '/assets/images/user1.png',
+//     chatAvatar: '/assets/images/image-not-found.png',
 //     lastMsgPreview: 'It was nice to see you!',
 //     unreadMsgCount: 2,
 //     lastMsgTime: '2025-05-29T18:49:29.949Z',
@@ -37,7 +37,7 @@ import type { MessageBubbleProps } from '@/components/message-bubble/types';
 //   {
 //     id: '5',
 //     chatName: 'Kaito',
-//     chatAvatar: '/assets/images/user1.png',
+//     chatAvatar: '/assets/images/image-not-found.png',
 //     lastMsgPreview: 'It was nice to see you!',
 //     unreadMsgCount: 1,
 //     lastMsgTime: '2025-05-29T18:49:29.949Z',

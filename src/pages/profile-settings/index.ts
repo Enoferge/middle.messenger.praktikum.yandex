@@ -69,7 +69,9 @@ class ProfileSettingsPageBase extends Block<ProfileSettingsContext> {
         CloseButton: new IconButton({
           iconName: 'close',
           variant: 'plain',
-          onClick: () => console.log('onClose'),
+          onClick: () => {
+            window.router.go(ROUTER.messenger);
+          },
         }),
       },
     });

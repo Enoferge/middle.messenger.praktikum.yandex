@@ -11,21 +11,21 @@ export type GetChatsRequestData = {
 
 export type GetChatsResponseData = {
   id: number,
-  title?: string,
-  avatar?: string,
-  unread_count?: number,
-  created_by?: number,
+  title?: string | null,
+  avatar?: string | null,
+  unread_count?: number | null,
+  created_by?: number | null,
   last_message?: {
     user?: {
       first_name: string,
       second_name: string,
-      avatar: string,
+      avatar: string | null,
       email: string,
       login: string,
       phone: string,
     },
-    time?: string,
-    content?: string,
+    time?: string | null,
+    content?: string | null,
   }
 }
 
@@ -61,7 +61,7 @@ export type GetChatUsersResponseDataDto = {
   second_name: string,
   display_name: string,
   login: string,
-  avatar: string,
+  avatar: string | null,
   role: string,
 }
 
@@ -84,5 +84,9 @@ export default class ChatsApi {
 
   async getChatUsers(data: GetChatUsersRequestData) {
     return userApi.get<GetChatUsersResponseDataDto[] | ApiError>(`/${data.id}/users`, { data });
+  }
+
+  async changeChatAvatar(data: FormData) {
+    return userApi.put<void | ApiError>('/avatar', { data });
   }
 }

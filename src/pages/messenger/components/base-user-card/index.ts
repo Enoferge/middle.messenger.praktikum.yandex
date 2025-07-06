@@ -11,21 +11,22 @@ export interface BaseUserCardProps extends Props {
   submitButtonText: string;
   formId: string;
   customContent?: Block;
+  useFileUpload?: boolean;
   onSuccess?: () => void;
   onSubmit: (formData: Record<string, string>) => Promise<void>;
 }
 
-export abstract class BaseUserCard extends Block<BaseUserCardProps> {
+export abstract class BaseUserCard<T extends BaseUserCardProps> extends Block<T> {
   protected form: Form;
 
   protected card: Card;
 
-  constructor(props: BaseUserCardProps) {
+  constructor(props: T) {
     const formChildren = props.customContent ? { CustomContent: props.customContent } : {};
 
     const form = new Form({
       formId: props.formId,
-      formFields: [
+      formFields: props.useFileUpload ? [] : [
         {
           name: FormFieldName.UserId,
           label: 'User id',
@@ -35,7 +36,7 @@ export abstract class BaseUserCard extends Block<BaseUserCardProps> {
           placeholder: 'Enter user id',
         },
       ],
-      formState: { [FormFieldName.UserId]: '' },
+      formState: props.useFileUpload ? {} : { [FormFieldName.UserId]: '' },
       onSubmit: props.onSubmit,
       onSuccess: () => {
         props.onSuccess?.();
