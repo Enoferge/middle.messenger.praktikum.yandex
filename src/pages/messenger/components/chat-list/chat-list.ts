@@ -1,7 +1,7 @@
 import { Block } from '@/core/block/block';
 import type { Props } from '@/core/block/types';
-
 import isEqual from '@/utils/is-equal';
+
 import template from './chat-list.hbs?raw';
 import { ChatItem } from '../chat-item';
 import type { ChatListItem } from '../../types';
@@ -9,10 +9,6 @@ import type { ChatListItem } from '../../types';
 export interface ChatListProps extends Props {
   chats: ChatListItem[];
   onChatItemClick?: (id: string) => void;
-
-  children: {
-    Chats?: ChatItem[];
-  };
 }
 
 export default class ChatList extends Block<ChatListProps> {
@@ -21,7 +17,7 @@ export default class ChatList extends Block<ChatListProps> {
       chats: props.chats,
       onChatItemClick: props.onChatItemClick,
       children: {
-        Chats: props.chats.map((chat) => new ChatItem({
+        chats: props.chats.map((chat) => new ChatItem({
           ...chat,
           onClickChatItem: props.onChatItemClick,
         })),
@@ -41,7 +37,7 @@ export default class ChatList extends Block<ChatListProps> {
 
     for (let i = 0; i < oldProps.chats.length; i++) {
       if (!isEqual(oldProps.chats[i], newProps.chats[i])) {
-        (this.children as ChatListProps['children']).Chats?.[i].setProps({
+        (this.children.chats[i] as ChatItem).setProps({
           ...newProps.chats[i],
           onClickChatItem: newProps.onChatItemClick,
         });
