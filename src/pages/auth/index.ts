@@ -17,7 +17,7 @@ export class AuthPage extends Block<AuthPageProps> {
       footerProps: { submitAction, secondaryAction },
     } = props;
 
-    super('fragment', {
+    super('div', {
       ...props,
       children: {
         Card: new Card({
