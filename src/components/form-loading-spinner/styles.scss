@@ -28,6 +28,7 @@
       height: var(--spinner-size);
       border: var(--border-size) solid var(--color-border-main);
       border-top: var(--border-size) solid var(--color-action);
+      border-radius: var(--border-radius);
       animation: spin var(--animation-duration) linear infinite;
     }
   }
