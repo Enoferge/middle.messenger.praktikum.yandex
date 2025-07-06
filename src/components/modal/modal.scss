@@ -1,12 +1,9 @@
 .modal {
   &__overlay {
-    --color-overlay: rgba(0,0,0,0.4);
+    --color-overlay: rgb(0 0 0 / 40%);
     
     position: fixed;
-    top: 0; 
-    left: 0;
-    right: 0; 
-    bottom: 0;
+    inset: 0;
     width: 100vw;
     height: 100vh;
     background: var(--color-overlay);

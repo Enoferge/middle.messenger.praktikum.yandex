@@ -1,5 +1,5 @@
 .form-loading {
-  --bg-color: rgba(46, 31, 76, 0.8);
+  --bg-color: rgb(46 31 76 / 80%);
   --spinner-size: 32px;
   --blur-size: 2px;
   --border-size: 3px;
@@ -7,10 +7,7 @@
   --animation-duration: 1s;
   
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: var(--bg-color);
   backdrop-filter: blur(var(--blur-size));
   z-index: var(--z-index-form-loading);

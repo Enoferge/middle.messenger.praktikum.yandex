@@ -10,7 +10,7 @@ export interface RemoveUserCardProps extends BaseUserCardProps {
   onSuccess?: () => void;
 }
 
-export class RemoveUserCard extends BaseUserCard<RemoveUserCardProps>  {
+export class RemoveUserCard extends BaseUserCard<RemoveUserCardProps> {
   constructor(props: RemoveUserCardProps) {
     super({
       ...props,
@@ -30,7 +30,6 @@ export class RemoveUserCard extends BaseUserCard<RemoveUserCardProps>  {
             activeChat: null,
           });
         }
-
       },
       customContent: new ChatUsersList({ users: props.users || [] }),
     });

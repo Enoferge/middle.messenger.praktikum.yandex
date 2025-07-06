@@ -73,30 +73,30 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
     if (!chatId) {
       return;
     }
-  
+
     const card = new AddUserCard({
       chatId,
       onSuccess: () => {
         this.props.hideModal?.();
       },
     });
-  
+
     this.props.showModal?.(card);
   }
-  
+
   showRemoveUserModal() {
     const chatId = this.props.activeChat?.id;
     if (!chatId) {
       return;
     }
-  
+
     const card = new RemoveUserCard({
       chatId,
       onSuccess: () => {
         this.props.hideModal?.();
       },
     });
-  
+
     this.props.showModal?.(card);
   }
 

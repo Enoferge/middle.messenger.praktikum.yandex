@@ -55,7 +55,8 @@
         "ignoreExpressions": true,
         "max": 2
       }
-    ]
+    ],
+    "no-plusplus": "off"
   },
   "overrides": [
     {

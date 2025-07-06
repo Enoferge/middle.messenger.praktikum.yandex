@@ -13,7 +13,7 @@ export interface BaseUserCardProps extends Props {
   customContent?: Block;
   useFileUpload?: boolean;
   onSuccess?: () => void;
-  onSubmit: (formData: Record<string, string>) => Promise<void>;
+  onSubmit?: (formData: Record<string, string>) => Promise<void>;
 }
 
 export abstract class BaseUserCard<T extends BaseUserCardProps> extends Block<T> {

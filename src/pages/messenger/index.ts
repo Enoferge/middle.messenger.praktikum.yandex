@@ -85,12 +85,12 @@ class MessengerPageBase extends Block<MessengerPageProps> {
         const userActiveChatIndex = this.props.userChats?.findIndex((item) => item.id === this.props.activeChat?.id) ?? -1;
 
         if (userActiveChatIndex !== -1) {
-          const updatedUserActiveChat = Object.assign({}, this.props.userChats?.[userActiveChatIndex], this.props.activeChat);
+          const updatedUserActiveChat = { ...this.props.userChats?.[userActiveChatIndex], ...this.props.activeChat };
 
           window.store.set({
             userChats: [
               ...(this.props.userChats?.slice(0, userActiveChatIndex) || []),
-              updatedUserActiveChat,  
+              updatedUserActiveChat,
               ...(this.props.userChats?.slice(userActiveChatIndex + 1) || []),
             ],
           });

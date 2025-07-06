@@ -1,19 +1,21 @@
-.tooltip__trigger {
-  position: relative;
+.tooltip {
+  &__trigger {
+    position: relative;
+  }
+
+  &__content {
+    --shadow-color: rgb(0 0 0 / 15%);
+    --shadow-size: 4px;
+    --shadow-blur: 16px;
+
+    position: absolute;
+    top: 42px;
+    right: 22px;
+    background-color: var(--color-bg-layout);
+    border-radius: var(--radius-large);
+    border-top-right-radius: 0;
+    box-shadow: 0 var(--shadow-size) var(--shadow-blur) var(--shadow-color);
+    padding: var(--space-s) var(--space-xs);
+    z-index: var(--z-index-tooltip);
+  } 
 }
-
-.tooltip__content {
-  --shadow-color: rgba(0,0,0,0.15);
-  --shadow-size: 4px;
-  --shadow-blur: 16px;
-
-  position: absolute;
-  top: 42px;
-  right: 22px;
-  background-color: var(--color-bg-layout);
-  border-radius: var(--radius-large);
-  border-top-right-radius: 0;
-  box-shadow: 0 var(--shadow-size) var(--shadow-blur) var(--shadow-color);
-  padding: var(--space-s) var(--space-xs);
-  z-index: var(--z-index-tooltip);
-} 

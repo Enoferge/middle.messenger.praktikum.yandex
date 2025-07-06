@@ -1,4 +1,3 @@
-import type { ChatItemProps } from '@/components/chat-item/types';
 import type { MessageBubbleProps } from '@/components/message-bubble/types';
 
 // export const messengerChats: Array<ChatItemProps> = [

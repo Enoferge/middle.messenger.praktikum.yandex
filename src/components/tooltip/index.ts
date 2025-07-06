@@ -21,7 +21,6 @@ export class Tooltip extends Block<TooltipProps> {
         click: () => this.toggleContent(),
       },
     });
-
   }
 
   toggleContent() {
@@ -31,4 +30,4 @@ export class Tooltip extends Block<TooltipProps> {
   render() {
     return template;
   }
-} 
+}
