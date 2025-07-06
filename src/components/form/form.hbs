@@ -1,9 +1,14 @@
 {{#each FormFields}}
 {{{this}}}
 {{/each}}
+{{#if FormError}}
+  {{{FormError}}}
+{{/if}}
+{{#if FormLoadingSpinner}}
+  {{{FormLoadingSpinner}}}
+{{/if}}
 {{#if CustomContent}}
 <div class="form__custom-content">
   {{{CustomContent}}}
 </div>
 {{/if}}
-{{{FormError}}}

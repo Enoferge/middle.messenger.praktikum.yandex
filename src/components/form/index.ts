@@ -6,25 +6,14 @@ import { FormFieldName } from '@/constants/formFields';
 import { TextareaField } from '@/components/textarea-field';
 import type { TextareaFieldProps } from '@/components/textarea-field/types';
 import isEqual from '@/utils/is-equal';
-import { connect } from '@/core/hoc/connect-to-store';
 
-import { formController } from '@/services/form-controller';
 import type { FormProps } from './types';
 import './styles.scss';
 import template from './form.hbs?raw';
 import { FormError } from '../form-error';
+import { FormLoadingSpinner } from '../form-loading-spinner';
 
-export interface FormWithStoreProps extends FormProps {
-  formError?: string | null;
-  isFormLoading?: boolean;
-}
-
-const mapStateToProps = (state: any) => ({
-  formError: state.formError,
-  isFormLoading: state.isFormLoading,
-});
-
-export class Form extends Block<FormWithStoreProps> {
+export class Form extends Block<FormProps> {
   constructor(props?: FormProps) {
     if (!props) {
       throw new Error('Form: props are required');
@@ -40,7 +29,10 @@ export class Form extends Block<FormWithStoreProps> {
       children: {
         FormFields: [],
         FormError: new FormError({
-          error: formController.getError(),
+          error: props.formError || null,
+        }),
+        FormLoadingSpinner: new FormLoadingSpinner({
+          isLoading: props.isFormLoading || false,
         }),
         ...props.children,
       },
@@ -50,6 +42,10 @@ export class Form extends Block<FormWithStoreProps> {
         },
       },
     });
+
+    if (this.children.FormLoadingSpinner) {
+      (this.children.FormLoadingSpinner as FormLoadingSpinner).hide();
+    }
   }
 
   private createFieldComponents(props: FormProps): (InputField | TextareaField)[] {
@@ -71,9 +67,11 @@ export class Form extends Block<FormWithStoreProps> {
     }) || [];
   }
 
-  private handleFieldChange({ name, value }: { name: string, value: string }): void {
-    if (formController.hasError()) {
-      formController.clearError();
+  private handleFieldChange({ name, value }: { name: string, value: string }) {
+    if (this.props.formError) {
+      this.setProps({
+        formError: null,
+      });
     }
 
     this.setProps({
@@ -132,12 +130,13 @@ export class Form extends Block<FormWithStoreProps> {
 
     if (!this.isFormInvalid) {
       try {
+        this.setProps({ isFormLoading: true });
         await this.props.onSubmit?.(filledFields);
-        formController.clearError();
+        this.setProps({ formError: null, isFormLoading: false });
         this.props.onSuccess?.();
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An error occurred';
-        formController.setError(errorMessage);
+        this.setProps({ formError: errorMessage, isFormLoading: false });
       }
     }
   }
@@ -156,10 +155,20 @@ export class Form extends Block<FormWithStoreProps> {
     );
   }
 
-  componentDidUpdate(oldProps: FormWithStoreProps, newProps: FormWithStoreProps) {
+  componentDidUpdate(oldProps: FormProps, newProps: FormProps) {
     if (oldProps.formError !== newProps.formError) {
       if (this.children.FormError) {
         (this.children.FormError as FormError).setProps({ error: newProps.formError });
+      }
+    }
+
+    if (oldProps.isFormLoading !== newProps.isFormLoading) {
+      if (this.children.FormLoadingSpinner) {
+        if (newProps.isFormLoading) {
+          (this.children.FormLoadingSpinner as FormLoadingSpinner).show();
+        } else {
+          (this.children.FormLoadingSpinner as FormLoadingSpinner).hide();
+        }
       }
       return false;
     }
@@ -196,13 +205,7 @@ export class Form extends Block<FormWithStoreProps> {
     this.forceUpdate();
   }
 
-  componentWillUnmount(): void {
-    formController.clearError();
-  }
-
   render() {
     return template;
   }
 }
-
-export const ConnectedForm = connect<FormWithStoreProps, any>(mapStateToProps)(Form);

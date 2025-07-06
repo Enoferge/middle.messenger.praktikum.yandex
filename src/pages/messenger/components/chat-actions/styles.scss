@@ -10,7 +10,7 @@
   align-items: center;
   gap: var(--space-s);
   padding: var(--space-xs) var(--space-s);
-  font-size: 14px;
+  font-size: var(--font-size-plain-action-small);
   cursor: pointer;
 
   &:hover, &:focus {

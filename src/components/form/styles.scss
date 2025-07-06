@@ -5,6 +5,7 @@
   flex-direction: column;
   row-gap: var(--space-xs);
   width: 100%;
+  position: relative;
 
   &__error-caption {
     @include form-field-error-caption;

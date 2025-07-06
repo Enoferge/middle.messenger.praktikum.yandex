@@ -9,7 +9,7 @@
     align-items: center;
 
     &-login {
-      font-size: 14px;
+      font-size: var(--font-size-plain-action-small);
       font-weight: bold
     }
   }

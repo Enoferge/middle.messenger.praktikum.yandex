@@ -9,12 +9,15 @@ export interface FormProps extends Props {
   formState?: Record<string, string>;
   fieldsErrors?: Record<string, string>;
   isFormReadonly?: boolean;
+  formError?: string | null;
+  isFormLoading?: boolean;
   onSubmit?: (form: Record<string, string>) => Promise<void>
   onSuccess?: () => void
 
   children?: {
     FormFields?: Block[];
     FormError?: Block
+    FormLoadingSpinner?: Block;
     CustomContent?: Block;
   };
 }
