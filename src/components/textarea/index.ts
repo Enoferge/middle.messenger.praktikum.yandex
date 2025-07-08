@@ -23,4 +23,16 @@ export class Textarea extends Block<TextareaProps> {
   computeClass() {
     return getStateModifierClasses('textarea-field__textarea', this.props).join(' ');
   }
+
+  componentDidUpdate(oldProps: TextareaProps, newProps: TextareaProps): boolean {
+    if (oldProps.value !== newProps.value) {
+      const element = this.getContent() as HTMLTextAreaElement;
+      if (element && element.value !== newProps.value) {
+        element.value = newProps.value || '';
+      }
+      return true;
+    }
+
+    return false;
+  }
 }

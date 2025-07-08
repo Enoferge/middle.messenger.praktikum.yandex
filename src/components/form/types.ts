@@ -8,6 +8,7 @@ export interface FormProps extends Props {
   formFields?: Array<TextareaFieldProps | InputFieldProps>;
   formState?: Record<string, string>;
   fieldsErrors?: Record<string, string>;
+  touchedFields?: Record<string, boolean>;
   isFormReadonly?: boolean;
   formError?: string | null;
   isFormLoading?: boolean;

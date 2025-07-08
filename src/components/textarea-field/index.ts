@@ -35,6 +35,16 @@ export class TextareaField extends Block<TextareaFieldProps> {
     return getStateModifierClasses('textarea-field', this.props).join(' ');
   }
 
+  componentDidUpdate(oldProps: TextareaFieldProps, newProps: TextareaFieldProps): boolean {
+    if (oldProps.value !== newProps.value) {
+      const textarea = this.children.Textarea as Textarea;
+      textarea.setProps({ value: newProps.value });
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
     return template;
   }

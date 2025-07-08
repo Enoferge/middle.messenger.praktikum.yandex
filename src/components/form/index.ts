@@ -53,7 +53,7 @@ export class Form extends Block<FormProps> {
       const commonProps = {
         ...fieldProps,
         value: props.formState?.[fieldProps.name],
-        error: props.fieldsErrors?.[fieldProps.name],
+        error: props.touchedFields?.[fieldProps.name] ? (props.fieldsErrors?.[fieldProps.name] || '') : '',
         readonly: fieldProps.readonly || props.isFormReadonly,
         onFieldChange: this.handleFieldChange.bind(this),
         onFieldBlur: this.handleFieldBlur.bind(this),
@@ -83,6 +83,13 @@ export class Form extends Block<FormProps> {
   }
 
   private handleFieldBlur({ name, value }: { name: string, value: string }): void {
+    this.setProps({
+      touchedFields: {
+        ...(this.props.touchedFields || {}),
+        [name]: true,
+      },
+    });
+
     const error = validateField(
       name,
       value,
@@ -101,11 +108,13 @@ export class Form extends Block<FormProps> {
     fields.forEach((field) => {
       const fieldName = field.props.name;
       const newValue = formState?.[fieldName];
+      const showError = this.props.touchedFields?.[fieldName];
+      const error = showError ? fieldsErrors?.[fieldName] : null;
 
       field.setProps({
         value: newValue,
         readonly: isFormReadonly,
-        error: fieldsErrors?.[fieldName],
+        error,
       });
     });
   }
@@ -114,8 +123,14 @@ export class Form extends Block<FormProps> {
     e.preventDefault();
 
     const errors = this.validateAllFields();
+    const allTouched = Object.keys(this.props.formState || {}).reduce((acc, key) => {
+      acc[key] = true;
+      return acc;
+    }, {} as Record<string, boolean>);
+
     this.setProps({
       fieldsErrors: errors,
+      touchedFields: allTouched,
     });
 
     console.log('SUBMIT FORM');
@@ -133,6 +148,7 @@ export class Form extends Block<FormProps> {
         this.setProps({ isFormLoading: true });
         await this.props.onSubmit?.(filledFields);
         this.setProps({ formError: null, isFormLoading: false });
+        this.clearForm();
         this.props.onSuccess?.();
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An error occurred';
@@ -141,8 +157,25 @@ export class Form extends Block<FormProps> {
     }
   }
 
+  private clearForm(): void {
+    const clearedFormState = Object.keys(this.props.formState || {}).reduce((acc, key) => {
+      acc[key] = '';
+      return acc;
+    }, {} as Record<string, string>);
+
+    this.setProps({
+      formState: clearedFormState,
+      fieldsErrors: {},
+      touchedFields: {},
+    });
+
+    this.updateExistingFieldValues(clearedFormState, {}, false);
+  }
+
   get isFormInvalid() {
-    return Object.values(this.props.fieldsErrors || {}).some((el) => !!el);
+    return Object.entries(this.props.fieldsErrors || {}).some(
+      ([name, error]) => !!error && this.props.touchedFields?.[name],
+    );
   }
 
   validateAllFields() {
@@ -186,9 +219,13 @@ export class Form extends Block<FormProps> {
 
     if (!isEqual(oldProps.formState || {}, newProps.formState || {})
       || !isEqual(oldProps.fieldsErrors || {}, newProps.fieldsErrors || {})
-      || oldProps.isFormReadonly !== newProps.isFormReadonly) {
-      this.updateExistingFieldValues(newProps.formState || {}, newProps.fieldsErrors || {}, newProps.isFormReadonly || false);
-
+      || oldProps.isFormReadonly !== newProps.isFormReadonly
+      || !isEqual(oldProps.touchedFields || {}, newProps.touchedFields || {})) {
+      this.updateExistingFieldValues(
+        newProps.formState || {},
+        newProps.fieldsErrors || {},
+        newProps.isFormReadonly || false,
+      );
       return false;
     }
 
