@@ -17,10 +17,9 @@ export interface MessengerPageProps extends Props {
   chatListItems?: ChatListItem[];
   activeChat?: ChatInfo;
   activeChatMessages?: Array<MessageBubbleProps>;
-  chatUsers?: GetChatUsersResponseDataDto[];
+  activeChatUsers?: GetChatUsersResponseDataDto[];
   userAvatarUrl?: string;
   user?: UserInfo | null;
-
   onActiveChatChange?: (chat: ChatInfo) => void
   updateSpecificUserChat?: (chat: ChatInfo, idx: number) => void
 }
@@ -28,7 +27,7 @@ export interface MessengerPageProps extends Props {
 export interface MessengerPageState {
   userChats?: ChatInfo[];
   activeChat?: ChatInfo;
-  chatUsers?: ChatInfo[];
+  activeChatUsers?: GetChatUsersResponseDataDto[];
   userAvatarUrl?: string;
   user?: UserInfo | null;
 }

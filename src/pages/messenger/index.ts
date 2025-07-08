@@ -7,7 +7,7 @@ import { InputField } from '@/components/input-field';
 import { FORM_FIELD_TYPE, FormFieldName } from '@/constants/formFields';
 import { Form } from '@/components';
 import isEqual from '@/utils/is-equal';
-import { createNewChat, getUserChats, mapApiChatsToChatListItems } from '@/services/chats';
+import { createNewChat, getUserChatByTitle, getUserChats, mapApiChatsToChatListItems } from '@/services/chats';
 import { Modal } from '@/components/modal';
 import { Card } from '@/components/card';
 import { FormFooter } from '@/components/form-footer';
@@ -84,15 +84,18 @@ class MessengerPageBase extends Block<MessengerPageProps> {
     (this.children.ActiveChatContainer as Block).setProps({
       showModal: this.showModal.bind(this),
       hideModal: this.hideModal.bind(this),
-      onActiveChatUpdate: () => {
+      updateChatPreview: async () => {
         const userActiveChatIndex = this.props.userChats?.findIndex((item) => item.id === this.props.activeChat?.id) ?? -1;
 
         if (userActiveChatIndex !== -1) {
           const currentActiveChat = this.props.userChats?.[userActiveChatIndex];
 
           if (currentActiveChat) {
-            const updatedUserActiveChat = { ...currentActiveChat, ...this.props.activeChat };
-            this.props.updateSpecificUserChat?.(updatedUserActiveChat, userActiveChatIndex);
+            const updatedChat = await getUserChatByTitle(currentActiveChat?.title);
+
+            if (updatedChat) {
+              this.props.updateSpecificUserChat?.(updatedChat, userActiveChatIndex);
+            }
           }
         }
       },

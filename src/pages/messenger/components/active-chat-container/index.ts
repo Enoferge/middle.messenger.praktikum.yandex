@@ -4,10 +4,10 @@ import { IconButton } from '@/components/icon-button';
 import { FORM_FIELD_TYPE, FormFieldName } from '@/constants/formFields';
 import { Form, Tooltip } from '@/components';
 import isEqual from '@/utils/is-equal';
-import { changeChatAvatar, getUserChatByTitle } from '@/services/chats';
-
+import { changeChatAvatar, getChatUsers, getUserChatByTitle } from '@/services/chats';
 import { chatWebSocketManager } from '@/services/chat-websocket';
 import type { MessageBubbleProps } from '@/components/message-bubble/types';
+
 import { AddUserCard } from '../add-user-card';
 import { RemoveUserCard } from '../remove-user-card';
 import template from './active-chat-container.hbs?raw';
@@ -21,7 +21,9 @@ import './styles.scss';
 
 const mapStateToProps = (state: MessengerPageState) => ({
   activeChat: state.activeChat,
+  activeChatUsers: state.activeChatUsers,
   user: state.user || null,
+  userChats: state.userChats,
 });
 
 class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
@@ -91,6 +93,8 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
       return;
     }
 
+    await getChatUsers({ id: activeChat.id, offset: 0, limit: 20 });
+
     try {
       const { user } = this.props;
       console.log('User from store:', user);
@@ -125,11 +129,14 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
     }
   }
 
-  private handleNewMessage(message: MessageBubbleProps): void {
+  private async handleNewMessage(message: MessageBubbleProps): Promise<void> {
     const messagesContainer = this.children.MessagesContainer as MessagesContainer;
+
     messagesContainer.setProps({
       messages: [...(messagesContainer.props.messages || []), message],
     });
+
+    this.props.updateChatPreview?.();
   }
 
   private handleOldMessages(messages: MessageBubbleProps[]): void {
@@ -177,6 +184,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
 
     const card = new RemoveUserCard({
       chatId,
+      users: this.props.activeChatUsers,
       onSuccess: () => {
         this.props.hideModal?.();
       },
@@ -203,7 +211,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
             activeChat: updatedChat,
           });
 
-          this.props.onActiveChatUpdate?.();
+          this.props.updateChatPreview?.();
         }
       },
       onFileUpload: async (file: File) => {

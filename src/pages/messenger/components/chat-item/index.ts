@@ -1,6 +1,5 @@
 import { Block } from '@/core/block/block';
 import { Avatar } from '@/components/avatar';
-import { formatTime } from '@/utils/format-time';
 import { getAvatarFullUrl } from '@/utils/avatar';
 
 import template from './chat-item.hbs?raw';
@@ -11,7 +10,6 @@ export class ChatItem extends Block<ChatItemProps> {
   constructor(props: ChatItemProps) {
     super('div', {
       ...props,
-      lastMsgTime: props.lastMsgTime ? formatTime(props.lastMsgTime) : '',
       class: 'chat-item__wrapper',
       events: {
         click: () => {

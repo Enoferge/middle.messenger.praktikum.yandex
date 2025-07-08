@@ -17,12 +17,12 @@ type GetChatsResponseData = {
   created_by?: number | null,
   last_message?: {
     user?: {
-      first_name: string,
-      second_name: string,
-      avatar: string | null,
-      email: string,
-      login: string,
-      phone: string,
+      first_name?: string | null,
+      second_name?: string | null,
+      avatar?: string | null,
+      email?: string | null,
+      login?: string | null,
+      phone?: string | null,
     },
     time?: string | null,
     content?: string | null,
@@ -58,12 +58,12 @@ export type GetChatUsersRequestData = {
 
 export type GetChatUsersResponseDataDto = {
   id: number,
-  first_name: string,
-  second_name: string,
-  display_name: string,
+  first_name?: string | null,
+  second_name?: string | null,
+  display_name?: string | null,
   login: string,
-  avatar: string | null,
-  role: string,
+  avatar?: string | null,
+  role?: string | null,
 }
 
 export type GetChatTokenRequestData = {

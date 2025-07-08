@@ -1,4 +1,4 @@
-import { getChatUsers, getUserChats, removeUsersFromChat } from '@/services/chats';
+import { getUserChats, removeUsersFromChat } from '@/services/chats';
 import { FormFieldName } from '@/constants/formFields';
 
 import { UserCard, type UserCardProps } from '../user-card';
@@ -37,20 +37,7 @@ export class RemoveUserCard extends UserCard {
     });
   }
 
-  async fetchUsers() {
-    const users = await getChatUsers({ id: this.props.chatId, offset: 0, limit: 20 });
-    this.setProps({ users });
-  }
-
-  componentDidMount() {
-    this.fetchUsers();
-  }
-
   componentDidUpdate(oldProps: RemoveUserCardProps & UserCardProps, newProps: RemoveUserCardProps & UserCardProps): boolean {
-    if (oldProps.chatId !== newProps.chatId) {
-      this.fetchUsers();
-    }
-
     if (oldProps.users !== newProps.users) {
       this.updateCustomContent({ users: newProps.users });
     }
