@@ -8,7 +8,7 @@ export type ModeConfig = {
   showFileUpload?: boolean;
 };
 
-export type UserInfo = Omit<UserDTO, 'id' | 'avatar'>;
+export type UserInfo = Omit<UserDTO, | 'avatar'>;
 
 export interface ProfileSettingsProps extends Props {
   onProfileModeChange?: (mode: ProfileMode) => void;

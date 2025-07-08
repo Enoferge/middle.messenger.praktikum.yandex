@@ -1,6 +1,7 @@
 import type { Props } from '@/core/block/types';
 import type { MessageBubbleProps } from '@/components/message-bubble/types';
-import type { GetChatsResponseData, GetChatUsersResponseDataDto } from '@/api/chats';
+import type { ChatInfo, GetChatUsersResponseDataDto } from '@/api/chats';
+import type { UserInfo } from '../profile-settings/types';
 
 export interface ChatListItem {
   id: string;
@@ -12,17 +13,22 @@ export interface ChatListItem {
 }
 
 export interface MessengerPageProps extends Props {
-  userChats?: GetChatsResponseData[];
+  userChats?: ChatInfo[];
   chatListItems?: ChatListItem[];
-  activeChat?: GetChatsResponseData;
+  activeChat?: ChatInfo;
   activeChatMessages?: Array<MessageBubbleProps>;
   chatUsers?: GetChatUsersResponseDataDto[];
   userAvatarUrl?: string;
+  user?: UserInfo | null;
+
+  onActiveChatChange?: (chat: ChatInfo) => void
+  updateSpecificUserChat?: (chat: ChatInfo, idx: number) => void
 }
 
 export interface MessengerPageState {
-  userChats?: GetChatsResponseData[];
-  activeChat?: GetChatsResponseData;
-  chatUsers?: GetChatUsersResponseDataDto[];
+  userChats?: ChatInfo[];
+  activeChat?: ChatInfo;
+  chatUsers?: ChatInfo[];
   userAvatarUrl?: string;
+  user?: UserInfo | null;
 }

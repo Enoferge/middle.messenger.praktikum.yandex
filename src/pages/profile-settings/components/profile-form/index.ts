@@ -13,13 +13,21 @@ interface ProfileFormProps extends Props {
 }
 
 type ProfileFormState = Pick<ProfileSettingsState, 'profileMode' | 'user'>
-type ProfileFormStateProps = ProfileFormState
+type ProfileFormStateProps = {
+  profileMode: ProfileFormState['profileMode']
+  user: Omit<ProfileFormState['user'], 'id'>
+}
+
 type ProfileStateUnitedProps = ProfileFormProps & ProfileFormStateProps
 
-const mapStateToProps = (state: ProfileFormState) => ({
-  profileMode: state.profileMode,
-  user: state.user,
-});
+const mapStateToProps = (state: ProfileFormState): ProfileFormStateProps => {
+  const { id: _id, ...userInfo } = state.user || {};
+
+  return {
+    profileMode: state.profileMode,
+    user: userInfo,
+  };
+};
 
 function isFormReadonly(mode: ProfileMode): boolean {
   return mode === 'READ';

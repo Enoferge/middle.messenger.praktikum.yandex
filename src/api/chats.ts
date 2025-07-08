@@ -9,7 +9,7 @@ export type GetChatsRequestData = {
   title?: string,
 }
 
-export type GetChatsResponseData = {
+type GetChatsResponseData = {
   id: number,
   title?: string | null,
   avatar?: string | null,
@@ -28,6 +28,7 @@ export type GetChatsResponseData = {
     content?: string | null,
   }
 }
+export type { GetChatsResponseData as ChatInfo };
 
 export type CreateNewChatRequestData = {
   title: string,
@@ -65,6 +66,14 @@ export type GetChatUsersResponseDataDto = {
   role: string,
 }
 
+export type GetChatTokenRequestData = {
+  id: number,
+}
+
+export type GetChatTokenResponseData = {
+  token: string,
+}
+
 export default class ChatsApi {
   async getUserChats(data: GetChatsRequestData) {
     return userApi.get<GetChatsResponseData[] | ApiError>('', { data });
@@ -88,5 +97,9 @@ export default class ChatsApi {
 
   async changeChatAvatar(data: FormData) {
     return userApi.put<void | ApiError>('/avatar', { data });
+  }
+
+  async getChatToken(data: GetChatTokenRequestData) {
+    return userApi.post<GetChatTokenResponseData | ApiError>(`/token/${data.id}`, { data });
   }
 }

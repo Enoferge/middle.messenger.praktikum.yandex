@@ -13,7 +13,7 @@ import { Card } from '@/components/card';
 import { FormFooter } from '@/components/form-footer';
 import { getAvatarFullUrl } from '@/utils/avatar';
 import { ROUTER } from '@/navigation/constants';
-import type { GetChatsResponseData } from '@/api/chats';
+import type { ChatInfo } from '@/api/chats';
 import type Router from '@/navigation/router';
 
 import template from './messenger.hbs?raw';
@@ -57,10 +57,10 @@ class MessengerPageBase extends Block<MessengerPageProps> {
         ChatList: new ChatList({
           chats: props?.chatListItems || [],
           onChatItemClick: (id: string) => {
-            const chat = this.props?.userChats?.find((c: GetChatsResponseData) => String(c.id) === id);
-            window.store.set({
-              activeChat: chat,
-            });
+            const chat = this.props?.userChats?.find((c: ChatInfo) => String(c.id) === id);
+            if (chat) {
+              this.props.onActiveChatChange?.(chat);
+            }
           },
         }),
         Modal: new Modal({
@@ -88,15 +88,12 @@ class MessengerPageBase extends Block<MessengerPageProps> {
         const userActiveChatIndex = this.props.userChats?.findIndex((item) => item.id === this.props.activeChat?.id) ?? -1;
 
         if (userActiveChatIndex !== -1) {
-          const updatedUserActiveChat = { ...this.props.userChats?.[userActiveChatIndex], ...this.props.activeChat };
+          const currentActiveChat = this.props.userChats?.[userActiveChatIndex];
 
-          window.store.set({
-            userChats: [
-              ...(this.props.userChats?.slice(0, userActiveChatIndex) || []),
-              updatedUserActiveChat,
-              ...(this.props.userChats?.slice(userActiveChatIndex + 1) || []),
-            ],
-          });
+          if (currentActiveChat) {
+            const updatedUserActiveChat = { ...currentActiveChat, ...this.props.activeChat };
+            this.props.updateSpecificUserChat?.(updatedUserActiveChat, userActiveChatIndex);
+          }
         }
       },
     });
@@ -188,6 +185,21 @@ const MessengerPageBaseConnected = connect<MessengerPageProps, MessengerPageStat
 
 export class MessengerPage extends BasePageWithLayout {
   constructor() {
-    super(MessengerPageBaseConnected, {});
+    super(MessengerPageBaseConnected, {
+      onActiveChatChange: (chat: ChatInfo) => {
+        window.store.set({
+          activeChat: chat,
+        });
+      },
+      updateSpecificUserChat: (chat: ChatInfo, idx: number) => {
+        window.store.set({
+          userChats: [
+            ...(window.store.state.userChats?.slice(0, idx) || []),
+            chat,
+            ...(window.store.state.userChats?.slice(idx + 1) || []),
+          ],
+        });
+      },
+    });
   }
 }
