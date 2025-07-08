@@ -36,4 +36,11 @@ export class Input extends Block<InputProps> {
   componentDidUpdate(oldProps: InputProps, newProps: InputProps): boolean {
     return !isEqual(oldProps, newProps);
   }
+
+  public focus() {
+    const element = this.getContent() as HTMLInputElement;
+    if (element) {
+      element.focus();
+    }
+  }
 }

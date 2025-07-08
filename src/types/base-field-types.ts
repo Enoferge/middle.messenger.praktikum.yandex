@@ -22,3 +22,7 @@ export interface BaseFieldProps {
   onFieldBlur?: ({ name, value }: { name: string; value: string }) => void;
   onEnterPressed?: ({ name, value }: { name: string; value: string }) => Promise<void> | void
 }
+
+export interface FocusableField {
+  focus(): void;
+}

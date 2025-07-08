@@ -3,10 +3,11 @@ import { getStateModifierClasses } from '@/utils/get-state-modifier-classes';
 import { Textarea } from '@/components/textarea';
 
 import './styles.scss';
+import type { FocusableField } from '@/types/base-field-types';
 import template from './textarea-field.hbs?raw';
 import type { TextareaFieldProps } from './types';
 
-export class TextareaField extends Block<TextareaFieldProps> {
+export class TextareaField extends Block<TextareaFieldProps> implements FocusableField {
   constructor(props: TextareaFieldProps) {
     const {
       label, onFieldChange, onFieldBlur, ...textareaProps
@@ -57,5 +58,12 @@ export class TextareaField extends Block<TextareaFieldProps> {
 
   render() {
     return template;
+  }
+
+  public focus() {
+    const textarea = this.children.Textarea as Textarea;
+    if (textarea && typeof textarea.focus === 'function') {
+      textarea.focus();
+    }
   }
 }

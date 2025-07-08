@@ -13,6 +13,7 @@ export interface FormProps extends Props {
   formError?: string | null;
   isFormLoading?: boolean;
   submitOnEnter?: boolean
+  focusFieldAfterSubmit?: string;
   onSubmit?: (form: Record<string, string>) => Promise<void>
   onSuccess?: () => void
 

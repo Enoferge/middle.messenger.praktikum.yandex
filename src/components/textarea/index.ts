@@ -36,4 +36,11 @@ export class Textarea extends Block<TextareaProps> {
 
     return false;
   }
+
+  public focus() {
+    const element = this.getContent() as HTMLTextAreaElement;
+    if (element) {
+      element.focus();
+    }
+  }
 }

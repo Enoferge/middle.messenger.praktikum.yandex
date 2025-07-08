@@ -6,6 +6,7 @@ import { FormFieldName } from '@/constants/formFields';
 import { TextareaField } from '@/components/textarea-field';
 import type { TextareaFieldProps } from '@/components/textarea-field/types';
 import isEqual from '@/utils/is-equal';
+import type { FocusableField } from '@/types/base-field-types';
 
 import type { FormProps } from './types';
 import './styles.scss';
@@ -14,6 +15,8 @@ import { FormError } from '../form-error';
 import { FormLoadingSpinner } from '../form-loading-spinner';
 
 export class Form extends Block<FormProps> {
+  private fieldRefs: Record<string, FocusableField> = {};
+
   constructor(props?: FormProps) {
     if (!props) {
       throw new Error('Form: props are required');
@@ -49,6 +52,8 @@ export class Form extends Block<FormProps> {
   }
 
   private createFieldComponents(props: FormProps): (InputField | TextareaField)[] {
+    this.fieldRefs = {};
+
     return props.formFields?.map((fieldProps: TextareaFieldProps | InputFieldProps, idx: number, arr) => {
       const commonProps: TextareaFieldProps | InputFieldProps = {
         ...fieldProps,
@@ -66,11 +71,13 @@ export class Form extends Block<FormProps> {
         };
       }
 
-      if (fieldProps.fieldType === 'textarea') {
-        return new TextareaField(commonProps);
-      }
+      const fieldComponent = fieldProps.fieldType === 'textarea'
+        ? new TextareaField(commonProps)
+        : new InputField(commonProps);
 
-      return new InputField(commonProps);
+      this.fieldRefs[fieldProps.name] = fieldComponent;
+
+      return fieldComponent;
     }) || [];
   }
 
@@ -160,6 +167,12 @@ export class Form extends Block<FormProps> {
         await this.props.onSubmit?.(filledFields);
         this.setProps({ formError: null, isFormLoading: false });
         this.clearForm();
+
+        if (this.props.focusFieldAfterSubmit && this.fieldRefs[this.props.focusFieldAfterSubmit]) {
+          const field = this.fieldRefs[this.props.focusFieldAfterSubmit];
+          field?.focus();
+        }
+
         this.props.onSuccess?.();
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An error occurred';

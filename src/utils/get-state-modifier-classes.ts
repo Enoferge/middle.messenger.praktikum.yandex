@@ -1,4 +1,4 @@
-import type { BaseFieldAttrs } from '@/types/base-field-props';
+import type { BaseFieldAttrs } from '@/types/base-field-types';
 
 type StateProps = Pick<BaseFieldAttrs, 'error' | 'readonly' | 'disabled'>
 

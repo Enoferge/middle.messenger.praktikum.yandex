@@ -2,13 +2,14 @@ import { Block } from '@/core/block/block';
 import { Input } from '@/components/input';
 import { getStateModifierClasses } from '@/utils/get-state-modifier-classes';
 import isEqual from '@/utils/is-equal';
+import type { FocusableField } from '@/types/base-field-types';
 
 import './styles.scss';
 import template from './input-field.hbs?raw';
 import type { InputFieldProps } from './types';
 import { Icon } from '../icon';
 
-export class InputField extends Block<InputFieldProps> {
+export class InputField extends Block<InputFieldProps> implements FocusableField {
   constructor(props: InputFieldProps) {
     const {
       label, onFieldChange, onFieldBlur, ...inputProps
@@ -57,5 +58,12 @@ export class InputField extends Block<InputFieldProps> {
 
   render() {
     return template;
+  }
+
+  public focus() {
+    const element = this.getContent() as HTMLInputElement;
+    if (element) {
+      element.focus();
+    }
   }
 }

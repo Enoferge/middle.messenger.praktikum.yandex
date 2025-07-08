@@ -1,5 +1,5 @@
 import type { Props } from '@/core/block/types';
-import type { BaseFieldAttrs } from '@/types/base-field-props';
+import type { BaseFieldAttrs } from '@/types/base-field-types';
 
 export interface InputAttrs extends BaseFieldAttrs {
   type?: string;
