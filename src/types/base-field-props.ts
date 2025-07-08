@@ -20,4 +20,5 @@ export interface BaseFieldProps {
   error?: string;
   onFieldChange?: ({ name, value }: { name: string; value: string }) => void;
   onFieldBlur?: ({ name, value }: { name: string; value: string }) => void;
+  onEnterPressed?: ({ name, value }: { name: string; value: string }) => Promise<void> | void
 }

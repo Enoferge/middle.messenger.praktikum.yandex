@@ -12,6 +12,7 @@ export interface FormProps extends Props {
   isFormReadonly?: boolean;
   formError?: string | null;
   isFormLoading?: boolean;
+  submitOnEnter?: boolean
   onSubmit?: (form: Record<string, string>) => Promise<void>
   onSuccess?: () => void
 

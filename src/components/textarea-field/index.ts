@@ -26,6 +26,16 @@ export class TextareaField extends Block<TextareaFieldProps> {
             const { name, value } = e.target as HTMLTextAreaElement;
             onFieldBlur?.({ name, value });
           },
+          onKeyDown: async (e: Event) => {
+            const { name, value } = e.target as HTMLTextAreaElement;
+            if (props.onEnterPressed) {
+              const keyboardEvent = e as KeyboardEvent;
+              if (keyboardEvent.key === 'Enter' && !keyboardEvent.shiftKey) {
+                e.preventDefault();
+                await props.onEnterPressed({ name, value });
+              }
+            }
+          },
         }),
       },
     });

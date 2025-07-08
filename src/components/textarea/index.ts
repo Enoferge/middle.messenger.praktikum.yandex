@@ -7,7 +7,7 @@ import type { TextareaProps } from './types';
 export class Textarea extends Block<TextareaProps> {
   constructor(props: TextareaProps) {
     const {
-      onChange, onFocus, onBlur, ...attrs
+      onChange, onFocus, onBlur, onKeyDown, ...attrs
     } = props;
     super('textarea', {
       ...props,
@@ -16,6 +16,7 @@ export class Textarea extends Block<TextareaProps> {
         change: (e) => onChange?.(e),
         blur: (e) => onBlur?.(e),
         focus: (e) => onFocus?.(e),
+        keydown: (e) => onKeyDown?.(e),
       },
     });
   }

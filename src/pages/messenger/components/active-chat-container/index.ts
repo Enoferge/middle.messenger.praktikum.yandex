@@ -57,6 +57,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
           onSubmit: async (formData) => {
             await this.handleSendMessage(formData[FormFieldName.Message]);
           },
+          submitOnEnter: true,
         }),
       },
     });

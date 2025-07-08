@@ -11,4 +11,5 @@ export interface TextareaProps extends Props, TextareaAttrs {
   onChange?: (e: Event) => void;
   onBlur?: (e: Event) => void;
   onFocus?: (e: Event) => void;
+  onKeyDown?: (e: Event) => void;
 }

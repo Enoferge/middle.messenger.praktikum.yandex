@@ -49,8 +49,8 @@ export class Form extends Block<FormProps> {
   }
 
   private createFieldComponents(props: FormProps): (InputField | TextareaField)[] {
-    return props.formFields?.map((fieldProps: TextareaFieldProps | InputFieldProps) => {
-      const commonProps = {
+    return props.formFields?.map((fieldProps: TextareaFieldProps | InputFieldProps, idx: number, arr) => {
+      const commonProps: TextareaFieldProps | InputFieldProps = {
         ...fieldProps,
         value: props.formState?.[fieldProps.name],
         error: props.touchedFields?.[fieldProps.name] ? (props.fieldsErrors?.[fieldProps.name] || '') : '',
@@ -58,6 +58,13 @@ export class Form extends Block<FormProps> {
         onFieldChange: this.handleFieldChange.bind(this),
         onFieldBlur: this.handleFieldBlur.bind(this),
       };
+
+      if (idx === arr.length - 1 && props.submitOnEnter) {
+        commonProps.onEnterPressed = async ({ name, value }) => {
+          this.handleFieldChange({ name, value });
+          await this.submitForm();
+        };
+      }
 
       if (fieldProps.fieldType === 'textarea') {
         return new TextareaField(commonProps);
@@ -122,6 +129,10 @@ export class Form extends Block<FormProps> {
   private async handleFormSubmit(e: Event): Promise<void> {
     e.preventDefault();
 
+    this.submitForm();
+  }
+
+  private async submitForm() {
     const errors = this.validateAllFields();
     const allTouched = Object.keys(this.props.formState || {}).reduce((acc, key) => {
       acc[key] = true;
@@ -157,7 +168,7 @@ export class Form extends Block<FormProps> {
     }
   }
 
-  private clearForm(): void {
+  private clearForm() {
     const clearedFormState = Object.keys(this.props.formState || {}).reduce((acc, key) => {
       acc[key] = '';
       return acc;
