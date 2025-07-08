@@ -19,13 +19,6 @@
     }
   }
 
-  &__active-chat {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    padding: var(--space-m);
-  }
-
   &__user-msg-textarea {
     flex: 1 1 auto;
   }

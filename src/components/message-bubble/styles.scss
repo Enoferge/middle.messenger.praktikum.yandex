@@ -3,6 +3,7 @@
   --color-message-bubble-border-incoming: #ca7fa2;
   --color-message-bubble-bg-outcoming: #645ea6;
   --color-message-bubble-border-outcoming: #7e79bf;
+  --min-width: 60px;
 
   position: relative;
   padding: var(--space-xs);
@@ -10,6 +11,7 @@
   border: 2px solid;
   border-radius: var(--radius-small);
   max-width: 50%;
+  min-width: var(--min-width);
 
   &_incoming {
     background-color: var(--color-message-bubble-bg-incoming);

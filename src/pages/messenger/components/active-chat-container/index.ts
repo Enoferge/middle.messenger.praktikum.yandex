@@ -15,6 +15,7 @@ import type { MessengerPageState } from '../../types';
 import { ChatActions } from '../chat-actions';
 import { UploadChatAvatarCard } from '../upload-chat-avatar';
 import ActiveChatAvatar from '../active-chat-avatar';
+import { MessagesContainer } from '../messages-container';
 import type { ActiveChatContainerProps } from './types';
 import './styles.scss';
 
@@ -39,7 +40,9 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
           type: 'submit',
           form: 'message-form',
         }),
-        activeChatMessages: [],
+        MessagesContainer: new MessagesContainer({
+          messages: [],
+        }),
         MessageForm: new Form({
           formId: 'message-form',
           formFields: [{
@@ -52,7 +55,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
             [FormFieldName.Message]: '',
           },
           onSubmit: async (formData) => {
-            console.log('onSubmit textarea', formData);
+            await this.handleSendMessage(formData[FormFieldName.Message]);
           },
         }),
       },
@@ -77,6 +80,10 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
   }
 
   private async handleActiveChatChange(activeChat: ActiveChatContainerProps['activeChat']): Promise<void> {
+    const messagesContainer = this.children.MessagesContainer as MessagesContainer;
+
+    messagesContainer.setProps({ messages: [] });
+
     if (!activeChat?.id) {
       chatWebSocketManager.disconnectFromChat();
       return;
@@ -94,9 +101,11 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
       await chatWebSocketManager.connectToChat(activeChat.id, user.id, {
         onMessage: (message: MessageBubbleProps) => {
           console.log('chatWebSocketManager onMessage', message);
+          this.handleNewMessage(message);
         },
         onOldMessages: (messages: MessageBubbleProps[]) => {
           console.log('onOldMessages', messages);
+          this.handleOldMessages(messages);
         },
         onOpen: () => {
           console.log('chatWebSocketManager onOpen');
@@ -111,6 +120,32 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
       });
     } catch (error) {
       console.error('Failed to connect to WebSocket', error);
+    }
+  }
+
+  private handleNewMessage(message: MessageBubbleProps): void {
+    const messagesContainer = this.children.MessagesContainer as MessagesContainer;
+    messagesContainer.setProps({
+      messages: [...(messagesContainer.props.messages || []), message],
+    });
+  }
+
+  private handleOldMessages(messages: MessageBubbleProps[]): void {
+    const messagesContainer = this.children.MessagesContainer as MessagesContainer;
+    messagesContainer.setProps({
+      messages: messages.reverse(),
+    });
+  }
+
+  private async handleSendMessage(content: string): Promise<void> {
+    if (!content.trim()) {
+      return;
+    }
+
+    try {
+      chatWebSocketManager.sendMessage(content);
+    } catch (error) {
+      console.error('failed to send message:', error);
     }
   }
 
