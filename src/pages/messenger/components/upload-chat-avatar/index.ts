@@ -1,14 +1,15 @@
 import { FileUpload } from '@/components/file-upload';
-import { BaseUserCard, type BaseUserCardProps } from '../base-user-card';
 
-export interface UploadChatAvatarCardProps extends BaseUserCardProps {
+import { UserCard } from '../user-card';
+
+export interface UploadChatAvatarCardProps {
   chatId: number;
   selectedFile?: File
   onSuccess?: () => void;
   onFileUpload?: (file: File) => Promise<void>;
 }
 
-export class UploadChatAvatarCard extends BaseUserCard<UploadChatAvatarCardProps> {
+export class UploadChatAvatarCard extends UserCard {
   private selectedFile: File | null = null;
 
   constructor(props: UploadChatAvatarCardProps) {

@@ -1,21 +1,21 @@
 import { addUsersToChat } from '@/services/chats';
 import { FormFieldName } from '@/constants/formFields';
 
-import { BaseUserCard, type BaseUserCardProps } from '../base-user-card';
+import { UserCard } from '../user-card';
 
-export interface AddUserCardProps extends BaseUserCardProps {
+export interface AddUserProps { 
   chatId: number;
   onSuccess?: () => void;
 }
 
-export class AddUserCard extends BaseUserCard<AddUserCardProps> {
-  constructor(props: AddUserCardProps) {
+export class AddUserCard extends UserCard {
+  constructor(props: AddUserProps) {
     super({
       ...props,
       title: 'Add user',
       submitButtonText: 'Add',
       formId: 'add-user-form',
-      onSubmit: async (formData) => {
+      onSubmit: async (formData: Record<string, string>) => {
         await addUsersToChat({
           users: [Number(formData[FormFieldName.UserId])],
           chatId: props.chatId,

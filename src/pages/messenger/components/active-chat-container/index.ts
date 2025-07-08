@@ -12,11 +12,11 @@ import { RemoveUserCard } from '../remove-user-card';
 import template from './active-chat-container.hbs?raw';
 import type { MessengerPageState } from '../../types';
 import { activeChatMessages } from '../../constants';
-import './styles.scss';
 import { ChatActions } from '../chat-actions';
 import { UploadChatAvatarCard } from '../upload-chat-avatar';
 import ActiveChatAvatar from '../active-chat-avatar';
 import type { ActiveChatContainerProps } from './types';
+import './styles.scss';
 
 const mapStateToProps = (state: MessengerPageState) => ({
   activeChat: state.activeChat,
@@ -70,6 +70,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
 
   showAddUserModal() {
     const chatId = this.props.activeChat?.id;
+
     if (!chatId) {
       return;
     }
@@ -86,6 +87,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
 
   showRemoveUserModal() {
     const chatId = this.props.activeChat?.id;
+
     if (!chatId) {
       return;
     }
@@ -102,6 +104,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
 
   showUploadFileModal() {
     const chatId = this.props.activeChat?.id;
+  
     if (!chatId) {
       return;
     }

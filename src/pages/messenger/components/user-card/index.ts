@@ -5,7 +5,7 @@ import { FormFooter } from '@/components/form-footer';
 import type { Props } from '@/core/block/types';
 import { FormFieldName } from '@/constants/formFields';
 
-export interface BaseUserCardProps extends Props {
+export interface UserCardProps extends Props {
   chatId: number;
   title: string;
   submitButtonText: string;
@@ -16,12 +16,12 @@ export interface BaseUserCardProps extends Props {
   onSubmit?: (formData: Record<string, string>) => Promise<void>;
 }
 
-export abstract class BaseUserCard<T extends BaseUserCardProps> extends Block<T> {
+export class UserCard extends Block<UserCardProps> {
   protected form: Form;
 
   protected card: Card;
 
-  constructor(props: T) {
+  constructor(props: UserCardProps) {
     const formChildren = props.customContent ? { CustomContent: props.customContent } : {};
 
     const form = new Form({
