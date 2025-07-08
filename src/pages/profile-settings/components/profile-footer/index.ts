@@ -11,7 +11,8 @@ export interface ProfileFooterProps extends Props {
 }
 
 type ProfileFooterState = Pick<ProfileSettingsState, 'profileMode' | 'avatarToUpload'>
-type ProfileFooterContext = ProfileFooterProps & ProfileFooterState
+type ProfileFooterStateProps = ProfileFooterState
+type ProfileFooterUnitedProps = ProfileFooterProps & ProfileFooterStateProps
 
 const mapStateToProps = (state: ProfileFooterState) => ({
   profileMode: state.profileMode,
@@ -23,22 +24,24 @@ function isButtonDisabled(mode: ProfileMode, avatarToUpload?: File | null) {
 }
 
 class ProfileFooter extends Block<ProfileFooterProps> {
-  constructor(props: ProfileFooterContext) {
+  constructor(props: ProfileFooterProps) {
+    const { profileMode, avatarToUpload, ...rest } = props as ProfileFooterUnitedProps;
+
     super('div', {
-      ...props,
+      ...rest,
       class: 'profile-card__form-footer',
       children: {
         Button: new Button({
-          ...BUTTON_UI_CONFIGS[props.profileMode],
+          ...BUTTON_UI_CONFIGS[profileMode],
           fullWidth: true,
-          disabled: isButtonDisabled(props.profileMode, props.avatarToUpload),
+          disabled: isButtonDisabled(profileMode, avatarToUpload),
           onClick: props.onClick,
         }),
       },
     });
   }
 
-  componentDidUpdate(oldProps: ProfileFooterContext, newProps: ProfileFooterContext): boolean {
+  componentDidUpdate(oldProps: ProfileFooterUnitedProps, newProps: ProfileFooterUnitedProps): boolean {
     if (
       oldProps.profileMode !== newProps.profileMode
       || oldProps.avatarToUpload !== newProps.avatarToUpload

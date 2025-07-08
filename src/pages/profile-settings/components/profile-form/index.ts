@@ -13,7 +13,8 @@ interface ProfileFormProps extends Props {
 }
 
 type ProfileFormState = Pick<ProfileSettingsState, 'profileMode' | 'user'>
-type ProfileFormContext = ProfileFormProps & ProfileFormState
+type ProfileFormStateProps = ProfileFormState
+type ProfileStateUnitedProps = ProfileFormProps & ProfileFormStateProps
 
 const mapStateToProps = (state: ProfileFormState) => ({
   profileMode: state.profileMode,
@@ -25,13 +26,15 @@ function isFormReadonly(mode: ProfileMode): boolean {
 }
 
 class ProfileForm extends Block<ProfileFormProps> {
-  constructor(props: ProfileFormContext) {
-    const formSource = props.profileMode === 'CHANGE_PASS' ? 'password' : 'info';
-    const formState = (props.profileMode === 'CHANGE_PASS' ? FORM_PASSWORD_INITIAL_STATE : props.user || FORM_USER_INITIAL_STATE);
+  constructor(props: ProfileFormProps) {
+    const { profileMode, user, ...rest } = props as ProfileStateUnitedProps;
+
+    const formSource = profileMode === 'CHANGE_PASS' ? 'password' : 'info';
+    const formState = (profileMode === 'CHANGE_PASS' ? FORM_PASSWORD_INITIAL_STATE : user || FORM_USER_INITIAL_STATE);
     const formFields = FORM_CONFIGS[formSource].fields;
 
     super('div', {
-      ...props,
+      ...rest,
       class: 'profile-form',
       children: {
         Form: new Form({
@@ -42,13 +45,13 @@ class ProfileForm extends Block<ProfileFormProps> {
             await props.onSubmit(mapFormToApiFields(form));
           },
           onSuccess: props.onSuccess,
-          isFormReadonly: isFormReadonly(props.profileMode),
+          isFormReadonly: isFormReadonly(profileMode),
         }),
       },
     });
   }
 
-  componentDidUpdate(oldProps: ProfileFormContext, newProps: ProfileFormContext): boolean {
+  componentDidUpdate(oldProps: ProfileStateUnitedProps, newProps: ProfileStateUnitedProps): boolean {
     if (oldProps.user !== newProps.user || oldProps.profileMode !== newProps.profileMode) {
       const formSource = newProps.profileMode === 'CHANGE_PASS' ? 'password' : 'info';
       const formState = (newProps.profileMode === 'CHANGE_PASS' ? FORM_PASSWORD_INITIAL_STATE : newProps.user || FORM_USER_INITIAL_STATE);

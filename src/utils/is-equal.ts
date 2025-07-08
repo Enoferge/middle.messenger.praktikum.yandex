@@ -1,3 +1,4 @@
+// we use any here because PlainObject meant to represent any plain JS object with string keys and unknown value types
 type PlainObject<T = any> = Record<string, T>
 
 function isPlainObject(value: unknown): value is PlainObject {

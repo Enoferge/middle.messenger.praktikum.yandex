@@ -13,14 +13,15 @@ export interface ProfileActionsProps extends Props {
 }
 
 type ProfileActionsState = Pick<ProfileSettingsState, 'profileMode'>
-type ProfileActionsContext = ProfileActionsProps & ProfileActionsState
+type ProfileActionsStateProps = ProfileActionsState
+type ProfileActionsUnitedProps = ProfileActionsProps & ProfileActionsStateProps
 
 const mapStateToProps = (state: ProfileActionsState) => ({
   profileMode: state.profileMode,
 });
 
 class ProfileActions extends Block<ProfileActionsProps> {
-  constructor(props: ProfileActionsContext) {
+  constructor(props: ProfileActionsProps) {
     super('ul', {
       ...props,
       class: 'profile-card__avatar-actions',
@@ -28,12 +29,12 @@ class ProfileActions extends Block<ProfileActionsProps> {
         role: 'list',
       },
       children: {
-        Buttons: ProfileActions.createButtons(props),
+        Buttons: ProfileActions.createButtons(props as ProfileActionsUnitedProps),
       },
     });
   }
 
-  static createButtons(props: ProfileActionsContext) {
+  static createButtons(props: ProfileActionsUnitedProps) {
     return ['CHANGE_AVATAR', 'CHANGE_PASS'].includes(props.profileMode)
       ? [new Button({ variant: 'plain', text: 'Back', onClick: props.onBackToProfile })]
       : [
@@ -45,7 +46,7 @@ class ProfileActions extends Block<ProfileActionsProps> {
       ];
   }
 
-  componentDidUpdate(oldProps: ProfileActionsContext, newProps: ProfileActionsContext): boolean {
+  componentDidUpdate(oldProps: ProfileActionsUnitedProps, newProps: ProfileActionsUnitedProps): boolean {
     if (oldProps.profileMode !== newProps.profileMode) {
       this.children.Buttons = ProfileActions.createButtons(newProps);
       return true;

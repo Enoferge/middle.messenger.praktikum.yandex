@@ -3,7 +3,7 @@ import { FormFieldName } from '@/constants/formFields';
 
 import { UserCard } from '../user-card';
 
-export interface AddUserProps { 
+export interface AddUserProps {
   chatId: number;
   onSuccess?: () => void;
 }

@@ -14,6 +14,7 @@ import { FormFooter } from '@/components/form-footer';
 import { getAvatarFullUrl } from '@/utils/avatar';
 import { ROUTER } from '@/navigation/constants';
 import type { GetChatsResponseData } from '@/api/chats';
+import type Router from '@/navigation/router';
 
 import template from './messenger.hbs?raw';
 import type { MessengerPageProps, MessengerPageState } from './types';
@@ -29,6 +30,8 @@ const mapStateToProps = (state: MessengerPageState) => ({
 });
 
 class MessengerPageBase extends Block<MessengerPageProps> {
+  private router!: Router;
+
   constructor(props?: MessengerPageProps) {
     super('div', {
       ...props,
@@ -44,7 +47,7 @@ class MessengerPageBase extends Block<MessengerPageProps> {
           },
           events: {
             click: () => {
-              window.router.go(ROUTER.profileSettings);
+              this.router.go(ROUTER.profileSettings);
             },
           },
         }),

@@ -5,16 +5,15 @@ import isEqual from '@/utils/is-equal';
 
 export function connect<
   TProps extends Props,
-  TState extends State>(mapStateToProps: (state: TState) => Partial<TProps & TState>) {
+  TState extends State>(mapStateToProps: (state: TState) => Props) {
   return function (Component: BlockClass<TProps>) {
     return class extends Component {
       private onChangeStoreCallback: () => void;
 
-      constructor(props?: TProps) {
+      constructor(props: TProps) {
         const { store } = window;
         let state = mapStateToProps(store.getState());
-
-        super({ ...(props || {}), ...state } as TProps & TState);
+        super({ ...props, ...state });
 
         this.onChangeStoreCallback = () => {
           const newState = mapStateToProps(store.getState());

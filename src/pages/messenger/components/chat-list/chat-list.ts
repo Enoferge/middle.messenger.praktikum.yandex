@@ -37,7 +37,8 @@ export default class ChatList extends Block<ChatListProps> {
 
     for (let i = 0; i < oldProps.chats.length; i++) {
       if (!isEqual(oldProps.chats[i], newProps.chats[i])) {
-        (this.children.chats[i] as ChatItem).setProps({
+        const chatBlocks = this.children.chats as ChatItem[];
+        chatBlocks[i].setProps({
           ...newProps.chats[i],
           onClickChatItem: newProps.onChatItemClick,
         });

@@ -27,7 +27,7 @@ export class Input extends Block<InputProps> {
 
   computeAttrs() {
     const {
-      onChange, onFocus, onBlur, ...attrs
+      onChange: _onChange, onFocus: _onFocus, onBlur: _onBlur, ...attrs
     } = this.props;
 
     return getPreparedAttrs(attrs);

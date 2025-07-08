@@ -9,7 +9,7 @@ export interface WithRouter {
 
 export function withRouter<
   TProps extends Props>(WrappedBlock: BlockClass<TProps>):
-    new (props?: TProps) => Block<TProps> & WithRouter {
+    new (props: TProps) => Block<TProps> & WithRouter {
   return class extends WrappedBlock {
     router: Router = window.router;
   };

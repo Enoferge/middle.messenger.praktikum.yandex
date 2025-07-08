@@ -18,11 +18,9 @@ registerHelpers();
 
 const APP_ROOT_ELEMENT_ID = '#app';
 
-// TODO: refac
 window.store = new Store({
   profileMode: 'READ',
   user: null,
-  avatarToUpload: null,
 });
 
 window.router = Router.getInstance(APP_ROOT_ELEMENT_ID);

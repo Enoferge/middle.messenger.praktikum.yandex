@@ -7,7 +7,7 @@ const authApi = new AuthApi();
 export const getUserInfo = async () => {
   try {
     const { data } = await authApi.getUserInfo();
-    const { id, avatar, ...info } = data as UserDTO;
+    const { id: _id, avatar, ...info } = data as UserDTO;
 
     window.store.set({
       user: info,

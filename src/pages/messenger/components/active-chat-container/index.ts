@@ -28,7 +28,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
       ...props,
       class: 'messenger__section messenger__section_right',
       children: {
-        ActiveChatAvatar: new ActiveChatAvatar(),
+        ActiveChatAvatar: new ActiveChatAvatar({}),
         FileButton: new IconButton({
           iconName: 'file',
           variant: 'plain',
@@ -104,7 +104,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
 
   showUploadFileModal() {
     const chatId = this.props.activeChat?.id;
-  
+
     if (!chatId) {
       return;
     }

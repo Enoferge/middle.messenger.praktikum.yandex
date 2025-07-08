@@ -65,12 +65,12 @@ class ProfileSettingsPageBase extends Block<ProfileSettingsProps> {
             props?.onAvatarFileChange?.(file);
           },
         }),
-        ProfileFooter: new ProfileFooter(),
+        ProfileFooter: new ProfileFooter({}),
         CloseButton: new IconButton({
           iconName: 'close',
           variant: 'plain',
           onClick: () => {
-            window.router.go(ROUTER.messenger);
+            this.router.go(ROUTER.messenger);
           },
         }),
       },
