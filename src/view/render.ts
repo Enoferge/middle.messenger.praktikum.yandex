@@ -1,25 +1,21 @@
-import Handlebars from 'handlebars';
-import { DefaultLayout } from '../layouts/default';
-import { pages } from '../navigation/router';
-import type { PageName } from '../navigation/types';
-import { prepareForm } from '../utils/form';
+import { DefaultLayout } from '@/layouts/default';
+import { pages } from '@/navigation/router';
+import type { PageName } from '@/navigation/types';
 
 export function renderPage(page: PageName) {
-  const { template, context = {}, layoutContext = {}, mountCb } = pages[page];
-
-  const pageHTML = Handlebars.compile(template)(context);
-  const fullHTML = Handlebars.compile(DefaultLayout)({ body: pageHTML, ...layoutContext });
+  const { pageBlock, layoutContext = {} } = pages[page];
+  const layout = new DefaultLayout({
+    hideHomeButton: layoutContext.hideHomeButton,
+    children: {
+      PageContent: pageBlock,
+    },
+  });
 
   const root = document.getElementById('app');
+  const layoutContent = layout.getContent();
 
-  if (root) {
-    root.innerHTML = fullHTML;
-  }
-
-  if (context.formId) {
-    prepareForm(context.formId, console.log);
-  }
-  if (typeof mountCb === 'function') {
-    mountCb();
+  if (root && layoutContent) {
+    root.appendChild(layoutContent);
+    pageBlock.dispatchComponentDidMount();
   }
 }

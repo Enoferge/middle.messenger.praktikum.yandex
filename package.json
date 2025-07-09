@@ -10,17 +10,35 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "npm run build && npm run preview"
+    "start": "npm run build && npm run preview",
+    "type-check": "tsc --noEmit",
+    "eslint": "eslint . --ext .ts,.js",
+    "eslint:fix": "eslint . --ext .ts,.js --fix",
+    "stylelint": "stylelint '**/*.{css,scss}'",
+    "stylelint:fix": "stylelint \"**/*.{css,scss}\" --fix",
+    "lint": "npm run eslint && npm run stylelint && npm run type-check"
   },
   "devDependencies": {
+    "@types/node": "^22.15.27",
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-import-resolver-typescript": "^4.4.2",
+    "eslint-plugin-import": "^2.31.0",
     "postcss": "^8.5.3",
     "postcss-nested": "^7.0.2",
     "postcss-preset-env": "^10.1.6",
     "prettier": "^3.5.3",
+    "sass": "^1.89.1",
+    "stylelint": "^16.20.0",
+    "stylelint-config-standard": "^38.0.0",
+    "stylelint-scss": "^6.12.0",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"
   },
   "dependencies": {
-    "handlebars": "^4.7.8"
+    "handlebars": "^4.7.8",
+    "nanoid": "^5.1.5"
   }
 }
