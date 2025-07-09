@@ -28,7 +28,6 @@ class Route implements RouteInterface {
 
   leave() {
     if (this._block) {
-      // this._block.hide();
       this._block.dispose();
     }
   }
@@ -49,7 +48,6 @@ class Route implements RouteInterface {
   }
 
   render() {
-    // Always dispose the old block before creating a new one
     if (this._block) {
       this._block.dispose();
       this._block = null;

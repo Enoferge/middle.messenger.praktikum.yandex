@@ -8,15 +8,15 @@ import { signUpFields } from '../auth/constants';
 import { AuthPage } from '../auth';
 import type { AuthPageProps } from '../auth/types';
 
-const testFields = {
-  [FormFieldName.FirstName]: 'TestFirst',
-  [FormFieldName.SecondName]: 'TestSecond',
-  [FormFieldName.Login]: 'TestLoginSvr1',
-  [FormFieldName.DisplayName]: 'TestDisplaySvr1',
-  [FormFieldName.Email]: 'test-email-svr1@yandex.ru',
-  [FormFieldName.Phone]: '+79998887766',
-  [FormFieldName.Password]: 'qwertyQWERTY1',
-  [FormFieldName.PasswordConfirm]: 'qwertyQWERTY1',
+const initialSignUpFormState = {
+  [FormFieldName.FirstName]: '',
+  [FormFieldName.SecondName]: '',
+  [FormFieldName.Login]: '',
+  [FormFieldName.DisplayName]: '',
+  [FormFieldName.Email]: '',
+  [FormFieldName.Phone]: '',
+  [FormFieldName.Password]: '',
+  [FormFieldName.PasswordConfirm]: '',
 };
 
 export class SignUpPage extends BasePageWithLayout<AuthPageProps> {
@@ -26,17 +26,7 @@ export class SignUpPage extends BasePageWithLayout<AuthPageProps> {
       formId: 'sign-up-form',
       formProps: {
         formFields: signUpFields,
-        formState: testFields,
-        // formState: {
-        //   [FormFieldName.FirstName]: '',
-        //   [FormFieldName.SecondName]: '',
-        //   [FormFieldName.Login]: '',
-        //   [FormFieldName.DisplayName]: '',
-        //   [FormFieldName.Email]: '',
-        //   [FormFieldName.Phone]: '',
-        //   [FormFieldName.Password]: '',
-        //   [FormFieldName.PasswordConfirm]: '',
-        // },
+        formState: initialSignUpFormState,
         onSubmit: async (form: Record<string, string>) => createUser(form as CreateUserRequestData),
       },
       footerProps: {

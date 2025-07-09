@@ -1,16 +1,16 @@
 import { FormFieldName } from '@/constants/formFields';
 import { PAGES } from '@/navigation/constants';
-
 import { BasePageWithLayout } from '@/core/base-page-with-layout/base-page-with-layout';
 import { login } from '@/services/auth';
 import type { LoginRequestData } from '@/api/types';
+
 import { signInFields } from '../auth/constants';
 import { AuthPage } from '../auth';
 import type { AuthPageProps } from '../auth/types';
 
-const testFields = {
-  [FormFieldName.Login]: 'TestLoginSvr1',
-  [FormFieldName.Password]: 'qwertyQWERTY1',
+const initialSignInFormState = {
+  [FormFieldName.Login]: '',
+  [FormFieldName.Password]: '',
 };
 
 export class SignInPage extends BasePageWithLayout<AuthPageProps> {
@@ -20,11 +20,7 @@ export class SignInPage extends BasePageWithLayout<AuthPageProps> {
       formId: 'sign-in-form',
       formProps: {
         formFields: signInFields,
-        formState: testFields,
-        // formState: {
-        //   [FormFieldName.Login]: '',
-        //   [FormFieldName.Password]: '',
-        // },
+        formState: initialSignInFormState,
         onSubmit: async (form: Record<string, string>) => login(form as LoginRequestData),
       },
       footerProps: {

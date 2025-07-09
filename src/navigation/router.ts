@@ -84,6 +84,7 @@ class Router {
         route.render();
       }
     } catch (e) {
+      console.error(e);
       this.go(ROUTER.error400);
     }
   }

@@ -6,7 +6,6 @@ import './styles/variables.scss';
 import './styles/base.scss';
 import './styles/fonts.scss';
 import './styles/ui';
-import { registerHelpers } from './templates/helpers';
 import { HomePage } from './pages/home';
 import { SignInPage } from './pages/sign-in';
 import { SignUpPage } from './pages/sign-up';
@@ -17,13 +16,12 @@ import { Error400Page } from './pages/error/Error400Page';
 import { Error404Page } from './pages/error/Error404Page';
 import { Error500Page } from './pages/error/Error500Page';
 
-registerHelpers();
-
 const APP_ROOT_ELEMENT_ID = '#app';
 
 window.store = new Store({
   profileMode: 'READ',
   user: null,
+  activeChat: null,
 });
 
 window.router = Router.getInstance(APP_ROOT_ELEMENT_ID);
