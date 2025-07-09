@@ -16,6 +16,13 @@ import { Error400Page } from './pages/error/Error400Page';
 import { Error404Page } from './pages/error/Error404Page';
 import { Error500Page } from './pages/error/Error500Page';
 
+if (!window.location.hash || !window.location.hash.startsWith('#/')) {
+  const path = window.location.pathname.replace(/^\//, '');
+  if (path && path !== '') {
+    window.location.replace(`/#/${path}`);
+  }
+}
+
 const APP_ROOT_ELEMENT_ID = '#app';
 
 window.store = new Store({

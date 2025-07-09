@@ -48,6 +48,13 @@ class Router {
   }
 
   _onRoute(pathname: string) {
+    const route = this.getRoute(pathname);
+
+    if (!route) {
+      this.go(ROUTER.error404);
+      return;
+    }
+
     const { user } = window.store.getState();
     const isAuthPage = [ROUTER.signIn, ROUTER.signUp].includes(pathname as ROUTER);
     const isProtectedPage = !isAuthPage;
@@ -64,13 +71,6 @@ class Router {
       if (pathname !== ROUTER.messenger) {
         this.go(ROUTER.messenger);
       }
-      return;
-    }
-
-    const route = this.getRoute(pathname);
-
-    if (!route) {
-      this.go(ROUTER.error404);
       return;
     }
 
