@@ -13,6 +13,9 @@ import { SignUpPage } from './pages/sign-up';
 import { MessengerPage } from './pages/messenger';
 import { ProfileSettingsPage } from './pages/profile-settings';
 import { getUserInfo } from './services/auth';
+import { Error400Page } from './pages/error/Error400Page';
+import { Error404Page } from './pages/error/Error404Page';
+import { Error500Page } from './pages/error/Error500Page';
 
 registerHelpers();
 
@@ -30,7 +33,10 @@ window.router
   .use(ROUTER.signIn, SignInPage)
   .use(ROUTER.signUp, SignUpPage)
   .use(ROUTER.messenger, MessengerPage)
-  .use(ROUTER.profileSettings, ProfileSettingsPage);
+  .use(ROUTER.profileSettings, ProfileSettingsPage)
+  .use(ROUTER.error400, Error400Page)
+  .use(ROUTER.error404, Error404Page)
+  .use(ROUTER.error500, Error500Page);
 
 await getUserInfo();
 window.router.start();

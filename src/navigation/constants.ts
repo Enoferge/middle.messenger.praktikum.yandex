@@ -4,6 +4,9 @@ export enum ROUTER {
   signUp = '/sign-up',
   messenger = '/messenger',
   profileSettings = '/settings',
+  error400 = '/400',
+  error404 = '/404',
+  error500 = '/500',
 }
 
 export const PAGES = {
@@ -12,7 +15,7 @@ export const PAGES = {
   SIGN_IN: { name: 'signIn', link: ROUTER.signIn },
   MESSENGER: { name: 'messenger', link: ROUTER.messenger },
   PROFILE_SETTINGS: { name: 'profileSettings', link: ROUTER.profileSettings },
-  // 500: '500',
-  // 400: '400',
-  // 404: '404',
+  ERROR_400: { name: 'error400', link: ROUTER.error400 },
+  ERROR_404: { name: 'error404', link: ROUTER.error404 },
+  ERROR_500: { name: 'error500', link: ROUTER.error500 },
 } as const;

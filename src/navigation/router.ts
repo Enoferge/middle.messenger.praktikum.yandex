@@ -70,16 +70,21 @@ class Router {
     const route = this.getRoute(pathname);
 
     if (!route) {
+      this.go(ROUTER.error404);
       return;
     }
 
-    if (this._currentRoute && this._currentRoute !== route) {
-      this._currentRoute.leave();
-    }
+    try {
+      if (this._currentRoute && this._currentRoute !== route) {
+        this._currentRoute.leave();
+      }
 
-    if (this._currentRoute !== route) {
-      this._currentRoute = route;
-      route.render();
+      if (this._currentRoute !== route) {
+        this._currentRoute = route;
+        route.render();
+      }
+    } catch (e) {
+      this.go(ROUTER.error400);
     }
   }
 

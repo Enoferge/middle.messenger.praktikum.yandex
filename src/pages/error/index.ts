@@ -15,7 +15,7 @@ export class ErrorPage extends Block<ErrorPageProps> {
       pageTitleClass,
       children: {
         Link: new Link({
-          page: 'messenger',
+          link: 'messenger',
           text: 'Return to chats',
         }),
       },
