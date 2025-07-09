@@ -14,8 +14,12 @@ export interface WebSocketConfig {
   token: string;
 }
 
+export type MessageContent = MessageBubbleProps & {
+  userId?: number;
+};
+
 export type WebSocketEventHandlers = {
-  onMessage?: (message: MessageBubbleProps) => void;
+  onMessage?: (message: MessageContent) => void;
   onOldMessages?: (messages: MessageBubbleProps[]) => void;
   onOpen?: () => void;
   onClose?: (event: CloseEvent) => void;

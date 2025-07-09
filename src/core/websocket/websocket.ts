@@ -1,5 +1,5 @@
 import type { MessageBubbleProps } from '@/components/message-bubble/types';
-import type { WebSocketConfig, WebSocketEventHandlers, WebSocketMessage } from './types';
+import type { MessageContent, WebSocketConfig, WebSocketEventHandlers, WebSocketMessage } from './types';
 
 class WebSocketService {
   private socket: WebSocket | null = null;
@@ -79,11 +79,12 @@ class WebSocketService {
       }
 
       if (data.type === 'message') {
-        const message: MessageBubbleProps = {
+        const message: MessageContent = {
           id: data.id?.toString() || '',
           text: data.content,
           time: data.time || new Date().toISOString(),
           isIncoming: data.user_id !== this.config?.userId,
+          userId: data.user_id,
         };
 
         this.eventHandlers.onMessage?.(message);

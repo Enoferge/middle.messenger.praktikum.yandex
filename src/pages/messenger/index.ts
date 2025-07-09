@@ -91,11 +91,8 @@ class MessengerPageBase extends Block<MessengerPageProps> {
           const currentActiveChat = this.props.userChats?.[userActiveChatIndex];
 
           if (currentActiveChat) {
-            const updatedChat = await getUserChatByTitle(currentActiveChat?.title);
-
-            if (updatedChat) {
-              this.props.updateSpecificUserChat?.(updatedChat, userActiveChatIndex);
-            }
+            const updatedUserActiveChat = { ...currentActiveChat, ...this.props.activeChat };
+            this.props.updateSpecificUserChat?.(updatedUserActiveChat, userActiveChatIndex);
           }
         }
       },

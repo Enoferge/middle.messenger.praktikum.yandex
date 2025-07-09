@@ -7,7 +7,9 @@ import isEqual from '@/utils/is-equal';
 import { changeChatAvatar, getChatUsers, getUserChatByTitle } from '@/services/chats';
 import { chatWebSocketManager } from '@/services/chat-websocket';
 import type { MessageBubbleProps } from '@/components/message-bubble/types';
+import type { MessageContent } from '@/core/websocket/types';
 
+import type { ChatInfo } from '@/api/chats';
 import { AddUserCard } from '../add-user-card';
 import { RemoveUserCard } from '../remove-user-card';
 import template from './active-chat-container.hbs?raw';
@@ -71,6 +73,11 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
   componentDidMount() {}
 
   componentWillUnmount() {
+    console.log('componentWillUnmount');
+    window.store.set({
+      activeChat: null,
+      activeChatUsers: null,
+    });
     chatWebSocketManager.disconnectFromChat();
   }
 
@@ -129,14 +136,40 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
     }
   }
 
-  private async handleNewMessage(message: MessageBubbleProps): Promise<void> {
+  private async handleNewMessage({ userId, ...message }: MessageContent): Promise<void> {
     const messagesContainer = this.children.MessagesContainer as MessagesContainer;
 
     messagesContainer.setProps({
       messages: [...(messagesContainer.props.messages || []), message],
     });
 
-    this.props.updateChatPreview?.();
+    const chatId = this.props.activeChat?.id;
+    const { activeChatUsers, userChats } = this.props;
+
+    if (chatId && userChats) {
+      const idx = userChats.findIndex((c: ChatInfo) => c.id === chatId);
+      const chat = userChats[idx];
+      const senderFirstName = activeChatUsers?.find((u: ChatInfo) => u.id === userId)?.first_name || '?';
+
+      chat.last_message = {
+        content: message.text,
+        time: message.time,
+        user: {
+          ...chat.last_message?.user,
+          first_name: senderFirstName,
+        },
+      };
+
+      chat.unread_count = 0;
+
+      window.store.set({
+        userChats: [
+          ...window.store.state.userChats.slice(0, idx),
+          chat,
+          ...window.store.state.userChats.slice(idx + 1),
+        ],
+      });
+    }
   }
 
   private handleOldMessages(messages: MessageBubbleProps[]): void {
