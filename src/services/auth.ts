@@ -21,12 +21,8 @@ export const getUserInfo = async () => {
 
 export const login = async (data: LoginRequestData) => {
   try {
-    const res = await authApi.login(data);
-
-    console.log(res);
-    console.log('login succeed');
-
-    await getUserInfo(); // move
+    await authApi.login(data);
+    await getUserInfo();
   } catch (e: unknown) {
     throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to sign in');
   }
@@ -34,11 +30,8 @@ export const login = async (data: LoginRequestData) => {
 
 export const createUser = async (data: CreateUserRequestData): Promise<void> => {
   try {
-    const res = await authApi.createUser(data);
-    console.log(res);
-    console.log('createUser succeed');
-
-    await getUserInfo(); // move
+    await authApi.createUser(data);
+    await getUserInfo();
   } catch (e: unknown) {
     throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to sign up');
   }

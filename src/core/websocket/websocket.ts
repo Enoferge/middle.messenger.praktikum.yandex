@@ -19,7 +19,6 @@ class WebSocketService {
     this.eventHandlers = handlers;
 
     const url = `wss://ya-praktikum.tech/ws/chats/${config.userId}/${config.chatId}/${config.token}`;
-    console.log('Websocket: connecting URL ', url);
 
     try {
       this.socket = new WebSocket(url);
@@ -42,13 +41,10 @@ class WebSocketService {
   }
 
   private handleOpen(): void {
-    console.log('WebSocket: connection established');
     this.eventHandlers.onOpen?.();
   }
 
   private handleClose(event: CloseEvent): void {
-    console.log('WebSocket: connection closed');
-
     this.eventHandlers.onClose?.(event);
   }
 
@@ -56,14 +52,11 @@ class WebSocketService {
     const rawData = event.data;
 
     if (typeof rawData === 'string' && !rawData.startsWith('{') && !rawData.startsWith('[')) {
-      console.log('WebSocket: received not-JSON text message ', rawData);
-
       return;
     }
 
     try {
       const data = JSON.parse(rawData);
-      console.log('WebSocket: received JSON message ', data);
 
       if (Array.isArray(data)) {
         const messages = data.map((msg) => ({
@@ -87,8 +80,6 @@ class WebSocketService {
         };
 
         this.eventHandlers.onMessage?.(message);
-      } else if (data.type === 'pong') {
-        console.log('WebSocket: pong received');
       }
     } catch (error) {
       console.error('WebSocket: failed to parse message as JSON:', error);
@@ -113,7 +104,6 @@ class WebSocketService {
 
     try {
       this.socket.send(JSON.stringify(message));
-      console.log('WebSocket: message sent:', message);
     } catch (error) {
       console.error('WebSocket: failed to send message:', error);
     }
@@ -133,7 +123,6 @@ class WebSocketService {
 
     try {
       this.socket.send(JSON.stringify(message));
-      console.log('WebSocket: get old messages request sent ', message);
     } catch (error) {
       console.error('WebSocket: failed to get old messages ', error);
     }

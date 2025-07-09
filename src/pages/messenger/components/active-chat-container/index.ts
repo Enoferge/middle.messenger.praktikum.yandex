@@ -73,7 +73,6 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
   componentDidMount() {}
 
   componentWillUnmount() {
-    console.log('componentWillUnmount');
     this.props.clearActiveChat?.();
     chatWebSocketManager.disconnectFromChat();
   }
@@ -101,7 +100,6 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
 
     try {
       const { user } = this.props;
-      console.log('User from store:', user);
 
       if (!user || !user.id) {
         console.error('User id was not found in store');
@@ -110,15 +108,12 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
 
       await chatWebSocketManager.connectToChat(activeChat.id, user.id, {
         onMessage: (message: MessageBubbleProps) => {
-          console.log('chatWebSocketManager onMessage', message);
           this.handleNewMessage(message);
         },
         onOldMessages: (messages: MessageBubbleProps[]) => {
-          console.log('onOldMessages', messages);
           this.handleOldMessages(messages);
         },
         onOpen: () => {
-          console.log('chatWebSocketManager onOpen');
           chatWebSocketManager.getOldMessages();
         },
         onClose: () => {
@@ -207,7 +202,6 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
       user: this.props.user,
       users: this.props.activeChatUsers,
       onLeaveChat: () => {
-        console.log('on leave chat');
         this.props.clearActiveChat?.();
         getUserChats({ offset: '0', limit: '20' });
       },

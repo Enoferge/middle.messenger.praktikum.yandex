@@ -23,7 +23,6 @@ class ChatWebSocketManagerImpl implements ChatWebSocketManager {
 
       if ('token' in response.data) {
         const { token } = response.data;
-        console.log('Websocket-chat: token received:', token);
 
         const config: WebSocketConfig = {
           userId,
@@ -33,8 +32,6 @@ class ChatWebSocketManagerImpl implements ChatWebSocketManager {
 
         webSocketService.connect(config, handlers);
         this.currentChatId = chatId;
-
-        console.log(`Websocket-chat: Connected to chat ${chatId}`);
       } else {
         throw new Error('Websocket-chat: failed to get chat token');
       }
@@ -47,7 +44,6 @@ class ChatWebSocketManagerImpl implements ChatWebSocketManager {
   disconnectFromChat(): void {
     webSocketService.disconnect();
     this.currentChatId = null;
-    console.log('Disconnected from chat WebSocket');
   }
 
   sendMessage(content: string): void {

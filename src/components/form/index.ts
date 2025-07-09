@@ -151,15 +151,9 @@ export class Form extends Block<FormProps> {
       touchedFields: allTouched,
     });
 
-    console.log('SUBMIT FORM');
-    console.log(this.props.formState);
-
     const filledFields = Object.fromEntries(
       Object.entries(this.props.formState || {}).filter(([name, value]) => value?.trim() !== '' && name !== FormFieldName.PasswordConfirm),
     );
-
-    console.log(filledFields);
-    console.log(`Form is ${this.isFormInvalid ? 'invalid' : 'valid'}`);
 
     if (!this.isFormInvalid) {
       try {
