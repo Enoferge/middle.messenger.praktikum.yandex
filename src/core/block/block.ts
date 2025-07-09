@@ -252,7 +252,7 @@ export class Block<T extends Props = Props> {
       });
 
       Object.entries(attrs).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
+        if (value !== undefined && value !== null && typeof value !== 'object') {
           this._element?.setAttribute(key, String(value));
         }
       });
