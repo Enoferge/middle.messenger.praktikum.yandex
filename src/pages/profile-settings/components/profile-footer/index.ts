@@ -1,9 +1,9 @@
 import { Block } from '@/core/block/block';
 import { Button } from '@/components/button';
-import type { Props } from '@/core/block/types';
 import { connect } from '@/core/hoc/connect-to-store';
+import type { Props } from '@/core/block/types';
+import type { ProfileMode, ProfileSettingsState } from '@/types/profile';
 
-import type { ProfileMode, ProfileSettingsState } from '../../types';
 import { BUTTON_UI_CONFIGS } from './constants';
 
 export interface ProfileFooterProps extends Props {

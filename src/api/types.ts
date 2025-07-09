@@ -17,6 +17,8 @@ export type UserDTO = {
     email: string;
 };
 
+export type UserInfo = Omit<UserDTO, 'avatar'>;
+
 export type CreateUserRequestData = Omit<UserDTO, 'avatar' | 'display_name' | 'id'> & {
     password: string
 }

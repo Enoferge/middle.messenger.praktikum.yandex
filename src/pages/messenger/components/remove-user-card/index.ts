@@ -1,6 +1,6 @@
 import { removeUsersFromChat } from '@/services/chats';
 import { FormFieldName } from '@/constants/formFields';
-import type { UserInfo } from '@/pages/profile-settings/types';
+import type { UserInfo } from '@/api/types';
 
 import { UserCard, type UserCardProps } from '../user-card';
 import { ChatUsersList } from '../chat-users-list';

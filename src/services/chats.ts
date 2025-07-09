@@ -12,7 +12,7 @@ import type {
 } from '@/api/chats';
 import ChatsApi from '@/api/chats';
 import type { ResponseError } from '@/core/http-transport/types';
-import type { ChatListItem } from '@/pages/messenger/types';
+import type { ChatListItem } from '@/types/messenger';
 import { formatTime } from '@/utils/format-time';
 import merge from '@/utils/merge';
 

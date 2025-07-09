@@ -9,8 +9,9 @@ import type { ChangeUserInfoRequestData, ChangeUserPassRequestData } from '@/api
 import { FileUpload, IconButton, Avatar } from '@/components';
 import type { FileUploadProps } from '@/components/file-upload/types';
 import { getAvatarFullUrl } from '@/utils/avatar';
+import type { ProfileMode, ProfileSettingsState } from '@/types/profile';
 
-import type { ProfileMode, ProfileSettingsState, ProfileFileUploadState, ProfileSettingsProps } from './types';
+import type { ProfileFileUploadState, ProfileSettingsProps } from './types';
 import template from './profile.hbs?raw';
 import { getConfig, DEFAULT_PROFILE_MODE } from './constants';
 import './styles.scss';

@@ -1,4 +1,4 @@
-import type { ModeConfig, ProfileMode } from './types';
+import type { ModeConfig, ProfileMode } from '@/types/profile';
 
 export const MODE_UI_CONFIGS: Record<ProfileMode, ModeConfig> = {
   READ: { showForm: true },

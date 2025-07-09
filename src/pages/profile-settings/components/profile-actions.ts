@@ -2,8 +2,7 @@ import { Block } from '@/core/block/block';
 import { Button } from '@/components/button';
 import type { Props } from '@/core/block/types';
 import { connect } from '@/core/hoc/connect-to-store';
-
-import type { ProfileSettingsState } from '../types';
+import type { ProfileSettingsState } from '@/types/profile';
 
 export interface ProfileActionsProps extends Props {
   onBackToProfile: () => void;

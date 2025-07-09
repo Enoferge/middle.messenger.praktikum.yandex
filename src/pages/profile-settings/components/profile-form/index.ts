@@ -2,9 +2,9 @@ import { Block } from '@/core/block/block';
 import { Form } from '@/components';
 import type { Props } from '@/core/block/types';
 import { connect } from '@/core/hoc/connect-to-store';
+import type { ProfileMode, ProfileSettingsState } from '@/types/profile';
 
 import { FORM_CONFIGS, FORM_PASSWORD_INITIAL_STATE, FORM_USER_INITIAL_STATE, PROFILE_FORM_ID } from './constants';
-import type { ProfileMode, ProfileSettingsState } from '../../types';
 import { mapFormToApiFields } from './helpers';
 
 interface ProfileFormProps extends Props {
