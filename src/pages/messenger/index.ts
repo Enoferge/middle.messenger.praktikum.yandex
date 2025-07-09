@@ -191,7 +191,7 @@ export class MessengerPage extends BasePageWithLayout {
       updateUserChat: (chatId: number, updatedChatInfo: Partial<ChatInfo>) => {
         const currentChatIdx = window.store.state.userChats.findIndex((chat: ChatInfo) => chat.id === chatId);
 
-        if (currentChatIdx) {
+        if (currentChatIdx !== -1) {
           const updatedChat = merge(window.store.state.userChats[currentChatIdx], updatedChatInfo);
 
           window.store.set({

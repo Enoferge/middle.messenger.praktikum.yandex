@@ -109,8 +109,7 @@ export class HTTPTransport {
             responseData = JSON.parse(xhr.responseText);
           } catch (e) {
             responseData = xhr.responseText;
-            console.error('error while parsing response json, returning responseText as it is');
-            console.error(e);
+            console.error('error while parsing response json, returning responseText as it is', e);
           }
 
           const statusCode = xhr.status;
