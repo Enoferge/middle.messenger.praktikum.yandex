@@ -3,14 +3,14 @@
 A tiny minimalist messenger with a touch of *kawaii* aesthetics.
 
 ## Pages Sprint 1
-- [Sign up page](https://kawaii-messenger.netlify.app/#/sign-up)
+- [Sign up page](https://kawaii-messenger.netlify.app/sign-up)
 - [Sign in page](https://kawaii-messenger.netlify.app/)
-- [Home page](https://kawaii-messenger.netlify.app/#/home)
-- [Profile settings](https://kawaii-messenger.netlify.app/#/settings)
-- [Messenger](https://kawaii-messenger.netlify.app/#/messenger)
-- [500 error page](https://kawaii-messenger.netlify.app/#/500)
-- [400 error page](https://kawaii-messenger.netlify.app/#/400)
-- [404 error page](https://kawaii-messenger.netlify.app/#/404)
+- [Home page](https://kawaii-messenger.netlify.app/home)
+- [Profile settings](https://kawaii-messenger.netlify.app/settings)
+- [Messenger](https://kawaii-messenger.netlify.app/messenger)
+- [500 error page](https://kawaii-messenger.netlify.app/500)
+- [400 error page](https://kawaii-messenger.netlify.app/400)
+- [404 error page](https://kawaii-messenger.netlify.app/404)
 
 ## 🛠 Tech Stack
 

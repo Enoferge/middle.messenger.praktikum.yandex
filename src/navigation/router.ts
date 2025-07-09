@@ -35,16 +35,14 @@ class Router {
   }
 
   start() {
-    window.onhashchange = () => {
+    window.onpopstate = () => {
       this._onRoute(this._getCurrentPath());
     };
-
     this._onRoute(this._getCurrentPath());
   }
 
   _getCurrentPath() {
-    const path = window.location.hash.replace(/^#/, '') || '/';
-    return path;
+    return window.location.pathname || '/';
   }
 
   _onRoute(pathname: string) {
@@ -90,7 +88,10 @@ class Router {
   }
 
   go(pathname: string) {
-    window.location.hash = pathname;
+    if (window.location.pathname !== pathname) {
+      window.history.pushState({}, '', pathname);
+      this._onRoute(pathname);
+    }
   }
 
   back() {

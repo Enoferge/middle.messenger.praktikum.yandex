@@ -17,7 +17,7 @@ class LinkBase extends Block<LinkProps> {
       ...props,
       class: `link${props.class ? ` ${props.class}` : ''}`,
       attrs: {
-        href: `#${cleanLink}`,
+        href: cleanLink,
       },
       events: {
         click: (e: MouseEvent) => {
