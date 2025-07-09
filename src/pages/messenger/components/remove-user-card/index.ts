@@ -1,16 +1,17 @@
-import { getUserChats, removeUsersFromChat } from '@/services/chats';
+import { removeUsersFromChat } from '@/services/chats';
 import { FormFieldName } from '@/constants/formFields';
+import type { UserInfo } from '@/pages/profile-settings/types';
 
 import { UserCard, type UserCardProps } from '../user-card';
 import { ChatUsersList } from '../chat-users-list';
 
-export interface RemoveUserCardProps {
-  chatId: number;
+export interface RemoveUserCardProps extends UserCardProps {
+  user?: UserInfo | null
   users?: Array<{ id: number; login: string }>;
-  onSuccess?: () => void;
+  onLeaveChat?: () => void
 }
 
-export class RemoveUserCard extends UserCard {
+export class RemoveUserCard extends UserCard<RemoveUserCardProps> {
   constructor(props: RemoveUserCardProps) {
     super({
       ...props,
@@ -23,21 +24,18 @@ export class RemoveUserCard extends UserCard {
           chatId: props.chatId,
         });
 
-        const users = this.props.users as RemoveUserCardProps['users'];
+        const { onLeaveChat } = this.props;
 
-        if (users?.length === 1 && formData[FormFieldName.UserId] === String(users[0].id)) {
+        if (formData[FormFieldName.UserId] === String(this.props.user?.id)) {
           console.log('you removed yourself from the chat');
-          getUserChats({ offset: '0', limit: '20' });
-          window.store.set({
-            activeChat: null,
-          });
+          onLeaveChat?.();
         }
       },
       customContent: new ChatUsersList({ users: props.users || [] }),
     });
   }
 
-  componentDidUpdate(oldProps: RemoveUserCardProps & UserCardProps, newProps: RemoveUserCardProps & UserCardProps): boolean {
+  componentDidUpdate(oldProps: RemoveUserCardProps, newProps: RemoveUserCardProps): boolean {
     if (oldProps.users !== newProps.users) {
       this.updateCustomContent({ users: newProps.users });
     }

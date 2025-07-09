@@ -4,12 +4,12 @@ import { IconButton } from '@/components/icon-button';
 import { FORM_FIELD_TYPE, FormFieldName } from '@/constants/formFields';
 import { Form, Tooltip } from '@/components';
 import isEqual from '@/utils/is-equal';
-import { changeChatAvatar, getChatUsers, getUserChatByTitle } from '@/services/chats';
+import { changeChatAvatar, getActiveChatUsers, getUserChats } from '@/services/chats';
 import { chatWebSocketManager } from '@/services/chat-websocket';
 import type { MessageBubbleProps } from '@/components/message-bubble/types';
 import type { MessageContent } from '@/core/websocket/types';
-
 import type { ChatInfo } from '@/api/chats';
+
 import { AddUserCard } from '../add-user-card';
 import { RemoveUserCard } from '../remove-user-card';
 import template from './active-chat-container.hbs?raw';
@@ -29,7 +29,7 @@ const mapStateToProps = (state: MessengerPageState) => ({
 });
 
 class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
-  constructor(props?: ActiveChatContainerProps) {
+  constructor(props: ActiveChatContainerProps) {
     super('section', {
       ...props,
       class: 'messenger__section messenger__section_right',
@@ -74,10 +74,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
 
   componentWillUnmount() {
     console.log('componentWillUnmount');
-    window.store.set({
-      activeChat: null,
-      activeChatUsers: null,
-    });
+    this.props.clearActiveChat?.();
     chatWebSocketManager.disconnectFromChat();
   }
 
@@ -100,7 +97,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
       return;
     }
 
-    await getChatUsers({ id: activeChat.id, offset: 0, limit: 20 });
+    await getActiveChatUsers({ id: activeChat.id, offset: 0, limit: 20 });
 
     try {
       const { user } = this.props;
@@ -144,30 +141,19 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
     });
 
     const chatId = this.props.activeChat?.id;
-    const { activeChatUsers, userChats } = this.props;
+    const sender = this.props.activeChatUsers?.find((u: ChatInfo) => u.id === userId);
+    const senderFirstName = sender?.first_name || sender?.display_name || '?';
 
-    if (chatId && userChats) {
-      const idx = userChats.findIndex((c: ChatInfo) => c.id === chatId);
-      const chat = userChats[idx];
-      const senderFirstName = activeChatUsers?.find((u: ChatInfo) => u.id === userId)?.first_name || '?';
-
-      chat.last_message = {
-        content: message.text,
-        time: message.time,
-        user: {
-          ...chat.last_message?.user,
-          first_name: senderFirstName,
+    if (chatId && senderFirstName) {
+      this.props.updateUserChat?.(chatId, {
+        unread_count: 0,
+        last_message: {
+          content: message.text,
+          time: message.time,
+          user: {
+            first_name: senderFirstName,
+          },
         },
-      };
-
-      chat.unread_count = 0;
-
-      window.store.set({
-        userChats: [
-          ...window.store.state.userChats.slice(0, idx),
-          chat,
-          ...window.store.state.userChats.slice(idx + 1),
-        ],
       });
     }
   }
@@ -201,6 +187,7 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
     const card = new AddUserCard({
       chatId,
       onSuccess: () => {
+        getActiveChatUsers(({ id: chatId, offset: 0, limit: 20 }));
         this.props.hideModal?.();
       },
     });
@@ -217,8 +204,15 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
 
     const card = new RemoveUserCard({
       chatId,
+      user: this.props.user,
       users: this.props.activeChatUsers,
+      onLeaveChat: () => {
+        console.log('on leave chat');
+        this.props.clearActiveChat?.();
+        getUserChats({ offset: '0', limit: '20' });
+      },
       onSuccess: () => {
+        getActiveChatUsers(({ id: chatId, offset: 0, limit: 20 }));
         this.props.hideModal?.();
       },
     });
@@ -237,14 +231,11 @@ class MessengerActiveChatContainer extends Block<ActiveChatContainerProps> {
       chatId,
       onSuccess: async () => {
         this.props.hideModal?.();
-        const updatedChat = await getUserChatByTitle(this.props.activeChat?.title);
 
-        if (updatedChat) {
-          window.store.set({
-            activeChat: updatedChat,
-          });
+        if (this.props.activeChat) {
+          const { avatar, id } = this.props.activeChat;
 
-          this.props.updateChatPreview?.();
+          this.props.updateUserChat?.(id, { avatar });
         }
       },
       onFileUpload: async (file: File) => {

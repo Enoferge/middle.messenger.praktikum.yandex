@@ -21,7 +21,8 @@ export interface MessengerPageProps extends Props {
   userAvatarUrl?: string;
   user?: UserInfo | null;
   onActiveChatChange?: (chat: ChatInfo) => void
-  updateSpecificUserChat?: (chat: ChatInfo, idx: number) => void
+  clearActiveChat?: () => void
+  updateUserChat?: (chatId: number, updatedChatInfo: Partial<ChatInfo>) => void
 }
 
 export interface MessengerPageState {

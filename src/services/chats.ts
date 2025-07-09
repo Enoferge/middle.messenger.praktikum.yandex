@@ -8,11 +8,13 @@ import type {
   RemoveUsersFromChatRequestData,
   GetChatTokenRequestData,
   GetChatTokenResponseData,
+  ChangeChatAvatarResponseData,
 } from '@/api/chats';
 import ChatsApi from '@/api/chats';
 import type { ResponseError } from '@/core/http-transport/types';
 import type { ChatListItem } from '@/pages/messenger/types';
 import { formatTime } from '@/utils/format-time';
+import merge from '@/utils/merge';
 
 const chatsApi = new ChatsApi();
 
@@ -75,7 +77,7 @@ export const removeUsersFromChat = async (requestData: RemoveUsersFromChatReques
   }
 };
 
-export const getChatUsers = async (requestData: GetChatUsersRequestData): Promise<GetChatUsersResponseDataDto[]> => {
+export const getActiveChatUsers = async (requestData: GetChatUsersRequestData): Promise<GetChatUsersResponseDataDto[]> => {
   try {
     const { data } = await chatsApi.getChatUsers(requestData);
 
@@ -91,7 +93,12 @@ export const getChatUsers = async (requestData: GetChatUsersRequestData): Promis
 
 export const changeChatAvatar = async (formData: FormData): Promise<void> => {
   try {
-    await chatsApi.changeChatAvatar(formData);
+    const { data } = await chatsApi.changeChatAvatar(formData);
+    const currentActiveChat = window.store.state.activeChat;
+
+    window.store.set({
+      activeChat: merge(currentActiveChat, { avatar: (data as ChangeChatAvatarResponseData).avatar }),
+    });
   } catch (e) {
     throw new Error((e as ResponseError)?.data?.reason || 'Error while trying to change chat avatar');
   }

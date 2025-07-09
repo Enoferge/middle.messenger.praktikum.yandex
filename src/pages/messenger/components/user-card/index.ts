@@ -7,25 +7,25 @@ import { FormFieldName } from '@/constants/formFields';
 
 export interface UserCardProps extends Props {
   chatId: number;
-  title: string;
-  submitButtonText: string;
-  formId: string;
+  title?: string;
+  submitButtonText?: string;
+  formId?: string;
   customContent?: Block;
   useFileUpload?: boolean;
   onSuccess?: () => void;
   onSubmit?: (formData: Record<string, string>) => Promise<void>;
 }
 
-export class UserCard extends Block<UserCardProps> {
+export class UserCard<T extends UserCardProps> extends Block<T> {
   protected form: Form;
 
   protected card: Card;
 
-  constructor(props: UserCardProps) {
+  constructor(props: T) {
     const formChildren = props.customContent ? { CustomContent: props.customContent } : {};
 
     const form = new Form({
-      formId: props.formId,
+      formId: String(props.formId),
       formFields: props.useFileUpload ? [] : [
         {
           name: FormFieldName.UserId,
@@ -45,14 +45,14 @@ export class UserCard extends Block<UserCardProps> {
     });
 
     const card = new Card({
-      title: props.title,
+      title: String(props.title),
       children: {
         ContentBlock: form,
         FooterBlock: new FormFooter({
           submitAction: {
             name: `${props.formId}-button`,
             formId: props.formId,
-            text: props.submitButtonText,
+            text: String(props.submitButtonText),
           },
         }),
       },

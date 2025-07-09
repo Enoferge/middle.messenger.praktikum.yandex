@@ -1,4 +1,3 @@
-import type { MessageBubbleProps } from '@/components/message-bubble/types';
 import type { MessageContent, WebSocketConfig, WebSocketEventHandlers, WebSocketMessage } from './types';
 
 class WebSocketService {

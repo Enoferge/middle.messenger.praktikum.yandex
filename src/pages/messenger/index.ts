@@ -7,7 +7,7 @@ import { InputField } from '@/components/input-field';
 import { FORM_FIELD_TYPE, FormFieldName } from '@/constants/formFields';
 import { Form } from '@/components';
 import isEqual from '@/utils/is-equal';
-import { createNewChat, getUserChatByTitle, getUserChats, mapApiChatsToChatListItems } from '@/services/chats';
+import { createNewChat, getUserChats, mapApiChatsToChatListItems } from '@/services/chats';
 import { Modal } from '@/components/modal';
 import { Card } from '@/components/card';
 import { FormFooter } from '@/components/form-footer';
@@ -15,6 +15,7 @@ import { getAvatarFullUrl } from '@/utils/avatar';
 import { ROUTER } from '@/navigation/constants';
 import type { ChatInfo } from '@/api/chats';
 import type Router from '@/navigation/router';
+import merge from '@/utils/merge';
 
 import template from './messenger.hbs?raw';
 import type { MessengerPageProps, MessengerPageState } from './types';
@@ -84,18 +85,8 @@ class MessengerPageBase extends Block<MessengerPageProps> {
     (this.children.ActiveChatContainer as Block).setProps({
       showModal: this.showModal.bind(this),
       hideModal: this.hideModal.bind(this),
-      updateChatPreview: async () => {
-        const userActiveChatIndex = this.props.userChats?.findIndex((item) => item.id === this.props.activeChat?.id) ?? -1;
-
-        if (userActiveChatIndex !== -1) {
-          const currentActiveChat = this.props.userChats?.[userActiveChatIndex];
-
-          if (currentActiveChat) {
-            const updatedUserActiveChat = { ...currentActiveChat, ...this.props.activeChat };
-            this.props.updateSpecificUserChat?.(updatedUserActiveChat, userActiveChatIndex);
-          }
-        }
-      },
+      clearActiveChat: this.props.clearActiveChat?.bind(this),
+      updateUserChat: this.props.updateUserChat?.bind(this),
     });
   }
 
@@ -191,14 +182,26 @@ export class MessengerPage extends BasePageWithLayout {
           activeChat: chat,
         });
       },
-      updateSpecificUserChat: (chat: ChatInfo, idx: number) => {
+      clearActiveChat: () => {
         window.store.set({
-          userChats: [
-            ...(window.store.state.userChats?.slice(0, idx) || []),
-            chat,
-            ...(window.store.state.userChats?.slice(idx + 1) || []),
-          ],
+          activeChat: null,
+          activeChatAvatar: null,
         });
+      },
+      updateUserChat: (chatId: number, updatedChatInfo: Partial<ChatInfo>) => {
+        const currentChatIdx = window.store.state.userChats.findIndex((chat: ChatInfo) => chat.id === chatId);
+
+        if (currentChatIdx) {
+          const updatedChat = merge(window.store.state.userChats[currentChatIdx], updatedChatInfo);
+
+          window.store.set({
+            userChats: [
+              ...(window.store.state.userChats?.slice(0, currentChatIdx) || []),
+              updatedChat,
+              ...(window.store.state.userChats?.slice(currentChatIdx + 1) || []),
+            ],
+          });
+        }
       },
     });
   }

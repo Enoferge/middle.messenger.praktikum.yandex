@@ -10,7 +10,8 @@ export interface ActiveChatContainerProps extends Props {
   activeChat?: ChatInfo;
   activeChatUsers?: GetChatUsersResponseDataDto[];
   activeChatMessages?: Array<MessageBubbleProps>;
-  updateChatPreview?: () => void
+  updateUserChat?: (chatId: number, updatedChatInfo: Partial<ChatInfo>) => void
+  clearActiveChat?: () => void
   showModal?: (content: Block) => void
   hideModal?: () => void
 }

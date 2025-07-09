@@ -66,6 +66,13 @@ export type GetChatUsersResponseDataDto = {
   role?: string | null,
 }
 
+export type ChangeChatAvatarResponseData = {
+  id: number,
+  title: string,
+  avatar: string,
+  created_by: number
+}
+
 export type GetChatTokenRequestData = {
   id: number,
 }
@@ -96,7 +103,7 @@ export default class ChatsApi {
   }
 
   async changeChatAvatar(data: FormData) {
-    return userApi.put<void | ApiError>('/avatar', { data });
+    return userApi.put<ChangeChatAvatarResponseData | ApiError>('/avatar', { data });
   }
 
   async getChatToken(data: GetChatTokenRequestData) {

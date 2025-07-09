@@ -1,15 +1,10 @@
 import { addUsersToChat } from '@/services/chats';
 import { FormFieldName } from '@/constants/formFields';
 
-import { UserCard } from '../user-card';
+import { UserCard, type UserCardProps } from '../user-card';
 
-export interface AddUserProps {
-  chatId: number;
-  onSuccess?: () => void;
-}
-
-export class AddUserCard extends UserCard {
-  constructor(props: AddUserProps) {
+export class AddUserCard extends UserCard<UserCardProps> {
+  constructor(props: UserCardProps) {
     super({
       ...props,
       title: 'Add user',
