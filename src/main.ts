@@ -36,5 +36,7 @@ window.router
   .use(ROUTER.error404, Error404Page)
   .use(ROUTER.error500, Error500Page);
 
-await getUserInfo();
-window.router.start();
+(async () => {
+  await getUserInfo();
+  window.router.start();
+})();
