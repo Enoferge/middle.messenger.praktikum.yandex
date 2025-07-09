@@ -1,11 +1,16 @@
 import { Block } from '@/core/block/block';
+import { withRouter } from '@/core/hoc/with-router';
+import type { WithRouter } from '@/core/hoc/with-router';
+import type Router from '@/navigation/router';
 
+import type { LinkProps } from './types';
 import './styles.scss';
 import template from './link.hbs?raw';
-import type { LinkProps } from './types';
 
-export class Link extends Block<LinkProps> {
-  constructor(props: LinkProps) {
+class LinkBase extends Block<LinkProps> {
+  private router!: Router;
+
+  constructor(props: LinkProps & Partial<WithRouter>) {
     const cleanLink = props.link?.startsWith('/') ? props.link : `/${props.link}`;
 
     super('a', {
@@ -17,7 +22,7 @@ export class Link extends Block<LinkProps> {
       events: {
         click: (e: MouseEvent) => {
           e.preventDefault();
-          window.router.go(cleanLink);
+          this.router?.go(cleanLink);
         },
       },
     });
@@ -27,3 +32,5 @@ export class Link extends Block<LinkProps> {
     return template;
   }
 }
+
+export const Link = withRouter(LinkBase);
