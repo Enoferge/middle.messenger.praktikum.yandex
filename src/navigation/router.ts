@@ -1,4 +1,4 @@
-import type { BlockClass, Props } from '@/core/block/types';
+import type { BlockClass, Props } from '../core/block/types';
 
 import Route from './route';
 import type { RouteInterface } from './types';
@@ -110,6 +110,14 @@ class Router {
     }
 
     return route;
+  }
+
+  clearRoutes() {
+    this.routes = [];
+  }
+
+  clearCurrentRoute() {
+    this._currentRoute = null;
   }
 }
 
