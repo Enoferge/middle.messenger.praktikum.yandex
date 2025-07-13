@@ -19,6 +19,8 @@ type RequestOptions = {
   method?: Method;
 };
 
+type HTTPMethod = <R = unknown>(url: string, options?: RequestOptions) => Promise<Response<R>>
+
 function queryStringify(data: Record<string, unknown> = {}): string {
   if (!data || typeof data !== 'object' || !Object.keys(data).length) {
     return '';
@@ -44,37 +46,13 @@ export class HTTPTransport {
     this.apiUrl = `${BASE_API_URL}${apiPath}`;
   }
 
-  get = <TResponse>(
-    url: string,
-    options: RequestOptions = {},
-  ): Promise<Response<TResponse>> => this.request<TResponse>(`${this.apiUrl}${url}`, {
-    ...options,
-    method: METHODS.GET,
-  }, options.timeout);
+  get: HTTPMethod = (url, options = {}) => this.request(`${this.apiUrl}${url}`, { ...options, method: METHODS.GET }, options.timeout);
 
-  put = <TResponse>(
-    url: string,
-    options: RequestOptions = {},
-  ): Promise<Response<TResponse>> => this.request(`${this.apiUrl}${url}`, {
-    ...options,
-    method: METHODS.PUT,
-  }, options.timeout);
+  put: HTTPMethod = (url, options = {}) => this.request(`${this.apiUrl}${url}`, { ...options, method: METHODS.PUT }, options.timeout);
 
-  post = <TResponse>(
-    url: string,
-    options: RequestOptions = {},
-  ): Promise<Response<TResponse>> => this.request(`${this.apiUrl}${url}`, {
-    ...options,
-    method: METHODS.POST,
-  }, options.timeout);
+  post: HTTPMethod = (url, options = {}) => this.request(`${this.apiUrl}${url}`, { ...options, method: METHODS.POST }, options.timeout);
 
-  delete = <TResponse>(
-    url: string,
-    options: RequestOptions = {},
-  ): Promise<Response<TResponse>> => this.request(`${this.apiUrl}${url}`, {
-    ...options,
-    method: METHODS.DELETE,
-  }, options.timeout);
+  delete: HTTPMethod = (url, options = {}) => this.request(`${this.apiUrl}${url}`, { ...options, method: METHODS.DELETE }, options.timeout);
 
   request = <TResponse>(url: string, options: RequestOptions, timeout = 5000):
     Promise<Response<TResponse>> => {
