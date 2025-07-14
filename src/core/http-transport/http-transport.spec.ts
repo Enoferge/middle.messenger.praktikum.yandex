@@ -7,7 +7,7 @@ import { HTTPTransport } from './http-transport';
   this.type = type;
 };
 
-describe.only('Http Transport', () => {
+describe('Http Transport', () => {
   let openSpy: sinon.SinonSpy;
   let sendSpy: sinon.SinonSpy;
   let sandbox: sinon.SinonSandbox;
