@@ -18,8 +18,7 @@
     "stylelint:fix": "stylelint \"**/*.{css,scss}\" --fix",
     "lint": "npm run eslint && npm run stylelint && npm run type-check",
     "test": "mocha",
-    "prepare": "husky install",
-    "pre-commit": "npx lint-staged && npm run test"
+    "prepare": "husky install"
   },
   "lint-staged": {
     "**/*.{css,scss}": [
