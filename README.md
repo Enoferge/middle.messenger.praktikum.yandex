@@ -14,16 +14,38 @@ A tiny minimalist messenger with a touch of *kawaii* aesthetics.
 
 ## 🛠 Tech Stack
 
-Client:  
-TypeScript, JavaScript, component-based architecture with custom Block class and EventBus.
+**Languages & Frameworks:**  
+- **TypeScript** & **JavaScript**  
+- Component-based architecture (custom `Block` class, `EventBus`)
 
-Tools:  
-Vite, PostCSS, Sass, Netlify, ESLint, Stylelint, TypeScript (tsc type checking).
+**Build & Tooling:**  
+- **Vite** – lightning-fast build tool
+- **Sass** (SCSS) – modern CSS with variables and nesting
+- **PostCSS** – CSS transformations (with plugins like `postcss-nested`, `postcss-preset-env`)
+- **Handlebars** – template engine for UI components
+
+**Testing:**  
+- **Mocha** – test runner  
+- **Chai** – assertions  
+- **Sinon** – spies, stubs, and mocks  
+- **jsdom** – DOM emulation for tests
+
+**Linting & Formatting:**  
+- **ESLint** – JavaScript/TypeScript linting  
+- **Stylelint** – CSS/SCSS linting  
+
+**Automation & Quality:**  
+- **Husky** – git hooks for pre-commit and pre-push  
+- **lint-staged** – run linters/formatters only on staged files  
+- **TypeScript** – static type checking (`tsc`)
+
+**Deployment:**  
+- **Netlify** – continuous deployment and hosting
 
 ## 🎨 Design
 
 View the UI design on [Figma](https://www.figma.com/design/xFYpnXMI4U0U1I0RQb2PJQ/Messenger-Public?node-id=0-1&t=0Gy7dVTRkVwptXQX-1)
-(work in progress)
+(mvp version for now)
 
 ## 🚀 Scripts
 
@@ -57,6 +79,9 @@ npm run stylelint:fix
 
 # Full lint: ESLint, Stylelint, and TypeScript check
 npm run lint
+
+# Run all unit tests (Mocha, Chai, Sinon)
+npm run test
 ```
 
 ## 🐉 Developer
