@@ -1,8 +1,8 @@
 import { nanoid } from 'nanoid';
 import Handlebars from 'handlebars';
 
-import { EventBus } from '@/core/event-bus/event-bus';
-import { cloneDeep } from '@/utils/clone-deep';
+import { cloneDeep } from '../../utils/clone-deep';
+import { EventBus } from '../event-bus/event-bus';
 
 import type {
   Meta, Element, Props, Children,

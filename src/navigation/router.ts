@@ -1,8 +1,8 @@
-import type { BlockClass, Props } from '@/core/block/types';
+import type { BlockClass, Props } from '../core/block/types';
 
 import Route from './route';
-import type { RouteInterface } from './types';
 import { ROUTER } from './constants';
+import type { RouteInterface } from './types';
 
 class Router {
   /* eslint-disable no-use-before-define */
@@ -29,7 +29,9 @@ class Router {
   }
 
   use(pathname: string, blockClass: BlockClass<Props>) {
-    const route = new Route(pathname, blockClass, { rootQuery: this._rootQuery });
+    const route = new Route(pathname, blockClass, {
+      rootQuery: this._rootQuery,
+    });
     this.routes.push(route);
     return this;
   }
@@ -54,7 +56,9 @@ class Router {
     }
 
     const { user } = window.store.getState();
-    const isAuthPage = [ROUTER.signIn, ROUTER.signUp].includes(pathname as ROUTER);
+    const isAuthPage = [ROUTER.signIn, ROUTER.signUp].includes(
+      pathname as ROUTER,
+    );
     const isProtectedPage = !isAuthPage;
 
     // Route guard
@@ -110,6 +114,14 @@ class Router {
     }
 
     return route;
+  }
+
+  clearRoutes() {
+    this.routes = [];
+  }
+
+  clearCurrentRoute() {
+    this._currentRoute = null;
   }
 }
 

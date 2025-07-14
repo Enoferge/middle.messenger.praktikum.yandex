@@ -1,4 +1,4 @@
-import { BASE_API_URL } from '@/constants/base';
+import { BASE_API_URL } from '../../constants/base';
 
 import type { Response } from './types';
 
