@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import Handlebars from 'handlebars';
 
-import { EventBus } from '@/services/event-bus/event-bus';
+import { EventBus } from '@/core/event-bus/event-bus';
 import { cloneDeep } from '@/utils/clone-deep';
 
 import type {
@@ -20,6 +20,8 @@ export class Block<T extends Props = Props> {
 
   _element: Element | null = null;
 
+  _isElementHidden = false;
+
   _id = nanoid(6);
 
   _meta: Meta | null = null;
@@ -27,6 +29,10 @@ export class Block<T extends Props = Props> {
   children: Children;
 
   props: T;
+
+  private _isBatchUpdating = false;
+
+  private _eventWrappers: Record<string, (e: Event) => void> = {};
 
   constructor(tagName = 'div', propsWithChildren: T = {} as T) {
     const eventBus = new EventBus();
@@ -81,10 +87,18 @@ export class Block<T extends Props = Props> {
     this.componentDidMount();
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   dispatchComponentDidMount() {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+
+    Object.values(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((component) => component.dispatchComponentDidMount());
+      } else {
+        child.dispatchComponentDidMount();
+      }
+    });
   }
 
   _componentDidUpdate = (...args: unknown[]) => {
@@ -100,32 +114,68 @@ export class Block<T extends Props = Props> {
     return true;
   }
 
-  setProps = (nextProps: Props) => {
+  public setProps = (nextProps: Props) => {
     if (!nextProps) {
       return;
     }
 
+    this._isBatchUpdating = true;
+    const oldProps = cloneDeep(this.props);
+
     Object.assign(this.props, nextProps);
+
+    this._isBatchUpdating = false;
+    this.eventBus().emit(Block.EVENTS.FLOW_CDU, oldProps, this.props);
   };
+
+  public forceUpdate(): void {
+    this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+  }
+
+  public updateChildren(children: Children): void {
+    this.children = children;
+  }
 
   get element() {
     return this._element;
   }
 
   _addEvents() {
-    const { events = {} } = this.props;
-
+    const events = this.computeEvents ? this.computeEvents() : (this.props.events || {});
     Object.keys(events).forEach((eventName) => {
-      this._element?.addEventListener(eventName, events[eventName]);
+      if (!this._eventWrappers[eventName]) {
+        this._eventWrappers[eventName] = (e: Event) => {
+          const currentEvents = this.computeEvents ? this.computeEvents() : (this.props.events || {});
+          currentEvents[eventName]?.(e);
+        };
+      }
+      this._element?.addEventListener(eventName, this._eventWrappers[eventName]);
     });
   }
 
   _removeEvents() {
-    const { events = {} } = this.props;
-
-    Object.keys(events).forEach((eventName) => {
-      this._element?.removeEventListener(eventName, events[eventName]);
+    Object.keys(this._eventWrappers).forEach((eventName) => {
+      this._element?.removeEventListener(eventName, this._eventWrappers[eventName]);
     });
+  }
+
+  _replaceStubWithContent(fragment: HTMLTemplateElement, component: Block) {
+    const stub = fragment.content.querySelector(`[data-id="${component._id}"]`);
+    const content = component.getContent();
+
+    if (content) {
+      if (stub) {
+        try {
+          stub.replaceWith(content);
+        } catch (e) {
+          if (stub.parentNode) {
+            stub.parentNode.replaceChild(content, stub);
+          } else {
+            fragment.content.appendChild(content);
+          }
+        }
+      }
+    }
   }
 
   _compile() {
@@ -146,20 +196,10 @@ export class Block<T extends Props = Props> {
     Object.values(this.children).forEach((child) => {
       if (Array.isArray(child)) {
         child.forEach((component) => {
-          const stub = fragment.content.querySelector(`[data-id="${component._id}"]`);
-          const content = component.getContent();
-
-          if (content) {
-            stub?.replaceWith(content);
-          }
+          this._replaceStubWithContent(fragment, component);
         });
       } else {
-        const stub = fragment.content.querySelector(`[data-id="${child._id}"]`);
-        const content = child.getContent();
-
-        if (content) {
-          stub?.replaceWith(content);
-        }
+        this._replaceStubWithContent(fragment, child);
       }
     });
 
@@ -170,6 +210,8 @@ export class Block<T extends Props = Props> {
     this._removeEvents();
 
     const block = this._compile();
+
+    this._applyAttributes();
 
     const className = this.computeClass();
     if (className) {
@@ -193,6 +235,34 @@ export class Block<T extends Props = Props> {
     return this.props.class || '';
   }
 
+  computeAttrs(): Record<string, unknown> {
+    return this.props.attrs || {};
+  }
+
+  computeEvents(): Record<string, (e: Event) => void> {
+    return this.props.events || {};
+  }
+
+  private _applyAttributes() {
+    const attrs = this.computeAttrs();
+
+    if (this._element) {
+      Array.from(this._element.attributes || []).forEach((attr) => {
+        this._element?.removeAttribute(attr.name);
+      });
+
+      Object.entries(attrs).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && typeof value !== 'object') {
+          this._element?.setAttribute(key, String(value));
+        }
+      });
+
+      if (this._isElementHidden) {
+        this._element.style.display = 'none';
+      }
+    }
+  }
+
   getContent() {
     return this.element;
   }
@@ -206,12 +276,13 @@ export class Block<T extends Props = Props> {
         const value = target[prop];
         return typeof value === 'function' ? value.bind(target) : value;
       },
-      // any - dynamic access to any possible keys for Proxy
       set: (target: any, prop, value) => {
         const oldProps = cloneDeep(target);
-        // eslint-disable-next-line no-param-reassign
         target[prop] = value;
-        emitBind(Block.EVENTS.FLOW_CDU, oldProps, target);
+
+        if (!this._isBatchUpdating) {
+          emitBind(Block.EVENTS.FLOW_CDU, oldProps, target);
+        }
 
         return true;
       },
@@ -235,6 +306,7 @@ export class Block<T extends Props = Props> {
     const content = this.getContent();
 
     if (content) {
+      this._isElementHidden = false;
       content.style.display = 'block';
     }
   }
@@ -243,7 +315,24 @@ export class Block<T extends Props = Props> {
     const content = this.getContent();
 
     if (content) {
+      this._isElementHidden = true;
       content.style.display = 'none';
     }
+  }
+
+  componentWillUnmount() { }
+
+  dispose(): void {
+    this.hide();
+    this.componentWillUnmount();
+    this._removeEvents();
+
+    Object.values(this.children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((c) => c.dispose());
+      } else {
+        child.dispose();
+      }
+    });
   }
 }

@@ -1,39 +1,42 @@
+import Router from '@/navigation/router';
+import { ROUTER } from '@/navigation/constants';
+import { Store } from '@/core/store/store';
+
 import './styles/variables.scss';
 import './styles/base.scss';
 import './styles/fonts.scss';
 import './styles/ui';
-import { renderPage } from './view/render';
-import { isPageName } from './utils/isPageName';
-import { registerHelpers } from './templates/helpers';
-import { pages } from './navigation/router';
-import { getCurrentPageNameFromPath } from './utils/getCurrentPageFromPath';
+import { HomePage } from './pages/home';
+import { SignInPage } from './pages/sign-in';
+import { SignUpPage } from './pages/sign-up';
+import { MessengerPage } from './pages/messenger';
+import { ProfileSettingsPage } from './pages/profile-settings';
+import { getUserInfo } from './services/auth';
+import { Error400Page } from './pages/error/Error400Page';
+import { Error404Page } from './pages/error/Error404Page';
+import { Error500Page } from './pages/error/Error500Page';
 
-registerHelpers();
+const APP_ROOT_ELEMENT_ID = '#app';
 
-document.addEventListener('click', (e) => {
-  const { target } = e;
-
-  if (!(target instanceof HTMLLinkElement)) {
-    return;
-  }
-
-  if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('/')) {
-    e.preventDefault();
-    const page = target.getAttribute('href')!.slice(1);
-    if (page && isPageName(page) && pages[page]) {
-      renderPage(page);
-      window.history.pushState(null, '', `/${page}`);
-    } else {
-      renderPage('404');
-      window.history.pushState(null, '', '404');
-    }
-  }
+window.store = new Store({
+  profileMode: 'READ',
+  user: null,
+  activeChat: null,
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderPage(getCurrentPageNameFromPath());
-});
+window.router = Router.getInstance(APP_ROOT_ELEMENT_ID);
 
-window.addEventListener('popstate', () => {
-  renderPage(getCurrentPageNameFromPath());
-});
+window.router
+  .use(ROUTER.home, HomePage)
+  .use(ROUTER.signIn, SignInPage)
+  .use(ROUTER.signUp, SignUpPage)
+  .use(ROUTER.messenger, MessengerPage)
+  .use(ROUTER.profileSettings, ProfileSettingsPage)
+  .use(ROUTER.error400, Error400Page)
+  .use(ROUTER.error404, Error404Page)
+  .use(ROUTER.error500, Error500Page);
+
+(async () => {
+  await getUserInfo();
+  window.router.start();
+})();

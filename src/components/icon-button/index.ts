@@ -7,24 +7,8 @@ import './styles.scss';
 
 export class IconButton extends Block<IconButtonProps> {
   constructor(props: IconButtonProps) {
-    const classes = ['icon-button', `icon-button_${props.variant || 'filled'}`, props.class || '']
-      .filter(Boolean)
-      .join(' ');
-
-    const attrs: Record<string, unknown> = {
-      class: classes,
-      type: props.type || 'button',
-      ...(props.name ? { form: props.name } : {}),
-      ...(props.form ? { form: props.form } : {}),
-    };
-
-    if (props.disabled) {
-      attrs.disabled = true;
-    }
-
     super('button', {
       ...props,
-      attrs,
       events: {
         click: (e) => props.onClick?.(e),
       },
@@ -32,6 +16,26 @@ export class IconButton extends Block<IconButtonProps> {
         Icon: new Icon({ class: 'icon-button__icon', name: props.iconName }),
       },
     });
+  }
+
+  computeClass(): string {
+    return ['icon-button', `icon-button_${this.props.variant || 'filled'}`, this.props.class || '']
+      .filter(Boolean)
+      .join(' ');
+  }
+
+  computeAttrs() {
+    const attrs: Record<string, unknown> = {
+      type: this.props.type || 'button',
+      ...(this.props.name ? { form: this.props.name } : {}),
+      ...(this.props.form ? { form: this.props.form } : {}),
+    };
+
+    if (this.props.disabled) {
+      attrs.disabled = true;
+    }
+
+    return attrs;
   }
 
   render() {

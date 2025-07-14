@@ -9,6 +9,8 @@ export const FormFieldName = {
   OldPassword: 'old_password',
   Password: 'password',
   PasswordConfirm: 'password_confirm',
+  ChatTitle: 'chat_title',
+  UserId: 'user_id',
 } as const;
 
 export const FORM_FIELD_TYPE = {

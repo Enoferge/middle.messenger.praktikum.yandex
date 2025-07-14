@@ -6,29 +6,9 @@
     {{{Search}}}
   </div>
   <div class='messenger__content'>
-    <div class='messenger__chats-list'>
-      {{#each chats}}
-        {{{this}}}
-      {{/each}}
-    </div>
+    {{{ChatList}}}
+    {{{CreateNewChatButton}}}
   </div>
 </section>
-<section class='messenger__section messenger__section_right'>
-  <div class='messenger__header'>
-    <div class='messenger__header-left-part'>
-      {{{ActiveChatAvatar}}}
-      <span class="messenger__header-title">{{{activeChatContactName}}}</span>
-    </div>
-    {{{SettingsButton}}}
-  </div>
-  <div class='messenger__content messenger__active-chat'>
-    {{#each activeChatMessages}}
-      {{{this}}}
-    {{/each}}
-  </div>
-  <div class='messenger__footer'>
-    {{{FileButton}}}
-    <div class='messenger__user-msg-textarea'>{{{MessageForm}}}</div>
-    {{{SendButton}}}
-  </div>
-</section>
+{{{ActiveChatContainer}}}
+{{{Modal}}}

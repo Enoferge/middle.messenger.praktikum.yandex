@@ -6,17 +6,17 @@ import './styles.scss';
 
 export class Avatar extends Block<AvatarProps> {
   constructor(props: AvatarProps) {
-    const classes = ['avatar', props.class || ''].filter(Boolean).join(' ');
-
-    const attrs: Record<string, unknown> = {
-      style: props.size ? `--avatar-size: ${props.size}px` : undefined,
-    };
-
     super('div', {
       ...props,
-      class: classes,
-      attrs,
     });
+  }
+
+  computeClass(): string {
+    return ['avatar', this.props.class || ''].filter(Boolean).join(' ');
+  }
+
+  computeAttrs(): Record<string, unknown> {
+    return { style: this.props.size ? `--avatar-size: ${this.props.size}px` : undefined };
   }
 
   render() {

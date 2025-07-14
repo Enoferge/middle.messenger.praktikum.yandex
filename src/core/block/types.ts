@@ -21,3 +21,5 @@ export type Meta = {
   tagName: string;
   props: Props;
 };
+
+export type BlockClass<TProps extends Props> = new (props: TProps) => Block<TProps>

@@ -1,0 +1,27 @@
+.chat-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-width: 220px;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-s);
+    padding: var(--space-xs) var(--space-s);
+    font-size: var(--font-size-plain-action-small);
+    cursor: pointer;
+
+    &:hover, &:focus {
+      color: var(--color-action);
+    }
+  }
+
+  &__icon {
+    --icon-size: 20px;
+
+    width: var(--icon-size);
+    height: var(--icon-size);
+    display: flex;
+  }
+}

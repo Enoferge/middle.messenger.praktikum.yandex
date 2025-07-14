@@ -1,0 +1,20 @@
+.modal {
+  &__overlay {
+    --color-overlay: rgb(0 0 0 / 40%);
+    
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--color-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--z-index-modal-overlay);
+  }
+
+  &__content {
+    position: relative;
+    z-index: var(--z-index-modal-content);
+  }
+}

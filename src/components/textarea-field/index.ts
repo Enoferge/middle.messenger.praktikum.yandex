@@ -3,10 +3,11 @@ import { getStateModifierClasses } from '@/utils/get-state-modifier-classes';
 import { Textarea } from '@/components/textarea';
 
 import './styles.scss';
+import type { FocusableField } from '@/types/base-field-types';
 import template from './textarea-field.hbs?raw';
 import type { TextareaFieldProps } from './types';
 
-export class TextareaField extends Block<TextareaFieldProps> {
+export class TextareaField extends Block<TextareaFieldProps> implements FocusableField {
   constructor(props: TextareaFieldProps) {
     const {
       label, onFieldChange, onFieldBlur, ...textareaProps
@@ -26,6 +27,16 @@ export class TextareaField extends Block<TextareaFieldProps> {
             const { name, value } = e.target as HTMLTextAreaElement;
             onFieldBlur?.({ name, value });
           },
+          onKeyDown: async (e: Event) => {
+            const { name, value } = e.target as HTMLTextAreaElement;
+            if (props.onEnterPressed) {
+              const keyboardEvent = e as KeyboardEvent;
+              if (keyboardEvent.key === 'Enter' && !keyboardEvent.shiftKey) {
+                e.preventDefault();
+                await props.onEnterPressed({ name, value });
+              }
+            }
+          },
         }),
       },
     });
@@ -35,7 +46,24 @@ export class TextareaField extends Block<TextareaFieldProps> {
     return getStateModifierClasses('textarea-field', this.props).join(' ');
   }
 
+  componentDidUpdate(oldProps: TextareaFieldProps, newProps: TextareaFieldProps): boolean {
+    if (oldProps.value !== newProps.value) {
+      const textarea = this.children.Textarea as Textarea;
+      textarea.setProps({ value: newProps.value });
+      return true;
+    }
+
+    return false;
+  }
+
   render() {
     return template;
+  }
+
+  public focus() {
+    const textarea = this.children.Textarea as Textarea;
+    if (textarea && typeof textarea.focus === 'function') {
+      textarea.focus();
+    }
   }
 }

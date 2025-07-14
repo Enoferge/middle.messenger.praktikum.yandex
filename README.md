@@ -3,15 +3,10 @@
 A tiny minimalist messenger with a touch of *kawaii* aesthetics.
 
 ## Pages Sprint 1
-- [Sign up page](https://kawaii-messenger.netlify.app/signUp)
-- [Sign in page](https://kawaii-messenger.netlify.app/signIn)
+- [Sign up page](https://kawaii-messenger.netlify.app/sign-up)
+- [Sign in page](https://kawaii-messenger.netlify.app/)
 - [Home page](https://kawaii-messenger.netlify.app/home)
-- [Profile read-only](https://kawaii-messenger.netlify.app/profileRead)
-- [Profile edit](https://kawaii-messenger.netlify.app/profileEdit)
-- [Profile change password](https://kawaii-messenger.netlify.app/profileChangePass)
-- [Profile change avatar](https://kawaii-messenger.netlify.app/profileChangeAvatar)
-- [Profile change avatar error](https://kawaii-messenger.netlify.app/profileChangeAvatarError)
-- [Profile change avatar uploaded](https://kawaii-messenger.netlify.app/profileChangeAvatarUploaded)
+- [Profile settings](https://kawaii-messenger.netlify.app/settings)
 - [Messenger](https://kawaii-messenger.netlify.app/messenger)
 - [500 error page](https://kawaii-messenger.netlify.app/500)
 - [400 error page](https://kawaii-messenger.netlify.app/400)

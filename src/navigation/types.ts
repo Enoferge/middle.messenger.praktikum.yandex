@@ -1,12 +1,11 @@
-import type { Block } from '@/core/block/block';
+import type { Props as BlockProps } from '@/core/block/types';
 
-import { PAGE_NAMES } from './constants';
-
-export interface PageData {
-  pageBlock: Block;
-  layoutContext?: {
-    hideHomeButton?: boolean;
-  };
+export interface RouteInterface {
+  render: () => void;
+  match: (path: string) => boolean;
+  leave: () => void;
 }
 
-export type PageName = (typeof PAGE_NAMES)[keyof typeof PAGE_NAMES];
+export interface RouteProps extends BlockProps {
+  rootQuery: string
+}

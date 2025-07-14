@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  font-size: 14px;
+  font-size: var(--font-size-plain-action-small);
 
   &__label {
     cursor: pointer;

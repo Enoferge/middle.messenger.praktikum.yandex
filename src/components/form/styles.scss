@@ -1,6 +1,17 @@
+@use '@/styles/ui/form-field/_mixins' as *;
+
 .form {
   display: flex;
   flex-direction: column;
   row-gap: var(--space-xs);
   width: 100%;
+  position: relative;
+
+  &__error-caption {
+    @include form-field-error-caption;
+  }
+
+  &__custom-content {
+    margin-top: var(--space-xs);
+  }
 }

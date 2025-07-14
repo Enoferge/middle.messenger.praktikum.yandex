@@ -10,36 +10,16 @@
     min-height: 0;
   }
 
-  &__section {
-    background-color: var(--color-bg-main);
-    display: flex;
-    flex-direction: column;
-    border: var(--border-width) solid var(--color-border-section);
-    border-radius: var(--radius-large);
-    overflow: hidden;
-
-    &_left {
-      flex: 0 0 25%;
-      min-width: 340px;
-      max-width: 420px;
-    }
-
-    &_right {
-      flex: 1 1 70%;
-      min-width: 0;
-    }
-  }
-
   &__content {
     flex: 1 1 auto;
     overflow: auto;
+    position: relative;
   }
 
-  &__active-chat {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-    padding: var(--space-m);
+  &__create-new-chat-button {
+    position: absolute;
+    bottom: var(--space-l);
+    right: var(--space-l);
   }
 
   &__message-bubble {
@@ -89,9 +69,5 @@
     display: flex;
     gap: var(--space-l);
     align-items: center;
-  }
-
-  &__user-msg-textarea {
-    flex: 1 1 auto;
   }
 }

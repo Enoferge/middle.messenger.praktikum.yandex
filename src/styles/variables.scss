@@ -1,6 +1,7 @@
 :root {
   --font-family-base: 'Poppins', system-ui, sans-serif;
   --font-size-plain-action: 18px;
+  --font-size-plain-action-small: 14px;
   --line-height-base-coef: 1.5;
   --border-width: 2px;
   --radius-small: 20px;
@@ -8,6 +9,7 @@
   --color-bg-layout: #392f5c;
   --color-bg-main: #2e1f4c;
   --color-error-accent: #ff6969;
+  --color-action: #e0a85d;
   --color-warning-accent: #fac156;
   --color-border-main: #7460b7;
   --color-border-section: #52448A;
@@ -29,4 +31,12 @@
   --space-xxxl: 64px;
   --space-xxxxl: 96px;
   --size-icon-s: 16px;
+  --z-index-form-loading: 10;
+  --z-index-tooltip: 100;
+  --z-index-modal-overlay: 1000;
+  --z-index-modal-content: 1001;
+  --shadow-color: rgb(0 0 0 / 15%);
+  --shadow-size: 4px;
+  --shadow-blur: 16px;
+  --animation-duration: 0.2s;
 }

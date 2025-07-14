@@ -7,7 +7,7 @@ import type { TextareaProps } from './types';
 export class Textarea extends Block<TextareaProps> {
   constructor(props: TextareaProps) {
     const {
-      onChange, onFocus, onBlur, ...attrs
+      onChange, onFocus, onBlur, onKeyDown, ...attrs
     } = props;
     super('textarea', {
       ...props,
@@ -16,11 +16,31 @@ export class Textarea extends Block<TextareaProps> {
         change: (e) => onChange?.(e),
         blur: (e) => onBlur?.(e),
         focus: (e) => onFocus?.(e),
+        keydown: (e) => onKeyDown?.(e),
       },
     });
   }
 
   computeClass() {
     return getStateModifierClasses('textarea-field__textarea', this.props).join(' ');
+  }
+
+  componentDidUpdate(oldProps: TextareaProps, newProps: TextareaProps): boolean {
+    if (oldProps.value !== newProps.value) {
+      const element = this.getContent() as HTMLTextAreaElement;
+      if (element && element.value !== newProps.value) {
+        element.value = newProps.value || '';
+      }
+      return true;
+    }
+
+    return false;
+  }
+
+  public focus() {
+    const element = this.getContent() as HTMLTextAreaElement;
+    if (element) {
+      element.focus();
+    }
   }
 }
