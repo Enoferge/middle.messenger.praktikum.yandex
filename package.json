@@ -20,11 +20,13 @@
     "test": "mocha",
     "prepare": "husky"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run test",
-      "pre-push": "npm run lint"
-    }
+  "lint-staged": {
+    "**/*.{css,scss}": [
+      "stylelint --fix"
+    ],
+    "**/*.{js,ts}": [
+      "eslint --fix"
+    ]
   },
   "devDependencies": {
     "@types/chai": "^5.2.2",
@@ -40,11 +42,11 @@
     "eslint-plugin-import": "^2.31.0",
     "husky": "^9.1.7",
     "jsdom": "^26.1.0",
+    "lint-staged": "^16.1.2",
     "mocha": "^11.7.1",
     "postcss": "^8.5.3",
     "postcss-nested": "^7.0.2",
     "postcss-preset-env": "^10.1.6",
-    "prettier": "^3.5.3",
     "sass": "^1.89.1",
     "sinon": "^21.0.0",
     "stylelint": "^16.20.0",
